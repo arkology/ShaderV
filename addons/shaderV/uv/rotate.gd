@@ -12,7 +12,7 @@ func _get_category():
 #	return ""
 
 func _get_description():
-	return "Rotate UV by angle in radians relative to center vector"
+	return "Rotate UV by angle in radians relative to pivot vector"
 
 func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -27,7 +27,7 @@ func _get_input_port_name(port):
 		1:
 			return "angle"
 		2:
-			return "center"
+			return "pivot"
 
 func _get_input_port_type(port):
 	set_input_port_default_value(1, 0.0)

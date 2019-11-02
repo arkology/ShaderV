@@ -1,9 +1,9 @@
 tool
 extends VisualShaderNodeCustom
-class_name VisualShaderNodeUVzoom
+class_name VisualShaderNodeUVtwirl
 
 func _get_name():
-	return "ZoomUV"
+	return "TwirlUV"
 
 func _get_category():
 	return "UV"
@@ -12,7 +12,7 @@ func _get_category():
 #	return ""
 
 func _get_description():
-	return "Zoom UV relative to pivot point"
+	return "Twirl UV by value relative to pivot point"
 
 func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -25,7 +25,7 @@ func _get_input_port_name(port):
 		0:
 			return "uv"
 		1:
-			return "zoomFactor"
+			return "value"
 		2:
 			return "pivot"
 
@@ -49,5 +49,16 @@ func _get_output_port_name(port):
 func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
+func _get_global_code(mode):
+	return """
+vec3 twirlUVFunc(vec2 _uv_twirlUVFunc, vec2 _pivot_twirlUVFunc, float _amount_twirlUVFunc){
+	_uv_twirlUVFunc -= _pivot_twirlUVFunc;
+	float _angle_twirlUVFunc = atan(_uv_twirlUVFunc.y, _uv_twirlUVFunc.x);
+	float _radiusTemp_twirlUVFunc = length(_uv_twirlUVFunc);
+	_angle_twirlUVFunc += _radiusTemp_twirlUVFunc * _amount_twirlUVFunc;
+	return vec3(_radiusTemp_twirlUVFunc * vec2(cos(_angle_twirlUVFunc), sin(_angle_twirlUVFunc)) + 0.5, 0.0);
+}
+"""
+
 func _get_code(input_vars, output_vars, mode, type):
-	return output_vars[0] + " = (%s - %s) * %s + %s;" % [input_vars[0], input_vars[2], input_vars[1], input_vars[2]]
+	return output_vars[0] + " = twirlUVFunc(%s.xy, %s.xy, %s);" % [input_vars[0], input_vars[2], input_vars[1]]

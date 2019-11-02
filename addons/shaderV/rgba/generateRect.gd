@@ -18,7 +18,7 @@ func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_input_port_count():
-	return 4
+	return 5
 
 func _get_input_port_name(port):
 	match port:
@@ -30,11 +30,14 @@ func _get_input_port_name(port):
 			return "scale"
 		3:
 			return "color"
+		4:
+			return "alpha"
 
 func _get_input_port_type(port):
 	set_input_port_default_value(1, Vector3(0.5, 0.5, 0))
 	set_input_port_default_value(2, Vector3(0.5, 0.5, 0.0))
 	set_input_port_default_value(3, Vector3(1.0, 1.0, 1.0))
+	set_input_port_default_value(4, 1.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
@@ -44,6 +47,8 @@ func _get_input_port_type(port):
 			return VisualShaderNode.PORT_TYPE_VECTOR
 		3:
 			return VisualShaderNode.PORT_TYPE_VECTOR
+		4:
+			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_output_port_count():
 	return 2
@@ -75,6 +80,6 @@ float rectCreati0nFunc(vec2 _uv_rect_generate, vec2 _pos_rect_generate, vec2 _si
 
 func _get_code(input_vars, output_vars, mode, type):
 	return """%s = %s;
-%s = rectCreati0nFunc(%s.xy, %s.xy, %s.xy);""" % [
+%s = rectCreati0nFunc(%s.xy, %s.xy, %s.xy) * %s;""" % [
 output_vars[0],input_vars[3],
-output_vars[1], input_vars[0], input_vars[1], input_vars[2]]
+output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[4]]

@@ -12,7 +12,7 @@ func _get_subcategory():
 	return "Animated"
 
 func _get_description():
-	return "Animated UV rotation by angle in radians relative to pivot vector"
+	return "Animated UV rotation by angle in radians relative to pivot point"
 
 func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_VECTOR

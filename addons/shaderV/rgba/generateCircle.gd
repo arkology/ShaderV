@@ -18,7 +18,7 @@ func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_input_port_count():
-	return 7
+	return 8
 
 func _get_input_port_name(port):
 	match port:
@@ -36,6 +36,8 @@ func _get_input_port_name(port):
 			return "hardness"
 		6:
 			return "color"
+		7:
+			return "alpha"
 
 func _get_input_port_type(port):
 	set_input_port_default_value(1, Vector3(0.5, 0.5, 0))
@@ -44,6 +46,7 @@ func _get_input_port_type(port):
 	set_input_port_default_value(4, 0.5)
 	set_input_port_default_value(5, 1.0)
 	set_input_port_default_value(6, Vector3(1.0, 1.0, 1.0))
+	set_input_port_default_value(7, 1.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
@@ -59,6 +62,8 @@ func _get_input_port_type(port):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		6:
 			return VisualShaderNode.PORT_TYPE_VECTOR
+		7:
+			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_output_port_count():
 	return 2
@@ -95,5 +100,5 @@ vec4 generateCirc1eFunc(vec2 _uv_circ1e, vec2 _center_circ1e, vec2 _scale_factor
 
 func _get_code(input_vars, output_vars, mode, type):
 	return """%s = %s;
-%s = generateCirc1eFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s).a;""" % [output_vars[0],
-input_vars[6], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5]]
+%s = generateCirc1eFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s).a * %s;""" % [output_vars[0],
+input_vars[6], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[7]]
