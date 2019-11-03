@@ -2,25 +2,25 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAshineFX
 
-func _get_name():
+func _get_name() -> String:
 	return "ShineFX"
 
-func _get_category():
+func _get_category() -> String:
 	return "RGBA"
 
 #func _get_subcategory():
 #	return ""
 
-func _get_description():
+func _get_description() -> String:
 	return "Adds shine effect in form of line"
 
-func _get_return_icon_type():
+func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_input_port_count():
+func _get_input_port_count() -> int:
 	return 10
 
-func _get_input_port_name(port):
+func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "uv"
@@ -43,7 +43,7 @@ func _get_input_port_name(port):
 		9:
 			return "shineColor"
 
-func _get_input_port_type(port):
+func _get_input_port_type(port: int):
 	set_input_port_default_value(3, 0.0)
 	set_input_port_default_value(4, 0.0)
 	set_input_port_default_value(5, 0.0)
@@ -73,24 +73,24 @@ func _get_input_port_type(port):
 		9:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_output_port_count():
+func _get_output_port_count() -> int:
 	return 2
 
-func _get_output_port_name(port):
+func _get_output_port_name(port: int):
 	match port:
 		0:
 			return "col"
 		1:
 			return "alpha"
 
-func _get_output_port_type(port):
+func _get_output_port_type(port: int):
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode):
+func _get_global_code(mode: int) -> String:
 	return """
 vec4 shineFunc(vec4 _color_sh1ne, vec2 _uv_sh1ne, float _loc_sh1ne, float _rot_sh1ne, float _width_sh1ne, float _soft_sh1ne, float _bright_sh1ne, float _gloss_sh1ne, vec3 _shine_color_sh1ne){
 	vec2 _angle_sh1ne = vec2(cos(_rot_sh1ne), sin(_rot_sh1ne));
@@ -103,7 +103,7 @@ vec4 shineFunc(vec4 _color_sh1ne, vec2 _uv_sh1ne, float _loc_sh1ne, float _rot_s
 }
 """
 
-func _get_code(input_vars, output_vars, mode, type):
+func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	return """%s = %s;
 %s = shineFunc(vec4(%s, %s), %s.xy, %s, %s, %s, %s, %s, %s, %s).rgb;""" % [
 output_vars[1], input_vars[2],

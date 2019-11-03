@@ -2,25 +2,25 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodePerlinNoise3D
 
-func _get_name():
+func _get_name() -> String:
 	return "PerlinNoise3D"
 
-func _get_category():
+func _get_category() -> String:
 	return "RGBA"
 
-func _get_subcategory():
+func _get_subcategory() -> String:
 	return "Noise"
 
-func _get_description():
+func _get_description() -> String:
 	return "Classic Perlin-Noise-3D function (by Curly-Brace)"
 
-func _get_return_icon_type():
+func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_input_port_count():
+func _get_input_port_count() -> int:
 	return 4
 
-func _get_input_port_name(port):
+func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "uv"
@@ -31,7 +31,7 @@ func _get_input_port_name(port):
 		3:
 			return "time"
 
-func _get_input_port_type(port):
+func _get_input_port_type(port: int):
 	set_input_port_default_value(1, Vector3(0, 0, 0))
 	set_input_port_default_value(2, 5)
 	set_input_port_default_value(3, 0)
@@ -45,16 +45,16 @@ func _get_input_port_type(port):
 		3:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_output_port_count():
+func _get_output_port_count() -> int:
 	return 1
 
-func _get_output_port_name(port):
+func _get_output_port_name(port: int) -> String:
 	return "result"
 
-func _get_output_port_type(port):
+func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode):
+func _get_global_code(mode: int) -> String:
 	return """
 
 vec3 mod289_3(vec3 x) {
@@ -72,10 +72,6 @@ vec4 permute(vec4 x) {
 vec4 taylorInvSqrt(vec4 r) {
 	return 1.79284291400159 - 0.85373472095314 * r;
 }
-
-//vec3 fade(vec3 t) {
-//	return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
-//}
 
 // Classic Perlin noise
 float cnoise(vec3 P) {
@@ -148,6 +144,6 @@ float cnoise(vec3 P) {
 }
 """
 
-func _get_code(input_vars, output_vars, mode, type):
+func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	return output_vars[0] + " = cnoise (vec3((%s.xy + %s.xy) * %s, %s)) * 0.5 + 0.5;" % [
 	input_vars[0], input_vars[1], input_vars[2], input_vars[3]]

@@ -2,25 +2,25 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAcreateRegularPolygon
 
-func _get_name():
+func _get_name() -> String:
 	return "RegularPolygon"
 
-func _get_category():
+func _get_category() -> String:
 	return "RGBA"
 
 #func _get_subcategory():
 #	return ""
 
-func _get_description():
+func _get_description() -> String:
 	return "Regular N-gon with 3+ sides"
 
-func _get_return_icon_type():
+func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_input_port_count():
+func _get_input_port_count() -> int:
 	return 8
 
-func _get_input_port_name(port):
+func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "uv"
@@ -39,7 +39,7 @@ func _get_input_port_name(port):
 		7:
 			return "alpha"
 
-func _get_input_port_type(port):
+func _get_input_port_type(port: int):
 	set_input_port_default_value(1, Vector3(0.5, 0.5, 0))
 	set_input_port_default_value(2, 3)
 	set_input_port_default_value(3, Vector3(1.0, 1.0, 0.0))
@@ -65,24 +65,24 @@ func _get_input_port_type(port):
 		7:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_output_port_count():
+func _get_output_port_count() -> int:
 	return 2
 
-func _get_output_port_name(port):
+func _get_output_port_name(port: int):
 	match port:
 		0:
 			return "col"
 		1:
 			return "alpha"
 
-func _get_output_port_type(port):
+func _get_output_port_type(port: int):
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode):
+func _get_global_code(mode: int) -> String:
 	return """
 float p0lyg0nFunc(vec2 _uv_p0lyg0n, vec2 _pos_p0lyg0n, vec2 _size_p0lyg0n, float _sides_p0lyg0n, float _angle_p0lyg0n, float _smooth_p0lyg0n){
 	_uv_p0lyg0n = (_uv_p0lyg0n - _pos_p0lyg0n) / (_size_p0lyg0n * 2.0);
@@ -95,7 +95,7 @@ float p0lyg0nFunc(vec2 _uv_p0lyg0n, vec2 _pos_p0lyg0n, vec2 _size_p0lyg0n, float
 }
 """
 
-func _get_code(input_vars, output_vars, mode, type):
+func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	return """%s = %s;
 %s = p0lyg0nFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s) * %s;""" % [
 output_vars[0], input_vars[6],

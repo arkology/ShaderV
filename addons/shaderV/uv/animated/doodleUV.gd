@@ -2,25 +2,25 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVdoodle
 
-func _get_name():
+func _get_name() -> String:
 	return "DoodleFX"
 
-func _get_category():
+func _get_category() -> String:
 	return "UV"
 
-func _get_subcategory():
+func _get_subcategory() -> String:
 	return "Animated"
 
-func _get_description():
+func _get_description() -> String:
 	return "Doodle UV effect"
 
-func _get_return_icon_type():
+func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_input_port_count():
+func _get_input_port_count() -> int:
 	return 6
 
-func _get_input_port_name(port):
+func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "uv"
@@ -35,7 +35,7 @@ func _get_input_port_name(port):
 		5:
 			return "time"
 
-func _get_input_port_type(port):
+func _get_input_port_type(port: int):
 	set_input_port_default_value(1, 0.5)
 	set_input_port_default_value(2, 4.0)
 	set_input_port_default_value(3, 0.7)
@@ -55,16 +55,16 @@ func _get_input_port_type(port):
 		5:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_output_port_count():
+func _get_output_port_count() -> int:
 	return 1
 
-func _get_output_port_name(port):
+func _get_output_port_name(port: int) -> String:
 	return "uv"
 
-func _get_output_port_type(port):
+func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_global_code(mode):
+func _get_global_code(mode: int) -> String:
 	return """
 float hash2D00dle(vec2 _p_hash_d00dle) {
 	return fract(1e4 * sin(17.0 * _p_hash_d00dle.x + _p_hash_d00dle.y * 0.1) * (0.1 + abs(sin(_p_hash_d00dle.y * 13.0 + _p_hash_d00dle.x))));
@@ -87,6 +87,6 @@ vec2 d00dleUVFunc(vec2 _uv_d00dle, float _max_offset_d00dle, float _time_d00dle,
 }
 """
 
-func _get_code(input_vars, output_vars, mode, type):
+func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	return "%s.xy = d00dleUVFunc(%s.xy, %s, %s, %s, int(%s), %s);" % [
 	output_vars[0], input_vars[0], input_vars[4], input_vars[5], input_vars[1], input_vars[2], input_vars[3]]

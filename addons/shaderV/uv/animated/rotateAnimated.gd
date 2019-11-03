@@ -2,25 +2,25 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVrotateAnimated
 
-func _get_name():
+func _get_name() -> String:
 	return "RotateUVAnim"
 
-func _get_category():
+func _get_category() -> String:
 	return "UV"
 
-func _get_subcategory():
+func _get_subcategory() -> String:
 	return "Animated"
 
-func _get_description():
+func _get_description() -> String:
 	return "Animated UV rotation by angle in radians relative to pivot point"
 
-func _get_return_icon_type():
+func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_input_port_count():
+func _get_input_port_count() -> int:
 	return 4
 
-func _get_input_port_name(port):
+func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "uv"
@@ -31,7 +31,7 @@ func _get_input_port_name(port):
 		3:
 			return "time"
 
-func _get_input_port_type(port):
+func _get_input_port_type(port: int):
 	set_input_port_default_value(1, 0.5)
 	set_input_port_default_value(2, Vector3(0.5, 0.5, 0))
 	match port:
@@ -45,16 +45,16 @@ func _get_input_port_type(port):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		
 
-func _get_output_port_count():
+func _get_output_port_count() -> int:
 	return 1
 
-func _get_output_port_name(port):
+func _get_output_port_name(port: int) -> String:
 	return "uv"
 
-func _get_output_port_type(port):
+func _get_output_port_type(port: int):
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_global_code(mode):
+func _get_global_code(mode: int) -> String:
 	return """
 vec2 r0tateUVAnimatedFunc(vec2 _uv_r0tate, vec2 _pivot_r0tate, float _r0tation_r0tate, float _r0tSpeed_r0tate, float _t1me_r0tate){
 	_r0tation_r0tate += _t1me_r0tate * _r0tSpeed_r0tate;
@@ -67,6 +67,6 @@ vec2 r0tateUVAnimatedFunc(vec2 _uv_r0tate, vec2 _pivot_r0tate, float _r0tation_r
 }
 """
 
-func _get_code(input_vars, output_vars, mode, type):
+func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	return output_vars[0] + " = vec3(r0tateUVAnimatedFunc(%s.xy, %s.xy, 0.0, %s, %s), 0);" % [
 	input_vars[0], input_vars[2], input_vars[1], input_vars[3]]

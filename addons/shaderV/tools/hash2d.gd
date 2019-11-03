@@ -2,22 +2,22 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderToolsHash2D
 
-func _get_name():
+func _get_name() -> String:
 	return "Hash2d"
 
-func _get_category():
+func _get_category() -> String:
 	return "Tools"
 
 #func _get_subcategory():
 #	return ""
 
-func _get_description():
+func _get_description() -> String:
 	return "Hash func with vector input"
 
-func _get_return_icon_type():
+func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_input_port_count():
+func _get_input_port_count() -> int:
 	return 1
 
 func _get_input_port_name(port: int) -> String:
@@ -26,13 +26,13 @@ func _get_input_port_name(port: int) -> String:
 func _get_input_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_output_port_count():
+func _get_output_port_count() -> int:
 	return 1
 
-func _get_output_port_name(port):
+func _get_output_port_name(port ) -> String:
 	return "rand"
 
-func _get_output_port_type(port):
+func _get_output_port_type(port) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:

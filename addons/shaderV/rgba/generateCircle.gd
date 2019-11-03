@@ -2,25 +2,25 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAcreateCircle
 
-func _get_name():
+func _get_name() -> String:
 	return "CircleCreate"
 
-func _get_category():
+func _get_category() -> String:
 	return "RGBA"
 
 #func _get_subcategory():
 #	return ""
 
-func _get_description():
+func _get_description() -> String:
 	return "Circle creation"
 
-func _get_return_icon_type():
+func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
-func _get_input_port_count():
+func _get_input_port_count() -> int:
 	return 8
 
-func _get_input_port_name(port):
+func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "uv"
@@ -39,7 +39,7 @@ func _get_input_port_name(port):
 		7:
 			return "alpha"
 
-func _get_input_port_type(port):
+func _get_input_port_type(port: int):
 	set_input_port_default_value(1, Vector3(0.5, 0.5, 0))
 	set_input_port_default_value(2, Vector3(1.0, 1.0, 0.0))
 	set_input_port_default_value(3, -0.5)
@@ -65,24 +65,24 @@ func _get_input_port_type(port):
 		7:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_output_port_count():
+func _get_output_port_count() -> int:
 	return 2
 
-func _get_output_port_name(port):
+func _get_output_port_name(port: int):
 	match port:
 		0:
 			return "col"
 		1:
 			return "alpha"
 
-func _get_output_port_type(port):
+func _get_output_port_type(port: int):
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode):
+func _get_global_code(mode: int) -> String:
 	return """
 vec4 generateCirc1eFunc(vec2 _uv_circ1e, vec2 _center_circ1e, vec2 _scale_factor_circ1e, float _innerRad_circ1e, float _outRad_circ1e, float _hard_circ1e) {
 	float _innerRadiusCheck0 = min(_innerRad_circ1e, _outRad_circ1e);
@@ -98,7 +98,7 @@ vec4 generateCirc1eFunc(vec2 _uv_circ1e, vec2 _center_circ1e, vec2 _scale_factor
 }
 """
 
-func _get_code(input_vars, output_vars, mode, type):
+func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	return """%s = %s;
 %s = generateCirc1eFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s).a * %s;""" % [output_vars[0],
 input_vars[6], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[7]]
