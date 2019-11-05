@@ -102,4 +102,4 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[4], input_vars[3], input_vars[5], input_vars[2],
 output_vars[0], output_vars[0], output_vars[1],
-output_vars[1], output_vars[0], output_vars[1],]
+output_vars[1], output_vars[0], output_vars[1]]
