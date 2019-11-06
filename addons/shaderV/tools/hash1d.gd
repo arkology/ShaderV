@@ -21,7 +21,7 @@ func _get_input_port_count() -> int:
 	return 1
 
 func _get_input_port_name(port: int) -> String:
-	return "inp"
+	return "in"
 
 func _get_input_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR

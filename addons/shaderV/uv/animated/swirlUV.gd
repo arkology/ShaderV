@@ -29,7 +29,7 @@ func _get_input_port_name(port: int):
 		2:
 			return "strength"
 		3:
-			return "speed"
+			return "time"
 
 func _get_input_port_type(port: int):
 	set_input_port_default_value(1, Vector3(0.5, 0.5, 0.0))
@@ -56,8 +56,8 @@ func _get_output_port_type(port: int) -> int:
 
 func _get_global_code(mode: int) -> String:
 	return """
-vec2 swirlUVFunc(vec2 _uv_sw1rl, float _t1me_sw1rl, vec2 _p1vot_sw1rl, float _amount_sw1rl, float _speed_sw1rl){
-	float _rotation_index_sw1rl = _amount_sw1rl * length(_uv_sw1rl - _p1vot_sw1rl) * sin(_t1me_sw1rl * _speed_sw1rl);
+vec2 swirlUVFunc(vec2 _uv_sw1rl, float _t1me_sw1rl, vec2 _p1vot_sw1rl, float _amount_sw1rl){
+	float _rotation_index_sw1rl = _amount_sw1rl * length(_uv_sw1rl - _p1vot_sw1rl) * _t1me_sw1rl;
 	_uv_sw1rl -= _p1vot_sw1rl;
 	_uv_sw1rl *= mat2(vec2(cos(_rotation_index_sw1rl), - sin(_rotation_index_sw1rl)),
 										vec2(sin(_rotation_index_sw1rl), cos(_rotation_index_sw1rl)));
@@ -67,5 +67,5 @@ vec2 swirlUVFunc(vec2 _uv_sw1rl, float _t1me_sw1rl, vec2 _p1vot_sw1rl, float _am
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = swirlUVFunc(%s.xy, TIME, %s.xy, %s, %s);" % [
-	output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[3]]
+	return "%s.xy = swirlUVFunc(%s.xy, %s, %s.xy, %s);" % [
+	output_vars[0], input_vars[0], input_vars[3], input_vars[1], input_vars[2]]

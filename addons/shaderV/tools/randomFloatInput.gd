@@ -21,7 +21,7 @@ func _get_input_port_count() -> int:
 	return 1
 
 func _get_input_port_name(port: int) -> String:
-	return "input"
+	return "in"
 
 func _get_input_port_type(port: int) -> int:
 	set_input_port_default_value(0, Vector3(0, 0, 0))

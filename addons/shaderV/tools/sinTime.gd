@@ -12,13 +12,20 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return "Returns sin(TIME)"
+	return "Returns sin([in] * TIME)"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_input_port_count() -> int:
-	return 0
+	return 1
+
+func _get_input_port_name(port: int) -> String:
+	return "in"
+
+func _get_input_port_type(port: int) -> int:
+	set_input_port_default_value(0, 1.0)
+	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_output_port_count() -> int:
 	return 1
@@ -30,4 +37,4 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return output_vars[0] + " = sin(TIME);"
+	return output_vars[0] + " = sin(%s * TIME);" % input_vars[0]
