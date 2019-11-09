@@ -12,7 +12,7 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return """Basic blur with 9 samples
+	return """Basic 8-directional blur with 9 samples
 Note: negative lod => detect lod automatically"""
 
 func _get_return_icon_type() -> int:
