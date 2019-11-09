@@ -25,7 +25,7 @@ func _get_input_port_name(port: int):
 		0:
 			return "uv"
 		1:
-			return "zoomFactor"
+			return "factor"
 		2:
 			return "pivot"
 
