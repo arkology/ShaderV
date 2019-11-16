@@ -11,8 +11,8 @@ func _get_category() -> String:
 #func _get_subcategory():
 #	return ""
 
-#func _get_description() -> String:
-#	return ""
+func _get_description() -> String:
+	return "Emboss filter"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR

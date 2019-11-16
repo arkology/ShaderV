@@ -3,7 +3,7 @@ extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAblur9sample
 
 func _get_name() -> String:
-	return "Blur"
+	return "BlurBasic"
 
 func _get_category() -> String:
 	return "RGBA"

@@ -12,7 +12,7 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return "Returns sin([in] * TIME)"
+	return "Returns sin([spd] * TIME)"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
@@ -21,7 +21,7 @@ func _get_input_port_count() -> int:
 	return 1
 
 func _get_input_port_name(port: int) -> String:
-	return "in"
+	return "spd"
 
 func _get_input_port_type(port: int) -> int:
 	set_input_port_default_value(0, 1.0)

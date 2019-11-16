@@ -12,7 +12,7 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return "Circle creation"
+	return "Circle creation with adjusted position, scale, inner/outer radius, hardness and color"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
