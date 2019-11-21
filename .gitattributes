@@ -1,2 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+
+# Exclude some files from zip downloads
+
+/.gitattributes                               export-ignore
+/.gitignore                                   export-ignore
+/README.md                                    export-ignore
+/editor_screenshot_2019-11-01T194454+0300.png export-ignore
