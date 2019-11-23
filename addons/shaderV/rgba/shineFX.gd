@@ -99,7 +99,7 @@ vec4 shineFunc(vec4 _color_sh1ne, vec2 _uv_sh1ne, float _loc_sh1ne, float _rot_s
 	float _shine_power_sh1ne = smoothstep(0.0, _soft_sh1ne * 2.0, _normal_sh1ne);
 	vec3 _reflect_color_sh1ne = mix(vec3(1.0), _color_sh1ne.rgb * 10.0, _gloss_sh1ne);
 	_color_sh1ne.rgb += _color_sh1ne.a * _shine_power_sh1ne * _bright_sh1ne * _reflect_color_sh1ne * _shine_color_sh1ne.rgb;
-	return _color_sh1ne;
+	return min(max(_color_sh1ne, vec4(0.0)), vec4(1.0));
 }
 """
 
