@@ -1,6 +1,6 @@
 tool
 extends VisualShaderNodeCustom
-class_name VisualShaderNodeGenericNoise2D
+class_name VisualShaderNodeNoiseGeneric2d
 
 func _get_name() -> String:
 	return "GenericNoise2D"

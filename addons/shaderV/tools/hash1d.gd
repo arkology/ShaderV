@@ -12,7 +12,7 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return "Hash func with scalar input"
+	return "Hash func with scalar input and scalar output"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR

@@ -1,6 +1,6 @@
 tool
 extends VisualShaderNodeCustom
-class_name VisualShaderNodePerlinNoise3D
+class_name VisualShaderNodeNoisePerlin3D
 
 func _get_name() -> String:
 	return "PerlinNoise3D"

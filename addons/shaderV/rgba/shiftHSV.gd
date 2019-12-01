@@ -13,6 +13,7 @@ func _get_category() -> String:
 
 func _get_description() -> String:
 	return """Changes hue, saturation and value of input color.
+Input values recommendations:
 [hue]: min=0.0, max=1.0;
 [saturation]: min=0.0;
 [value]: min=0.0;
@@ -92,5 +93,5 @@ vec3 hsvChangeHSVChan9eFunc(vec3 _c0l0r_HSVChan9e, float _h_HSVChan9e, float _s_
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = hsvChangeHSVChan9eFunc(%s, min(max(%s, 0.0), 1.0), max(%s, 0.0), max(%s, 0.0));" % [
+	return "%s = hsvChangeHSVChan9eFunc(%s, %s, %s, %s);" % [
 output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[3]]
