@@ -105,7 +105,7 @@ vec4 innerGl0wEmptyFunc(sampler2D _samp_1ngl0wEmpt, vec2 _uv_1ngl0wEmpt, float _
 	_a1pha_1ngl0w_1nv *= _c01r_1ngl0w.a; // masking
 	
 	if (_a1pha_1ngl0w_1nv > 0.0)
-		_a1pha_1ngl0w_1nv *= (abs(_1ntns_1ngl0wEmpt) + 1.0);
+		_a1pha_1ngl0w_1nv *= (_1ntns_1ngl0wEmpt + 1.0);
 	
 	return vec4(_c0l_1ngl0wEmpt.rgb, _a1pha_1ngl0w_1nv * _c0l_1ngl0wEmpt.a);
 }

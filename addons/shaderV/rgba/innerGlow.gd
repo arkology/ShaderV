@@ -105,7 +105,7 @@ vec4 innerGl0wFunc(sampler2D _samp_1ngl0w, vec2 _uv_1ngl0w, float _l0d_1ngl0w, f
 	_a1pha_1nv *= _c01r_1ngl0w.a; // masking
 	
 	if (_a1pha_1nv > 0.0)
-		_a1pha_1nv *= (abs(_1ntns_1ngl0w) + 1.0);
+		_a1pha_1nv *= (_1ntns_1ngl0w + 1.0);
 	
 	return mix(_c01r_1ngl0w, _c0l_1ngl0w, _a1pha_1nv * _c0l_1ngl0w.a);
 }
