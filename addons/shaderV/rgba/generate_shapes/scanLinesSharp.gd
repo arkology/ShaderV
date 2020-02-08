@@ -8,8 +8,8 @@ func _get_name() -> String:
 func _get_category() -> String:
 	return "RGBA"
 
-#func _get_subcategory():
-#	return ""
+func _get_subcategory():
+	return "Shapes"
 
 func _get_description() -> String:
 	return "Sharp moving scanlines"
@@ -42,7 +42,7 @@ func _get_input_port_type(port: int):
 	set_input_port_default_value(2, 0.5)
 	set_input_port_default_value(3, 1)
 	set_input_port_default_value(4, 0)
-	set_input_port_default_value(5, Vector3(0.0, 0.0, 0.0))
+	set_input_port_default_value(5, Vector3(1.0, 1.0, 1.0))
 	set_input_port_default_value(6, 1)
 	match port:
 		0:

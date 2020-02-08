@@ -8,8 +8,8 @@ func _get_name() -> String:
 func _get_category() -> String:
 	return "RGBA"
 
-#func _get_subcategory():
-#	return ""
+func _get_subcategory():
+	return "Shapes"
 
 func _get_description() -> String:
 	return "Spiral creation with adjusted position, size, linesAmount, softness, speed and color"

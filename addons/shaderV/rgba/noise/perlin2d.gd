@@ -16,7 +16,7 @@ func _get_description() -> String:
 If you dont want any peroid - set it to zero"""
 
 func _get_return_icon_type() -> int:
-	return VisualShaderNode.PORT_TYPE_VECTOR
+	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_input_port_count() -> int:
 	return 4

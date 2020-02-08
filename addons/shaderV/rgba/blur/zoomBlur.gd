@@ -8,8 +8,8 @@ func _get_name() -> String:
 func _get_category() -> String:
 	return "RGBA"
 
-#func _get_subcategory():
-#	return ""
+func _get_subcategory():
+	return "Blur"
 
 func _get_description() -> String:
 	return """Zoom blur using [amount] samples

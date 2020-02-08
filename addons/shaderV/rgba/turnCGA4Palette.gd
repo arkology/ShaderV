@@ -51,19 +51,14 @@ vec3 cg4Pa1etteFunc(vec3 _c0l_cga, float _g4mm4_cga){
 	float _gr4y_c0l_cga4 = 0.21 * _c0l_cga.r + 0.71 * _c0l_cga.g + 0.07 * _c0l_cga.b;
 	vec3 _re5_c0l_cga4 = vec3(0.0);
 	
-	vec3 _CGAPa1[4] = vec3[4] ( vec3(0.0,  0.0,  0.0),
-								vec3(1.0,  0.33, 1.0),
-								vec3(0.33, 1.0,  1.0),
-								vec3(1.0,  1.0,  1.0));
-	
 	if      (_gr4y_c0l_cga4 <= 1.0/4.0)
-		_re5_c0l_cga4 = _CGAPa1[0];
+		_re5_c0l_cga4 = vec3(0.0,  0.0,  0.0);
 	else if (_gr4y_c0l_cga4 <= 2.0/4.0)
-		_re5_c0l_cga4 = _CGAPa1[1];
+		_re5_c0l_cga4 = vec3(1.0,  0.33, 1.0);
 	else if (_gr4y_c0l_cga4 <= 3.0/4.0)
-		_re5_c0l_cga4 = _CGAPa1[2];
+		_re5_c0l_cga4 = vec3(0.33, 1.0,  1.0);
 	else if (_gr4y_c0l_cga4 <= 4.0/4.0)
-		_re5_c0l_cga4 = _CGAPa1[3];
+		_re5_c0l_cga4 = vec3(1.0,  1.0,  1.0);
 	
 	return _re5_c0l_cga4;
 }

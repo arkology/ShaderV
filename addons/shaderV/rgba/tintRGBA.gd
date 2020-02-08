@@ -33,7 +33,7 @@ func _get_input_port_name(port: int):
 
 func _get_input_port_type(port: int):
 	set_input_port_default_value(1, 1.0)
-	set_input_port_default_value(2, Vector3(1.0, 1.0, 0.0))
+	set_input_port_default_value(2, Vector3(1.0, 1.0, 1.0))
 	set_input_port_default_value(3, 1)
 	match port:
 		0:

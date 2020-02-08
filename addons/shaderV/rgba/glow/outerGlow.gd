@@ -1,9 +1,9 @@
 tool
 extends VisualShaderNodeCustom
-class_name VisualShaderNodeRGBAinnerGlow
+class_name VisualShaderNodeRGBAouterGlow
 
 func _get_name() -> String:
-	return "InnerGlow"
+	return "OuterGlow"
 
 func _get_category() -> String:
 	return "RGBA"
@@ -11,8 +11,8 @@ func _get_category() -> String:
 #func _get_subcategory():
 #	return ""
 
-#func _get_description() -> String:
-#	return ""
+func _get_description() -> String:
+	return "Adds outer glow to color. Color should have alpha < 1.0 to find contours"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -78,7 +78,7 @@ func _get_output_port_type(port: int):
 
 func _get_global_code(mode: int) -> String:
 	return """
-vec4 innerGl0wFunc(sampler2D _samp_1ngl0w, vec2 _uv_1ngl0w, float _l0d_1ngl0w, float _rad_1ngl0w, float _1ntns_1ngl0w, vec4 _c0l_1ngl0w){
+vec4 outerGl0wFunc(sampler2D _samp_1ngl0w, vec2 _uv_1ngl0w, float _l0d_1ngl0w, float _rad_1ngl0w, float _1ntns_1ngl0w, vec4 _c0l_1ngl0w){
 	_rad_1ngl0w = abs(_rad_1ngl0w);
 	
 	vec4 _c01r_1ngl0w = vec4(0.0);
@@ -101,18 +101,19 @@ vec4 innerGl0wFunc(sampler2D _samp_1ngl0w, vec2 _uv_1ngl0w, float _l0d_1ngl0w, f
 	int _nmb_ne1ghb0urs_b1r_cst = (_am0nt_1ngl0w * 2 + 1) * (_am0nt_1ngl0w * 2 + 1);
 	_a1pha_1ngl0w_b1 /= float(_nmb_ne1ghb0urs_b1r_cst);
 	
-	_a1pha_1nv = 1.0 - _a1pha_1ngl0w_b1; // inversion
-	_a1pha_1nv *= _c01r_1ngl0w.a; // masking
+	_a1pha_1nv = _a1pha_1ngl0w_b1; // inversion
+	_a1pha_1nv *= (1.0 - _c01r_1ngl0w.a); // masking
 	
 	if (_a1pha_1nv > 0.0)
 		_a1pha_1nv *= (_1ntns_1ngl0w + 1.0);
 	
-	return mix(_c01r_1ngl0w, _c0l_1ngl0w, _a1pha_1nv * _c0l_1ngl0w.a);
+	vec4 _gl0w_c0l_result = vec4(_c0l_1ngl0w.rgb, _a1pha_1nv * _c0l_1ngl0w.a);
+	return mix(_gl0w_c0l_result, _c01r_1ngl0w, _c01r_1ngl0w.a);
 }
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return """vec4 %s%s = innerGl0wFunc(%s, %s.xy, %s, %s, %s, vec4(%s, %s));
+	return """vec4 %s%s = outerGl0wFunc(%s, %s.xy, %s, %s, %s, vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[6],

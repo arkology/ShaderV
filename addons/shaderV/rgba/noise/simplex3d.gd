@@ -15,7 +15,7 @@ func _get_description() -> String:
 	return "3d simplex noise"
 
 func _get_return_icon_type() -> int:
-	return VisualShaderNode.PORT_TYPE_VECTOR
+	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_input_port_count() -> int:
 	return 4
