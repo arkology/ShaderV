@@ -2,6 +2,9 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderToolsRandomFloatInput
 
+func _init() -> void:
+	set_input_port_default_value(0, Vector3(0, 0, 0))
+
 func _get_name() -> String:
 	return "RandomFloatInput"
 
@@ -24,7 +27,6 @@ func _get_input_port_name(port: int) -> String:
 	return "in"
 
 func _get_input_port_type(port: int) -> int:
-	set_input_port_default_value(0, Vector3(0, 0, 0))
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_output_port_count() -> int:

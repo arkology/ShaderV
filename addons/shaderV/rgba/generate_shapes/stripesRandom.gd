@@ -2,8 +2,14 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAcreateStripesRandom
 
+func _init() -> void:
+	set_input_port_default_value(1, 0.5)
+	set_input_port_default_value(2, 20.0)
+	set_input_port_default_value(3, Vector3(1.0, 1.0, 1.0))
+	set_input_port_default_value(4, 1)
+
 func _get_name() -> String:
-	return "RandomStripes"
+	return "RandomStripesShape"
 
 func _get_category() -> String:
 	return "RGBA"
@@ -34,10 +40,6 @@ func _get_input_port_name(port: int):
 			return "alpha"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 0.5)
-	set_input_port_default_value(2, 20.0)
-	set_input_port_default_value(3, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(4, 1)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

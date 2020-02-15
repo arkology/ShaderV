@@ -2,8 +2,13 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeNoiseWorley2d
 
+func _init() -> void:
+	set_input_port_default_value(1, Vector3(0, 0, 0))
+	set_input_port_default_value(2, 5)
+	set_input_port_default_value(3, 1)
+
 func _get_name() -> String:
-	return "Worley2D"
+	return "WorleyNoise2D"
 
 func _get_category() -> String:
 	return "RGBA"
@@ -32,9 +37,6 @@ func _get_input_port_name(port: int):
 			return "jitter"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, Vector3(0, 0, 0))
-	set_input_port_default_value(2, 5)
-	set_input_port_default_value(3, 1)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

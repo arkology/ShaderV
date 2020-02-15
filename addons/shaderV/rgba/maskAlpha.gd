@@ -2,6 +2,10 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAmaskAlpha
 
+func _init() -> void:
+	set_input_port_default_value(1, 1)
+	set_input_port_default_value(2, 1)
+
 func _get_name() -> String:
 	return "MaskAlpha"
 
@@ -30,8 +34,6 @@ func _get_input_port_name(port: int):
 			return "maskAlpha"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 1)
-	set_input_port_default_value(2, 1)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
@@ -59,8 +61,8 @@ func _get_output_port_type(port: int):
 
 func _get_global_code(mode: int) -> String:
 	return """
-vec4 maskAlphaFunc(vec4 _col_to_mask_with_alpha, float _mask_alpha_to_mask_using_alpha){
-	return _col_to_mask_with_alpha * _mask_alpha_to_mask_using_alpha;
+vec4 maskAlphaFunc(vec4 _col_to_mask, float _mask_alpha_to_mask){
+	return vec4(_col_to_mask.rgb, _col_to_mask.a * _mask_alpha_to_mask);
 }
 """
 

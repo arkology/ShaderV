@@ -2,6 +2,15 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAshineFX
 
+func _init() -> void:
+	set_input_port_default_value(3, 0.0)
+	set_input_port_default_value(4, 0.0)
+	set_input_port_default_value(5, 0.0)
+	set_input_port_default_value(6, 0.0)
+	set_input_port_default_value(7, 0.0)
+	set_input_port_default_value(8, 0.0)
+	set_input_port_default_value(9, Vector3(1.0, 1.0, 1.0))
+
 func _get_name() -> String:
 	return "ShineFX"
 
@@ -44,13 +53,6 @@ func _get_input_port_name(port: int):
 			return "shineColor"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(3, 0.0)
-	set_input_port_default_value(4, 0.0)
-	set_input_port_default_value(5, 0.0)
-	set_input_port_default_value(6, 0.0)
-	set_input_port_default_value(7, 0.0)
-	set_input_port_default_value(8, 0.0)
-	set_input_port_default_value(9, Vector3(1.0, 1.0, 1.0))
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

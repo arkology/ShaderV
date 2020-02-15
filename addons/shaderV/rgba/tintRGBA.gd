@@ -2,6 +2,11 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAtintRGBA
 
+func _init() -> void:
+	set_input_port_default_value(1, 1.0)
+	set_input_port_default_value(2, Vector3(1.0, 1.0, 1.0))
+	set_input_port_default_value(3, 1)
+
 func _get_name() -> String:
 	return "TintRGBA"
 
@@ -32,9 +37,6 @@ func _get_input_port_name(port: int):
 			return "alphaTint"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 1.0)
-	set_input_port_default_value(2, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(3, 1)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

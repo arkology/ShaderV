@@ -2,6 +2,10 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVrotate
 
+func _init() -> void:
+	set_input_port_default_value(1, 0.0)
+	set_input_port_default_value(2, Vector3(0.5, 0.5, 0))
+
 func _get_name() -> String:
 	return "RotateUV"
 
@@ -30,8 +34,6 @@ func _get_input_port_name(port: int):
 			return "pivot"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 0.0)
-	set_input_port_default_value(2, Vector3(0.5, 0.5, 0))
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

@@ -2,6 +2,12 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAzoomBlur
 
+func _init() -> void:
+	set_input_port_default_value(2, -1.0)
+	set_input_port_default_value(3, Vector3(0.5, 0.5, 0.0))
+	set_input_port_default_value(4, 20.0)
+	set_input_port_default_value(5, 0.005)
+
 func _get_name() -> String:
 	return "ZoomBlur"
 
@@ -37,10 +43,6 @@ func _get_input_port_name(port: int):
 			return "length"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(2, -1.0)
-	set_input_port_default_value(3, Vector3(0.5, 0.5, 0.0))
-	set_input_port_default_value(4, 20.0)
-	set_input_port_default_value(5, 0.005)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_SAMPLER

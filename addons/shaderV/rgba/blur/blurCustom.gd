@@ -2,6 +2,11 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAblurCustom
 
+func _init() -> void:
+	set_input_port_default_value(2, -1.0)
+	set_input_port_default_value(3, 5)
+	set_input_port_default_value(4, 0.001)
+
 func _get_name() -> String:
 	return "BlurCustom"
 
@@ -35,9 +40,6 @@ func _get_input_port_name(port: int):
 			return "offset"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(2, -1.0)
-	set_input_port_default_value(3, 5)
-	set_input_port_default_value(4, 0.001)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_SAMPLER

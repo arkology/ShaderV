@@ -2,6 +2,9 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAblackNwhite
 
+func _init() -> void:
+	set_input_port_default_value(1, 0.5)
+
 func _get_name() -> String:
 	return "BlackAndWhite"
 
@@ -11,8 +14,8 @@ func _get_category() -> String:
 #func _get_subcategory():
 #	return ""
 
-#func _get_description() -> String:
-#	return ""
+func _get_description() -> String:
+	return "Turns color to black and white"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -28,7 +31,6 @@ func _get_input_port_name(port: int):
 			return "threshold"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 0.5)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

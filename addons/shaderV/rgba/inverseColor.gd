@@ -2,6 +2,9 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAinverseColor
 
+func _init() -> void:
+	set_input_port_default_value(2, 1.0)
+
 func _get_name() -> String:
 	return "InverseColor"
 
@@ -30,7 +33,6 @@ func _get_input_port_name(port: int):
 			return "intensity"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(2, 1.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

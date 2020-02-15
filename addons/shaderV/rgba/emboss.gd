@@ -2,6 +2,11 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAemboss
 
+func _init() -> void:
+	set_input_port_default_value(2, -1.0)
+	set_input_port_default_value(3, 0.005)
+	set_input_port_default_value(4, 1.0)
+
 func _get_name() -> String:
 	return "Emboss"
 
@@ -12,7 +17,8 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return "Emboss filter"
+	return """Emboss filter.
+Note: negative lod => detect lod automatically"""
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -34,9 +40,6 @@ func _get_input_port_name(port: int):
 			return "contrast"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(2, -1.0)
-	set_input_port_default_value(3, 0.005)
-	set_input_port_default_value(4, 1.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_SAMPLER

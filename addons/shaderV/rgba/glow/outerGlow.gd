@@ -2,14 +2,21 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAouterGlow
 
+func _init() -> void:
+	set_input_port_default_value(2, -1.0)
+	set_input_port_default_value(3, 1.0)
+	set_input_port_default_value(4, 1.0)
+	set_input_port_default_value(5, Vector3(1.0, 1.0, 1.0))
+	set_input_port_default_value(6, 1.0)
+
 func _get_name() -> String:
 	return "OuterGlow"
 
 func _get_category() -> String:
 	return "RGBA"
 
-#func _get_subcategory():
-#	return ""
+func _get_subcategory():
+	return "Glow"
 
 func _get_description() -> String:
 	return "Adds outer glow to color. Color should have alpha < 1.0 to find contours"
@@ -38,11 +45,6 @@ func _get_input_port_name(port: int):
 			return "alpha"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(2, -1.0)
-	set_input_port_default_value(3, 1.0)
-	set_input_port_default_value(4, 1.0)
-	set_input_port_default_value(5, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(6, 1.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_SAMPLER

@@ -2,8 +2,11 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVtilingNoffset
 
+func _init() -> void:
+	set_input_port_default_value(1, Vector3(0.0, 0.0, 0.0))
+
 func _get_name() -> String:
-	return "TilingAndOffset"
+	return "TilingAndOffsetUV"
 
 func _get_category() -> String:
 	return "UV"
@@ -28,7 +31,6 @@ func _get_input_port_name(port: int):
 			return "offset"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, Vector3(0.0, 0.0, 0.0))
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

@@ -2,6 +2,9 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAposterize
 
+func _init() -> void:
+	set_input_port_default_value(1, 8.0)
+
 func _get_name() -> String:
 	return "Posterize"
 
@@ -28,7 +31,6 @@ func _get_input_port_name(port: int):
 			return "steps"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 8.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

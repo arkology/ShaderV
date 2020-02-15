@@ -2,8 +2,18 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAcreateSpiral
 
+func _init() -> void:
+	set_input_port_default_value(1, Vector3(0.5, 0.5, 0))
+	set_input_port_default_value(2, 70.0)
+	set_input_port_default_value(3, 1.0)
+	set_input_port_default_value(4, 1.0)
+	set_input_port_default_value(5, 0.0)
+	set_input_port_default_value(6, 0.0)
+	set_input_port_default_value(7, Vector3(1.0, 1.0, 1.0))
+	set_input_port_default_value(8, 1.0)
+
 func _get_name() -> String:
-	return "SpiralCreate"
+	return "SpiralShape"
 
 func _get_category() -> String:
 	return "RGBA"
@@ -42,14 +52,6 @@ func _get_input_port_name(port: int):
 			return "alpha"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, Vector3(0.5, 0.5, 0))
-	set_input_port_default_value(2, 70.0)
-	set_input_port_default_value(3, 1.0)
-	set_input_port_default_value(4, 1.0)
-	set_input_port_default_value(5, 0.0)
-	set_input_port_default_value(6, 0.0)
-	set_input_port_default_value(7, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(8, 1.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

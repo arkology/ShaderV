@@ -2,6 +2,10 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVflip
 
+func _init() -> void:
+	set_input_port_default_value(1, false)
+	set_input_port_default_value(2, false)
+
 func _get_name() -> String:
 	return "FlipUV"
 
@@ -30,8 +34,6 @@ func _get_input_port_name(port: int):
 			return "hor"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, false)
-	set_input_port_default_value(2, false)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

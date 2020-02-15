@@ -3,7 +3,7 @@ extends VisualShaderNodeCustom
 class_name VisualShaderToolsHash2D
 
 func _get_name() -> String:
-	return "Hash2d"
+	return "HashRandom2d"
 
 func _get_category() -> String:
 	return "Tools"

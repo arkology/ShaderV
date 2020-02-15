@@ -2,8 +2,12 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVrotateAnimated
 
+func _init() -> void:
+	set_input_port_default_value(1, 0.5)
+	set_input_port_default_value(2, Vector3(0.5, 0.5, 0))
+
 func _get_name() -> String:
-	return "RotateUVAnim"
+	return "RotateUVAnimated"
 
 func _get_category() -> String:
 	return "UV"
@@ -32,8 +36,6 @@ func _get_input_port_name(port: int):
 			return "time"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 0.5)
-	set_input_port_default_value(2, Vector3(0.5, 0.5, 0))
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR

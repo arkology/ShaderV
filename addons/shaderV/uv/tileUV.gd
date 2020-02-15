@@ -2,6 +2,11 @@ tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVtile
 
+func _init() -> void:
+	set_input_port_default_value(1, 2.0)
+	set_input_port_default_value(2, 2.0)
+	set_input_port_default_value(3, 0.0)
+
 func _get_name() -> String:
 	return "TileUV"
 
@@ -36,9 +41,6 @@ func _get_input_port_name(port: int):
 			return "frame"
 
 func _get_input_port_type(port: int):
-	set_input_port_default_value(1, 2.0)
-	set_input_port_default_value(2, 2.0)
-	set_input_port_default_value(3, 0.0)
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
