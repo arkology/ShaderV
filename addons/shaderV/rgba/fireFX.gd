@@ -193,7 +193,8 @@ vec4 fireFXFunc(vec2 _uv_fire, vec2 _dir_fire, float _speed_fire, float _time_fi
 	vec4 _col1_fire, vec4 _col2_fire, vec4 _col3_fire,
 	float _col1_pos, float _col2_pos, float _col3_pos){
 	float _x_pos = mix(0.0, 1.0, _uv_fire.y);
-	_uv_fire += _dir_fire * _time_fire * _speed_fire;
+	_uv_fire.x -= _dir_fire.x * _time_fire * _speed_fire;
+	_uv_fire.y += _dir_fire.y * _time_fire * _speed_fire;
 	float _y_pos = perlingFbmFireFXTempFunc(_uv_fire, 8.0, 0.4, 1.0, 1.0, 1.0);
 	float _1 = step(_y_pos, _x_pos - _col1_pos);
 	float _3 = step(_y_pos, _x_pos - _col3_pos);

@@ -97,7 +97,7 @@ vec4 generateSp1ralFunc(vec2 _uv_genSp1r, vec2 _p1v0t_genSp1r, float _s1ze_genSp
 	float _va1ue_genSp1r = 1.0 - sin(length(_uv_genSp1r) * _s1ze_genSp1r +
 					floor(_l1neAmnt_genSp1r) * atan(_uv_genSp1r.x, _uv_genSp1r.y) +
 					_t1me_genSp1r * _spd_genSp1r ) / _s0ft_genSp1r;
-	return _c0l_genSp1r * _va1ue_genSp1r;
+	return vec4(_c0l_genSp1r.rgb, _c0l_genSp1r.a * _va1ue_genSp1r);
 }
 """
 

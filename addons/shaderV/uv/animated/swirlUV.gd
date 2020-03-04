@@ -34,14 +34,14 @@ func _get_input_port_name(port: int):
 		2:
 			return "strength"
 		3:
-			return "time"
+			return "sin_time"
 
 func _get_input_port_type(port: int):
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 		1:
-			return VisualShaderNode.PORT_TYPE_SCALAR
+			return VisualShaderNode.PORT_TYPE_VECTOR
 		2:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		3:

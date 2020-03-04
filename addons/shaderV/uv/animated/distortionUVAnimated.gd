@@ -7,7 +7,8 @@ func _init() -> void:
 	set_input_port_default_value(2, 0)
 	set_input_port_default_value(3, 0)
 	set_input_port_default_value(4, 0)
-	set_input_port_default_value(5, 0)
+	set_input_port_default_value(5, 1)
+	set_input_port_default_value(6, 0)
 
 func _get_name() -> String:
 	return "DistortionUVAnimated"
@@ -25,7 +26,7 @@ func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_input_port_count() -> int:
-	return 6
+	return 7
 
 func _get_input_port_name(port: int):
 	match port:
@@ -41,6 +42,8 @@ func _get_input_port_name(port: int):
 			return "distortY"
 		5:
 			return "speed"
+		6:
+			return "time"
 
 func _get_input_port_type(port: int):
 	match port:
@@ -55,6 +58,8 @@ func _get_input_port_type(port: int):
 		4:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		5:
+			return VisualShaderNode.PORT_TYPE_SCALAR
+		6:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_output_port_count() -> int:
@@ -76,5 +81,5 @@ vec2 d1stort1onUVAnimatedFunc(vec2 _uv_d1st, float _d1stX_d1st, float _d1stY_d1s
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = d1stort1onUVAnimatedFunc(%s.xy, %s, %s, %s, %s, %s, TIME);" % [
-	output_vars[0], input_vars[0], input_vars[3], input_vars[4], input_vars[1], input_vars[2], input_vars[5]]
+	return "%s.xy = d1stort1onUVAnimatedFunc(%s.xy, %s, %s, %s, %s, %s, %s);" % [
+	output_vars[0], input_vars[0], input_vars[3], input_vars[4], input_vars[1], input_vars[2], input_vars[5], input_vars[6]]

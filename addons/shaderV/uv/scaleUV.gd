@@ -1,13 +1,13 @@
 tool
 extends VisualShaderNodeCustom
-class_name VisualShaderNodeUVzoom
+class_name VisualShaderNodeUVscale
 
 func _init() -> void:
-	set_input_port_default_value(1, 1.0)
+	set_input_port_default_value(1, Vector3(1, 1, 0))
 	set_input_port_default_value(2, Vector3(0.5, 0.5, 0))
 
 func _get_name() -> String:
-	return "ZoomUV"
+	return "ScaleUV"
 
 func _get_category() -> String:
 	return "UV"
@@ -16,7 +16,7 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return "Zoom UV relative to pivot point"
+	return "Scale UV relative to pivot point"
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -29,7 +29,7 @@ func _get_input_port_name(port: int):
 		0:
 			return "uv"
 		1:
-			return "factor"
+			return "scale"
 		2:
 			return "pivot"
 
@@ -38,7 +38,7 @@ func _get_input_port_type(port: int):
 		0:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 		1:
-			return VisualShaderNode.PORT_TYPE_SCALAR
+			return VisualShaderNode.PORT_TYPE_VECTOR
 		2:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 
@@ -52,4 +52,5 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return output_vars[0] + " = (%s - %s) * %s + %s;" % [input_vars[0], input_vars[2], input_vars[1], input_vars[2]]
+	return "%s.xy = (%s.xy - %s.xy) * %s.xy + %s.xy;" % [
+	output_vars[0], input_vars[0], input_vars[2], input_vars[1], input_vars[2]]

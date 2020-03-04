@@ -1,0 +1,3937 @@
+[gd_scene load_steps=182 format=2]
+
+[ext_resource path="res://addons/shaderV/shaderV_icon.png" type="Texture" id=1]
+[ext_resource path="res://addons/shaderV/uv/tilingNoffset.gd" type="Script" id=2]
+[ext_resource path="res://addons/shaderV/uv/pixelate.gd" type="Script" id=3]
+[ext_resource path="res://addons/shaderV/uv/lensDistortion.gd" type="Script" id=4]
+[ext_resource path="res://addons/shaderV/uv/flipUV.gd" type="Script" id=5]
+[ext_resource path="res://addons/shaderV/uv/distortionUV.gd" type="Script" id=6]
+[ext_resource path="res://addons/shaderV/uv/scaleUV.gd" type="Script" id=7]
+[ext_resource path="res://addons/shaderV/uv/sphericalUV.gd" type="Script" id=8]
+[ext_resource path="res://addons/shaderV/uv/rotate.gd" type="Script" id=9]
+[ext_resource path="res://addons/shaderV/uv/tileUV.gd" type="Script" id=10]
+[ext_resource path="res://addons/shaderV/uv/transformUV.gd" type="Script" id=11]
+[ext_resource path="res://addons/shaderV/uv/twirl.gd" type="Script" id=12]
+[ext_resource path="res://addons/shaderV/uv/animated/distortionUVAnimated.gd" type="Script" id=13]
+[ext_resource path="res://addons/shaderV/uv/animated/doodleUV.gd" type="Script" id=14]
+[ext_resource path="res://addons/shaderV/uv/animated/tilingNoffsetAnimated.gd" type="Script" id=15]
+[ext_resource path="res://addons/shaderV/tools/sinTime.gd" type="Script" id=16]
+[ext_resource path="res://addons/shaderV/uv/animated/rotateAnimated.gd" type="Script" id=17]
+[ext_resource path="res://addons/shaderV/tools/hash1d.gd" type="Script" id=18]
+[ext_resource path="res://addons/shaderV/uv/animated/swirlUV.gd" type="Script" id=19]
+[ext_resource path="res://addons/shaderV/tools/hash2d.gd" type="Script" id=20]
+[ext_resource path="res://addons/shaderV/tools/hash2dvector.gd" type="Script" id=21]
+[ext_resource path="res://addons/shaderV/tools/randomFloat.gd" type="Script" id=22]
+[ext_resource path="res://addons/shaderV/tools/randomFloatInput.gd" type="Script" id=23]
+[ext_resource path="res://addons/shaderV/tools/randomGoldNoiseFloat.gd" type="Script" id=24]
+[ext_resource path="res://addons/shaderV/tools/vec2Compose.gd" type="Script" id=25]
+[ext_resource path="res://addons/shaderV/tools/remap.gd" type="Script" id=26]
+[ext_resource path="res://addons/shaderV/rgba/blur/blur9sample.gd" type="Script" id=27]
+[ext_resource path="res://addons/shaderV/rgba/blur/blurCustom.gd" type="Script" id=28]
+[ext_resource path="res://addons/shaderV/rgba/blur/zoomBlur.gd" type="Script" id=29]
+[ext_resource path="res://addons/shaderV/rgba/glow/innerGlow.gd" type="Script" id=30]
+[ext_resource path="res://addons/shaderV/rgba/glow/glowEmpty.gd" type="Script" id=31]
+[ext_resource path="res://addons/shaderV/rgba/glow/innerGlowEmpty.gd" type="Script" id=32]
+[ext_resource path="res://addons/shaderV/rgba/glow/outerGlow.gd" type="Script" id=33]
+[ext_resource path="res://addons/shaderV/rgba/glow/outerGlowEmpty.gd" type="Script" id=34]
+
+[sub_resource type="VisualShaderNodeCustom" id=12]
+default_input_values = [ 1, 0, 2, 0, 3, 0, 4, 0 ]
+script = ExtResource( 6 )
+
+[sub_resource type="VisualShaderNodeInput" id=13]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeTexture" id=14]
+source = 2
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=15]
+constant = 5.0
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=16]
+constant = 0.1
+
+[sub_resource type="VisualShader" id=17]
+code = "shader_type canvas_item;
+
+
+// DistortionUV
+
+vec2 d1stort1onUVFunc(vec2 _uv_d1st, float _d1stX_d1st, float _d1stY_d1st, float _waveX_d1st, float _waveY_d1st){
+	_uv_d1st.x += sin(_uv_d1st.y * _waveX_d1st) * _d1stX_d1st;
+	_uv_d1st.y += sin(_uv_d1st.x * _waveY_d1st) * _d1stY_d1st;
+	return _uv_d1st;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:5
+	float n_out5p0;
+	n_out5p0 = 5.000000;
+
+// Scalar:6
+	float n_out6p0;
+	n_out6p0 = 0.100000;
+
+// DistortionUV:2
+	vec3 n_out2p0;
+	{
+		n_out2p0.xy = d1stort1onUVFunc(n_out3p0.xy, n_out6p0, n_out6p0, n_out5p0, n_out5p0);
+	}
+// Texture:4
+	vec3 n_out4p0;
+	float n_out4p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out2p0.xy );
+		n_out4p0 = _tex_read.rgb;
+		n_out4p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out4p0;
+	COLOR.a = n_out4p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -457, -118 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 440, 140 )
+nodes/fragment/2/node = SubResource( 12 )
+nodes/fragment/2/position = Vector2( 60, 140 )
+nodes/fragment/3/node = SubResource( 13 )
+nodes/fragment/3/position = Vector2( -140, 80 )
+nodes/fragment/4/node = SubResource( 14 )
+nodes/fragment/4/position = Vector2( 240, 140 )
+nodes/fragment/5/node = SubResource( 15 )
+nodes/fragment/5/position = Vector2( -200, 160 )
+nodes/fragment/6/node = SubResource( 16 )
+nodes/fragment/6/position = Vector2( -200, 240 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 2, 0, 2, 0, 4, 0, 4, 0, 0, 0, 4, 1, 0, 1, 5, 0, 2, 1, 5, 0, 2, 2, 6, 0, 2, 3, 6, 0, 2, 4 )
+
+[sub_resource type="ShaderMaterial" id=18]
+shader = SubResource( 17 )
+
+[sub_resource type="VisualShaderNodeInput" id=19]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeTexture" id=20]
+source = 2
+
+[sub_resource type="VisualShaderNodeCustom" id=21]
+default_input_values = [ 1, false, 2, false ]
+script = ExtResource( 5 )
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id=22]
+constant = true
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id=23]
+constant = true
+
+[sub_resource type="VisualShader" id=24]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Boolean:8
+	bool n_out8p0;
+	n_out8p0 = true;
+
+// Boolean:9
+	bool n_out9p0;
+	n_out9p0 = true;
+
+// FlipUV:7
+	vec3 n_out7p0;
+	{
+		n_out7p0 = vec3(mix(n_out3p0.x, 1.0 - n_out3p0.x, float(n_out8p0)), mix(n_out3p0.y, 1.0 - n_out3p0.y, float(n_out9p0)), 0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out7p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -449, -62 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 500, -20 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -100, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 300, -20 )
+nodes/fragment/7/node = SubResource( 21 )
+nodes/fragment/7/position = Vector2( 100, -20 )
+nodes/fragment/8/node = SubResource( 22 )
+nodes/fragment/8/position = Vector2( -100, 40 )
+nodes/fragment/9/node = SubResource( 23 )
+nodes/fragment/9/position = Vector2( -100, 100 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 7, 0, 5, 0, 3, 0, 7, 0, 8, 0, 7, 1, 9, 0, 7, 2 )
+
+[sub_resource type="ShaderMaterial" id=25]
+shader = SubResource( 24 )
+
+[sub_resource type="VisualShaderNodeCustom" id=26]
+default_input_values = [ 1, 1.0 ]
+script = ExtResource( 4 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=27]
+constant = 1.0
+
+[sub_resource type="VisualShader" id=28]
+code = "shader_type canvas_item;
+
+
+// LensDistortionUV
+
+vec2 lensD1st0rti0nFunc(vec2 _uv_d1s_1en5, float _fctr_d1s_1en5){
+	vec2 _p0s_d1s_1en5 = _uv_d1s_1en5 - 0.5;
+	float _d1st_d1s_1en5 = length(_p0s_d1s_1en5);
+	if (_fctr_d1s_1en5 > 0.0) // fisheye / barrel
+		_uv_d1s_1en5 = vec2(0.5)+normalize(_p0s_d1s_1en5)*tan(_d1st_d1s_1en5*_fctr_d1s_1en5)*0.70711/tan(0.70711*_fctr_d1s_1en5);
+	else if (_fctr_d1s_1en5 < 0.0) // antifisheye / pincushion
+		_uv_d1s_1en5 = vec2(0.5)+normalize(_p0s_d1s_1en5)*atan(_d1st_d1s_1en5*-_fctr_d1s_1en5*10.0)*0.5/atan(-_fctr_d1s_1en5*0.5*10.0);
+	return _uv_d1s_1en5;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:8
+	float n_out8p0;
+	n_out8p0 = 1.000000;
+
+// LensDistortionUV:7
+	vec3 n_out7p0;
+	{
+		n_out7p0.xy = lensD1st0rti0nFunc(n_out3p0.xy, n_out8p0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out7p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -376, -139 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 500, -20 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -100, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 300, -20 )
+nodes/fragment/7/node = SubResource( 26 )
+nodes/fragment/7/position = Vector2( 100, 20 )
+nodes/fragment/8/node = SubResource( 27 )
+nodes/fragment/8/position = Vector2( -120, 60 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 8, 0, 7, 1, 3, 0, 7, 0, 7, 0, 5, 0 )
+
+[sub_resource type="ShaderMaterial" id=29]
+shader = SubResource( 28 )
+
+[sub_resource type="VisualShaderNodeCustom" id=30]
+default_input_values = [ 1, Vector3( 64, 64, 0 ) ]
+script = ExtResource( 3 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=31]
+constant = Vector3( 8, 8, 0 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=38]
+
+[sub_resource type="VisualShader" id=32]
+code = "shader_type canvas_item;
+
+
+// PixelateUV
+
+vec2 pixelateFunc(vec2 _uv_p1xelate, vec2 _effect_factor_p1xelate){
+	return round(_uv_p1xelate * _effect_factor_p1xelate) / _effect_factor_p1xelate;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Vector:8
+	vec3 n_out8p0;
+	n_out8p0 = vec3(8.000000,8.000000,0.000000);
+
+// PixelateUV:7
+	vec3 n_out7p0;
+	{
+		n_out7p0.xy = pixelateFunc(n_out3p0.xy, n_out8p0.xy);
+	}
+// Scalar:9
+	float n_out9p0;
+	n_out9p0 = 0.000000;
+
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = textureLod( TEXTURE , n_out7p0.xy , n_out9p0 );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -376, -139 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 520, -20 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -80, -100 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 340, -20 )
+nodes/fragment/7/node = SubResource( 30 )
+nodes/fragment/7/position = Vector2( 140, -20 )
+nodes/fragment/8/node = SubResource( 31 )
+nodes/fragment/8/position = Vector2( -240, 40 )
+nodes/fragment/9/node = SubResource( 38 )
+nodes/fragment/9/position = Vector2( 120, 100 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 8, 0, 7, 1, 3, 0, 7, 0, 7, 0, 5, 0, 9, 0, 5, 1 )
+
+[sub_resource type="ShaderMaterial" id=33]
+shader = SubResource( 32 )
+
+[sub_resource type="VisualShaderNodeCustom" id=39]
+default_input_values = [ 1, 0.0, 2, Vector3( 0.5, 0.5, 0 ) ]
+script = ExtResource( 9 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=40]
+constant = 0.4
+
+[sub_resource type="VisualShader" id=36]
+code = "shader_type canvas_item;
+
+
+// RotateUV
+
+vec3 r0tateUVFunc(vec3 _uv_r0tate, vec2 _pivot_r0tate, float _r0tation_r0tate){
+	//_r0tation_r0tate = radians(_r0tationDeg_r0tate);
+	vec2 _r0tAngle = vec2(cos(_r0tation_r0tate), sin(_r0tation_r0tate));
+	_uv_r0tate.xy -= _pivot_r0tate;
+	_uv_r0tate.xy = vec2((_uv_r0tate.x*_r0tAngle.x-_uv_r0tate.y*_r0tAngle.y),(_uv_r0tate.x*_r0tAngle.y+_uv_r0tate.y*_r0tAngle.x));
+	_uv_r0tate.xy += _pivot_r0tate;
+	return _uv_r0tate;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:8
+	float n_out8p0;
+	n_out8p0 = 0.400000;
+
+// RotateUV:7
+	vec3 n_in7p2 = vec3(0.50000,0.50000,0.00000);
+	vec3 n_out7p0;
+	{
+		n_out7p0 = r0tateUVFunc(n_out3p0, n_in7p2.xy, n_out8p0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out7p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -228, -187 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 600, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -100, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 400, 0 )
+nodes/fragment/7/node = SubResource( 39 )
+nodes/fragment/7/position = Vector2( 140, 0 )
+nodes/fragment/8/node = SubResource( 40 )
+nodes/fragment/8/position = Vector2( -120, 40 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 3, 0, 7, 0, 7, 0, 5, 0, 8, 0, 7, 1 )
+
+[sub_resource type="ShaderMaterial" id=37]
+shader = SubResource( 36 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=41]
+constant = Vector3( 2, 3, 0 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=42]
+constant = Vector3( 0.5, 0.5, 0 )
+
+[sub_resource type="VisualShaderNodeCustom" id=43]
+default_input_values = [ 1, Vector3( 1, 1, 0 ), 2, Vector3( 0.5, 0.5, 0 ) ]
+script = ExtResource( 7 )
+
+[sub_resource type="VisualShader" id=44]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Vector:10
+	vec3 n_out10p0;
+	n_out10p0 = vec3(2.000000,3.000000,0.000000);
+
+// Vector:11
+	vec3 n_out11p0;
+	n_out11p0 = vec3(0.500000,0.500000,0.000000);
+
+// ScaleUV:9
+	vec3 n_out9p0;
+	{
+		n_out9p0.xy = (n_out3p0.xy - n_out11p0.xy) * n_out10p0.xy + n_out11p0.xy;
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out9p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -228, -187 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 600, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -100, -60 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 400, 0 )
+nodes/fragment/9/node = SubResource( 43 )
+nodes/fragment/9/position = Vector2( 180, 0 )
+nodes/fragment/10/node = SubResource( 41 )
+nodes/fragment/10/position = Vector2( -220, 40 )
+nodes/fragment/11/node = SubResource( 42 )
+nodes/fragment/11/position = Vector2( -220, 140 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 9, 0, 5, 0, 3, 0, 9, 0, 10, 0, 9, 1, 11, 0, 9, 2 )
+
+[sub_resource type="ShaderMaterial" id=45]
+shader = SubResource( 44 )
+
+[sub_resource type="VisualShaderNodeCustom" id=46]
+default_input_values = [ 1, Vector3( 1, 1, 0 ), 2, Vector3( 0, 0, 0 ), 3, Vector3( 0.5, 0.5, 0 ), 4, Vector3( 0, 0, 0 ) ]
+script = ExtResource( 8 )
+
+[sub_resource type="VisualShader" id=47]
+code = "shader_type canvas_item;
+
+
+// SphericalUV
+
+vec2 sphericalFunc(vec2 _uv_shprc1, vec2 _p0s_shprc1, vec2 _rad_shprc1, vec2 _sp1n_shprc1, vec2 _l0c_p0s_shprc1){
+	vec2 _temp_p = (_uv_shprc1 - _p0s_shprc1) * 2.0;
+	float _temp_rad = length((_temp_p - _l0c_p0s_shprc1) * _rad_shprc1) + 0.0001;
+	float _temp_f = (1.0 - sqrt(1.0 - _temp_rad)) / _temp_rad;
+	return mod(vec2((_temp_p.x * 0.5 * _temp_f + _sp1n_shprc1.x) + 0.5,
+					(_temp_p.y * 0.5 * _temp_f + _sp1n_shprc1.y) + 0.5), vec2(1.0));
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// SphericalUV:12
+	vec3 n_in12p1 = vec3(1.00000,1.00000,0.00000);
+	vec3 n_in12p2 = vec3(0.00000,0.00000,0.00000);
+	vec3 n_in12p3 = vec3(0.50000,0.50000,0.00000);
+	vec3 n_in12p4 = vec3(0.00000,0.00000,0.00000);
+	vec3 n_out12p0;
+	{
+		n_out12p0.xy = sphericalFunc(n_out3p0.xy, n_in12p3.xy, n_in12p1.xy, n_in12p2.xy, n_in12p4.xy);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out12p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -245, -146 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 600, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -80, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 400, 0 )
+nodes/fragment/12/node = SubResource( 46 )
+nodes/fragment/12/position = Vector2( 160, 0 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 12, 0, 5, 0, 3, 0, 12, 0 )
+
+[sub_resource type="ShaderMaterial" id=48]
+shader = SubResource( 47 )
+
+[sub_resource type="VisualShaderNodeCustom" id=49]
+default_input_values = [ 1, 2.0, 2, 2.0, 3, 0.0 ]
+script = ExtResource( 10 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=55]
+
+[sub_resource type="VisualShader" id=53]
+code = "shader_type canvas_item;
+
+
+// TileUV
+
+vec2 t1leMapUV(vec2 _uv_t1le_t1mp, float _w1dth_t1mp, float _he1ght_t1mp, float _t1le_nmbr_t1mp){
+	_t1le_nmbr_t1mp = min(max(floor(_t1le_nmbr_t1mp), 0.0), _w1dth_t1mp * _he1ght_t1mp - 1.0);
+	vec2 tcrcp = vec2(1.0) / vec2(_w1dth_t1mp, _he1ght_t1mp);
+	float ty =floor(_t1le_nmbr_t1mp * tcrcp.x);
+	float tx = _t1le_nmbr_t1mp - _w1dth_t1mp * ty;
+	return (_uv_t1le_t1mp + vec2(tx, ty)) * tcrcp;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:14
+	float n_out14p0;
+	n_out14p0 = 0.000000;
+
+// TileUV:13
+	float n_in13p1 = 2.00000;
+	float n_in13p2 = 2.00000;
+	vec3 n_out13p0;
+	{
+		n_out13p0.xy = t1leMapUV(n_out3p0.xy, n_in13p1, n_in13p2, n_out14p0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out13p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -488, -134 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 600, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -40, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 400, 0 )
+nodes/fragment/13/node = SubResource( 49 )
+nodes/fragment/13/position = Vector2( 200, 0 )
+nodes/fragment/14/node = SubResource( 55 )
+nodes/fragment/14/position = Vector2( -51, 148 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 13, 0, 5, 0, 3, 0, 13, 0, 14, 0, 13, 3 )
+
+[sub_resource type="ShaderMaterial" id=54]
+shader = SubResource( 53 )
+
+[sub_resource type="VisualShaderNodeCustom" id=56]
+default_input_values = [ 1, Vector3( 0, 0, 0 ) ]
+script = ExtResource( 2 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=57]
+constant = 0.2
+
+[sub_resource type="VisualShader" id=58]
+code = "shader_type canvas_item;
+
+
+// TilingAndOffsetUV
+
+vec2 ti1ingN0ffsetFunc(vec2 _uv_tN0, vec2 _offset_tN0){
+	return vec2(mod(_uv_tN0.x + _offset_tN0.x, 1.0), mod(_uv_tN0.y + _offset_tN0.y, 1.0));
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:18
+	float n_out18p0;
+	n_out18p0 = 0.200000;
+
+// TilingAndOffsetUV:17
+	vec3 n_out17p0;
+	{
+		n_out17p0 = vec3(ti1ingN0ffsetFunc(n_out3p0.xy, vec3(n_out18p0).xy), 0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out17p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -505, -267 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 600, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -80, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 400, 0 )
+nodes/fragment/17/node = SubResource( 56 )
+nodes/fragment/17/position = Vector2( 180, 0 )
+nodes/fragment/18/node = SubResource( 57 )
+nodes/fragment/18/position = Vector2( -177, 76 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 17, 0, 5, 0, 3, 0, 17, 0, 18, 0, 17, 1 )
+
+[sub_resource type="ShaderMaterial" id=59]
+shader = SubResource( 58 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=51]
+constant = 0.2
+
+[sub_resource type="VisualShaderNodeCustom" id=60]
+default_input_values = [ 1, Vector3( 0, 0, 0 ), 2, Vector3( 1, 1, 0 ), 3, Vector3( 0.5, 0.5, 0 ), 4, 0, 5, Vector3( 0.5, 0.5, 0 ) ]
+script = ExtResource( 11 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=61]
+constant = Vector3( 0.1, 0.1, 0 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=62]
+constant = Vector3( 2, 2, 0 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=63]
+constant = Vector3( 0.5, 0.5, 0 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=64]
+constant = Vector3( 0.5, 0.5, 0 )
+
+[sub_resource type="VisualShader" id=65]
+code = "shader_type canvas_item;
+
+
+// TransformUV
+
+vec2 transformUVFunc(vec2 _uv_transform, vec2 _scale_uv_, vec2 _pivot_scale_uv_, vec2 _offset_uv_, float _rotate_uv, vec2 _pivot_rotate_uv_){
+	_uv_transform -= _offset_uv_; // offset
+	_uv_transform = (_uv_transform - _pivot_scale_uv_) * _scale_uv_ + _pivot_scale_uv_; // zoom
+	vec2 _rot_uv_angl = vec2(cos(_rotate_uv), sin(_rotate_uv));
+	mat2 _rot_matrix = mat2(vec2(_rot_uv_angl.x, - _rot_uv_angl.y), vec2(_rot_uv_angl.y, _rot_uv_angl.x));
+	_uv_transform = (_uv_transform - _pivot_rotate_uv_) * _rot_matrix + _pivot_rotate_uv_; // rotate
+	return _uv_transform;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Vector:19
+	vec3 n_out19p0;
+	n_out19p0 = vec3(0.100000,0.100000,0.000000);
+
+// Vector:20
+	vec3 n_out20p0;
+	n_out20p0 = vec3(2.000000,2.000000,0.000000);
+
+// Vector:22
+	vec3 n_out22p0;
+	n_out22p0 = vec3(0.500000,0.500000,0.000000);
+
+// Scalar:15
+	float n_out15p0;
+	n_out15p0 = 0.200000;
+
+// Vector:21
+	vec3 n_out21p0;
+	n_out21p0 = vec3(0.500000,0.500000,0.000000);
+
+// TransformUV:18
+	vec3 n_out18p0;
+	{
+		n_out18p0.xy = transformUVFunc(n_out3p0.xy, n_out20p0.xy, n_out22p0.xy, n_out19p0.xy, n_out15p0, n_out21p0.xy);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out18p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -227, -209 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 540, -20 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -120, -240 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 340, -20 )
+nodes/fragment/15/node = SubResource( 51 )
+nodes/fragment/15/position = Vector2( -300, 140 )
+nodes/fragment/18/node = SubResource( 60 )
+nodes/fragment/18/position = Vector2( 120, -20 )
+nodes/fragment/19/node = SubResource( 61 )
+nodes/fragment/19/position = Vector2( -300, -160 )
+nodes/fragment/20/node = SubResource( 62 )
+nodes/fragment/20/position = Vector2( -300, -60 )
+nodes/fragment/21/node = SubResource( 63 )
+nodes/fragment/21/position = Vector2( -300, 220 )
+nodes/fragment/22/node = SubResource( 64 )
+nodes/fragment/22/position = Vector2( -300, 40 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 18, 0, 5, 0, 3, 0, 18, 0, 19, 0, 18, 1, 20, 0, 18, 2, 22, 0, 18, 3, 15, 0, 18, 4, 21, 0, 18, 5 )
+
+[sub_resource type="ShaderMaterial" id=66]
+shader = SubResource( 65 )
+
+[sub_resource type="VisualShaderNodeCustom" id=67]
+default_input_values = [ 1, 1.0, 2, Vector3( 0.5, 0.5, 0 ) ]
+script = ExtResource( 12 )
+
+[sub_resource type="VisualShader" id=70]
+code = "shader_type canvas_item;
+
+
+// TwirlUV
+
+vec3 twirlUVFunc(vec2 _uv_twirlUVFunc, vec2 _pivot_twirlUVFunc, float _amount_twirlUVFunc){
+	_uv_twirlUVFunc -= _pivot_twirlUVFunc;
+	float _angle_twirlUVFunc = atan(_uv_twirlUVFunc.y, _uv_twirlUVFunc.x);
+	float _radiusTemp_twirlUVFunc = length(_uv_twirlUVFunc);
+	_angle_twirlUVFunc += _radiusTemp_twirlUVFunc * _amount_twirlUVFunc;
+	return vec3(_radiusTemp_twirlUVFunc * vec2(cos(_angle_twirlUVFunc), sin(_angle_twirlUVFunc)) + 0.5, 0.0);
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// TwirlUV:23
+	float n_in23p1 = 1.00000;
+	vec3 n_in23p2 = vec3(0.50000,0.50000,0.00000);
+	vec3 n_out23p0;
+	{
+		n_out23p0 = twirlUVFunc(n_out3p0.xy, n_in23p2.xy, n_in23p1);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out23p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -227, -209 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 520, -20 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -120, -20 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 320, -20 )
+nodes/fragment/23/node = SubResource( 67 )
+nodes/fragment/23/position = Vector2( 100, -20 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 23, 0, 5, 0, 3, 0, 23, 0 )
+
+[sub_resource type="ShaderMaterial" id=71]
+shader = SubResource( 70 )
+
+[sub_resource type="VisualShaderNodeCustom" id=72]
+default_input_values = [ 1, 0, 2, 0, 3, 0, 4, 0, 5, 1, 6, 0 ]
+script = ExtResource( 13 )
+
+[sub_resource type="VisualShaderNodeInput" id=73]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=74]
+constant = 5.0
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=75]
+constant = -0.2
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=76]
+constant = 0.01
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=77]
+constant = 1.0
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=78]
+constant = 5.0
+
+[sub_resource type="VisualShader" id=68]
+code = "shader_type canvas_item;
+
+
+// DistortionUVAnimated
+
+vec2 d1stort1onUVAnimatedFunc(vec2 _uv_d1st, float _d1stX_d1st, float _d1stY_d1st, float _waveX_d1st, float _waveY_d1st, float _spd_d1st, float _t1me_d1st){
+	_uv_d1st.x += sin(_uv_d1st.y * _waveX_d1st + _t1me_d1st * _spd_d1st) * _d1stX_d1st;
+	_uv_d1st.y += sin(_uv_d1st.x * _waveY_d1st + _t1me_d1st * _spd_d1st) * _d1stY_d1st;
+	return _uv_d1st;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:26
+	float n_out26p0;
+	n_out26p0 = 5.000000;
+
+// Scalar:30
+	float n_out30p0;
+	n_out30p0 = 5.000000;
+
+// Scalar:27
+	float n_out27p0;
+	n_out27p0 = -0.200000;
+
+// Scalar:28
+	float n_out28p0;
+	n_out28p0 = 0.010000;
+
+// Scalar:29
+	float n_out29p0;
+	n_out29p0 = 1.000000;
+
+// Input:25
+	float n_out25p0;
+	n_out25p0 = TIME;
+
+// DistortionUVAnimated:24
+	vec3 n_out24p0;
+	{
+		n_out24p0.xy = d1stort1onUVAnimatedFunc(n_out3p0.xy, n_out27p0, n_out28p0, n_out26p0, n_out30p0, n_out29p0, n_out25p0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out24p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -455, -211 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 520, -20 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -140, -200 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 320, -20 )
+nodes/fragment/24/node = SubResource( 72 )
+nodes/fragment/24/position = Vector2( 60, -20 )
+nodes/fragment/25/node = SubResource( 73 )
+nodes/fragment/25/position = Vector2( -160, 280 )
+nodes/fragment/26/node = SubResource( 74 )
+nodes/fragment/26/position = Vector2( -180, -120 )
+nodes/fragment/27/node = SubResource( 75 )
+nodes/fragment/27/position = Vector2( -180, 40 )
+nodes/fragment/28/node = SubResource( 76 )
+nodes/fragment/28/position = Vector2( -180, 120 )
+nodes/fragment/29/node = SubResource( 77 )
+nodes/fragment/29/position = Vector2( -180, 200 )
+nodes/fragment/30/node = SubResource( 78 )
+nodes/fragment/30/position = Vector2( -180, -40 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 24, 0, 5, 0, 3, 0, 24, 0, 25, 0, 24, 6, 26, 0, 24, 1, 29, 0, 24, 5, 28, 0, 24, 4, 27, 0, 24, 3, 30, 0, 24, 2 )
+
+[sub_resource type="ShaderMaterial" id=69]
+shader = SubResource( 68 )
+
+[sub_resource type="VisualShaderNodeCustom" id=79]
+default_input_values = [ 1, 0.5, 2, 4.0, 3, 0.7, 4, 0.065, 5, 0 ]
+script = ExtResource( 14 )
+
+[sub_resource type="VisualShaderNodeInput" id=80]
+input_name = "time"
+
+[sub_resource type="VisualShader" id=81]
+code = "shader_type canvas_item;
+
+
+// DoodleUV
+
+float hash2D00dle(vec2 _p_hash_d00dle) {
+	return fract(1e4 * sin(17.0 * _p_hash_d00dle.x + _p_hash_d00dle.y * 0.1) * (0.1 + abs(sin(_p_hash_d00dle.y * 13.0 + _p_hash_d00dle.x))));
+}
+
+float noiseD00dle(vec2 _seed_noise_d00dle){
+	vec2 i = floor(_seed_noise_d00dle);
+	vec2 f = fract(_seed_noise_d00dle);
+	float _a = hash2D00dle(i);
+	float _b = hash2D00dle(i + vec2(1.0, 0.0));
+	float _c = hash2D00dle(i + vec2(0.0, 1.0));
+	float _d = hash2D00dle(i + vec2(1.0, 1.0));
+	vec2 u = f * f * (3.0 - 2.0 * f);
+	return mix(_a, _b, u.x) + (_c - _a) * u.y * (1.0 - u.x) + (_d - _b) * u.x * u.y;
+}
+
+vec2 d00dleUVFunc(vec2 _uv_d00dle, float _max_offset_d00dle, float _time_d00dle, float _frame_time_d00dle, int _frame_count_d00dle, float _scale_d00dle){
+	float timeValueD00dle = mod(floor(_time_d00dle / _frame_time_d00dle), float(_frame_count_d00dle)) + 1.0;
+	return _uv_d00dle + vec2(noiseD00dle((_uv_d00dle + timeValueD00dle) * _scale_d00dle) * 2.0 - 1.0) * _max_offset_d00dle;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Input:7
+	float n_out7p0;
+	n_out7p0 = TIME;
+
+// DoodleUV:6
+	float n_in6p1 = 0.50000;
+	float n_in6p2 = 4.00000;
+	float n_in6p3 = 0.70000;
+	float n_in6p4 = 0.06500;
+	vec3 n_out6p0;
+	{
+		n_out6p0.xy = d00dleUVFunc(n_out3p0.xy, n_in6p4, n_out7p0, n_in6p1, int(n_in6p2), n_in6p3);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out6p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -375, -224 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 540, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -100, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 340, 0 )
+nodes/fragment/6/node = SubResource( 79 )
+nodes/fragment/6/position = Vector2( 100, 0 )
+nodes/fragment/7/node = SubResource( 80 )
+nodes/fragment/7/position = Vector2( -100, 180 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 6, 0, 5, 0, 3, 0, 6, 0, 7, 0, 6, 5 )
+
+[sub_resource type="ShaderMaterial" id=82]
+shader = SubResource( 81 )
+
+[sub_resource type="VisualShaderNodeCustom" id=83]
+default_input_values = [ 1, 0.5, 2, Vector3( 0.5, 0.5, 0 ) ]
+script = ExtResource( 17 )
+
+[sub_resource type="VisualShader" id=84]
+code = "shader_type canvas_item;
+
+
+// RotateUVAnimated
+
+vec2 r0tateUVAnimatedFunc(vec2 _uv_r0tate, vec2 _pivot_r0tate, float _r0tation_r0tate, float _r0tSpeed_r0tate, float _t1me_r0tate){
+	_r0tation_r0tate += _t1me_r0tate * _r0tSpeed_r0tate;
+	//_r0tation_r0tate = radians(_r0tationDeg_r0tate);
+	vec2 _r0tAngle = vec2(cos(_r0tation_r0tate), sin(_r0tation_r0tate));
+	_uv_r0tate -= _pivot_r0tate;
+	_uv_r0tate = vec2((_uv_r0tate.x*_r0tAngle.x-_uv_r0tate.y*_r0tAngle.y),(_uv_r0tate.x*_r0tAngle.y+_uv_r0tate.y*_r0tAngle.x));
+	_uv_r0tate += _pivot_r0tate;
+	return _uv_r0tate;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Input:7
+	float n_out7p0;
+	n_out7p0 = TIME;
+
+// RotateUVAnimated:8
+	float n_in8p1 = 0.50000;
+	vec3 n_in8p2 = vec3(0.50000,0.50000,0.00000);
+	vec3 n_out8p0;
+	{
+		n_out8p0 = vec3(r0tateUVAnimatedFunc(n_out3p0.xy, n_in8p2.xy, 0.0, n_in8p1, n_out7p0), 0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out8p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -375, -224 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 540, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -100, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 340, 0 )
+nodes/fragment/7/node = SubResource( 80 )
+nodes/fragment/7/position = Vector2( -100, 180 )
+nodes/fragment/8/node = SubResource( 83 )
+nodes/fragment/8/position = Vector2( 100, 0 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 8, 0, 5, 0, 3, 0, 8, 0, 7, 0, 8, 3 )
+
+[sub_resource type="ShaderMaterial" id=85]
+shader = SubResource( 84 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=86]
+constant = 1.0
+
+[sub_resource type="VisualShaderNodeCustom" id=87]
+default_input_values = [ 0, 1.0, 1, 1.0 ]
+script = ExtResource( 16 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=88]
+constant = 10.0
+
+[sub_resource type="VisualShaderNodeCustom" id=89]
+default_input_values = [ 1, Vector3( 0.5, 0.5, 0 ), 2, 0.0, 3, 0.0 ]
+script = ExtResource( 19 )
+
+[sub_resource type="VisualShader" id=90]
+code = "shader_type canvas_item;
+
+
+// SwirlUV
+
+vec2 swirlUVFunc(vec2 _uv_sw1rl, float _t1me_sw1rl, vec2 _p1vot_sw1rl, float _amount_sw1rl){
+	float _rotation_index_sw1rl = _amount_sw1rl * length(_uv_sw1rl - _p1vot_sw1rl) * _t1me_sw1rl;
+	_uv_sw1rl -= _p1vot_sw1rl;
+	_uv_sw1rl *= mat2(vec2(cos(_rotation_index_sw1rl), - sin(_rotation_index_sw1rl)),
+										vec2(sin(_rotation_index_sw1rl), cos(_rotation_index_sw1rl)));
+	_uv_sw1rl += _p1vot_sw1rl;
+	return _uv_sw1rl;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:10
+	float n_out10p0;
+	n_out10p0 = 1.000000;
+
+// Scalar:12
+	float n_out12p0;
+	n_out12p0 = 10.000000;
+
+// SinTIME:11
+	float n_in11p0 = 1.00000;
+	float n_out11p0;
+	{
+		n_out11p0 = n_out12p0 * sin(n_in11p0 * TIME);
+	}
+// SwirlUV:9
+	vec3 n_in9p1 = vec3(0.50000,0.50000,0.00000);
+	vec3 n_out9p0;
+	{
+		n_out9p0.xy = swirlUVFunc(n_out3p0.xy, n_out11p0, n_in9p1.xy, n_out10p0);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out9p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -375, -224 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 540, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -100, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 340, 0 )
+nodes/fragment/9/node = SubResource( 89 )
+nodes/fragment/9/position = Vector2( 100, -20 )
+nodes/fragment/10/node = SubResource( 86 )
+nodes/fragment/10/position = Vector2( -100, 40 )
+nodes/fragment/11/node = SubResource( 87 )
+nodes/fragment/11/position = Vector2( -100, 120 )
+nodes/fragment/12/node = SubResource( 88 )
+nodes/fragment/12/position = Vector2( -300, 160 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 3, 0, 9, 0, 9, 0, 5, 0, 10, 0, 9, 2, 11, 0, 9, 3, 12, 0, 11, 1 )
+
+[sub_resource type="ShaderMaterial" id=91]
+shader = SubResource( 90 )
+
+[sub_resource type="VisualShaderNodeCustom" id=92]
+default_input_values = [ 1, Vector3( 0, 0, 0 ), 2, 0.0 ]
+script = ExtResource( 15 )
+
+[sub_resource type="VisualShaderNodeInput" id=93]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=94]
+constant = 0.5
+
+[sub_resource type="VisualShader" id=95]
+code = "shader_type canvas_item;
+
+
+// TilingAndOffsetUVAnimated
+
+vec2 tilingNoffsetAnimatedFunc(vec2 _uv_tN0A, float _t1me_tN0A, vec2 _offset_tN0A){
+	return vec2(mod((_uv_tN0A.x + _offset_tN0A.x * _t1me_tN0A), 1.0), mod((_uv_tN0A.y + _offset_tN0A.y * _t1me_tN0A), 1.0));
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// Scalar:15
+	float n_out15p0;
+	n_out15p0 = 0.500000;
+
+// Input:14
+	float n_out14p0;
+	n_out14p0 = TIME;
+
+// TilingAndOffsetUVAnimated:13
+	vec3 n_out13p0;
+	{
+		n_out13p0.xy = n_out13p0.xy + tilingNoffsetAnimatedFunc(n_out3p0.xy, n_out14p0, vec3(n_out15p0).xy);
+	}
+// Texture:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out13p0.xy );
+		n_out5p0 = _tex_read.rgb;
+		n_out5p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -375, -224 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 540, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( -120, -40 )
+nodes/fragment/5/node = SubResource( 20 )
+nodes/fragment/5/position = Vector2( 340, 0 )
+nodes/fragment/13/node = SubResource( 92 )
+nodes/fragment/13/position = Vector2( 60, 0 )
+nodes/fragment/14/node = SubResource( 93 )
+nodes/fragment/14/position = Vector2( -140, 120 )
+nodes/fragment/15/node = SubResource( 94 )
+nodes/fragment/15/position = Vector2( -160, 40 )
+nodes/fragment/connections = PoolIntArray( 5, 0, 0, 0, 5, 1, 0, 1, 3, 0, 13, 0, 13, 0, 5, 0, 15, 0, 13, 1, 14, 0, 13, 2 )
+
+[sub_resource type="ShaderMaterial" id=96]
+shader = SubResource( 95 )
+
+[sub_resource type="VisualShaderNodeCustom" id=97]
+script = ExtResource( 18 )
+
+[sub_resource type="VisualShader" id=98]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// HashRandom1d:16
+	float n_out16p0;
+	{
+		n_out16p0 = fract(sin(dot(n_out3p0,vec3(0.333333,0.333333,0.333333))) * 1e4);
+	}
+// Output:0
+	COLOR.rgb = vec3(n_out16p0);
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -299, -213 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 540, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( 60, 0 )
+nodes/fragment/16/node = SubResource( 97 )
+nodes/fragment/16/position = Vector2( 280, 0 )
+nodes/fragment/connections = PoolIntArray( 16, 0, 0, 0, 3, 0, 16, 0 )
+
+[sub_resource type="ShaderMaterial" id=99]
+shader = SubResource( 98 )
+
+[sub_resource type="VisualShaderNodeCustom" id=102]
+script = ExtResource( 20 )
+
+[sub_resource type="VisualShader" id=100]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// HashRandom2d:17
+	float n_out17p0;
+	{
+		n_out17p0 = fract(1e4 * sin(17.0 * n_out3p0.x + n_out3p0.y * 0.1) * (0.1 + abs(sin(n_out3p0.y * 13.0 + n_out3p0.x))));
+	}
+// Output:0
+	COLOR.rgb = vec3(n_out17p0);
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -299, -213 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 480, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( 0, 0 )
+nodes/fragment/17/node = SubResource( 102 )
+nodes/fragment/17/position = Vector2( 220, 0 )
+nodes/fragment/connections = PoolIntArray( 17, 0, 0, 0, 3, 0, 17, 0 )
+
+[sub_resource type="ShaderMaterial" id=101]
+shader = SubResource( 100 )
+
+[sub_resource type="VisualShaderNodeCustom" id=103]
+script = ExtResource( 21 )
+
+[sub_resource type="VisualShader" id=104]
+code = "shader_type canvas_item;
+
+
+// HashRandom2dVec
+
+vec2 hash2v(vec2 co) {
+	float _tmp_h = dot(co, vec2(12.9898, 78.233));
+	return fract(vec2(sin(_tmp_h), cos(_tmp_h)) * 43758.5453) * 2.0 - 1.0;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0;
+	n_out3p0 = vec3(UV,0.0);
+
+// HashRandom2dVec:18
+	vec3 n_out18p0;
+	{
+		n_out18p0.xy = hash2v(n_out3p0.xy);
+	}
+// Output:0
+	COLOR.rgb = n_out18p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -277, -235 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 480, 0 )
+nodes/fragment/3/node = SubResource( 19 )
+nodes/fragment/3/position = Vector2( 0, 0 )
+nodes/fragment/18/node = SubResource( 103 )
+nodes/fragment/18/position = Vector2( 200, 0 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 18, 0, 18, 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=105]
+shader = SubResource( 104 )
+
+[sub_resource type="VisualShaderNodeCustom" id=106]
+script = ExtResource( 22 )
+
+[sub_resource type="VisualShader" id=107]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// RandomFloat:19
+	float n_out19p0;
+	{
+		n_out19p0 = fract(sin(dot(UV, vec2(12.9898, 78.233))) * 43758.5453123);
+	}
+// Output:0
+	COLOR.rgb = vec3(n_out19p0);
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -277, -235 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 0 )
+nodes/fragment/19/node = SubResource( 106 )
+nodes/fragment/19/position = Vector2( 200, 0 )
+nodes/fragment/connections = PoolIntArray( 19, 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=108]
+shader = SubResource( 107 )
+
+[sub_resource type="VisualShaderNodeCustom" id=109]
+default_input_values = [ 0, Vector3( 0, 0, 0 ) ]
+script = ExtResource( 23 )
+
+[sub_resource type="VisualShaderNodeInput" id=110]
+input_name = "uv"
+
+[sub_resource type="VisualShader" id=111]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:21
+	vec3 n_out21p0;
+	n_out21p0 = vec3(UV,0.0);
+
+// RandomFloatInput:20
+	float n_out20p0;
+	{
+		n_out20p0 = fract(sin(dot(n_out21p0.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+	}
+// Output:0
+	COLOR.rgb = vec3(n_out20p0);
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -277, -235 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 0 )
+nodes/fragment/20/node = SubResource( 109 )
+nodes/fragment/20/position = Vector2( 180, 0 )
+nodes/fragment/21/node = SubResource( 110 )
+nodes/fragment/21/position = Vector2( -62, 48 )
+nodes/fragment/connections = PoolIntArray( 20, 0, 0, 0, 21, 0, 20, 0 )
+
+[sub_resource type="ShaderMaterial" id=112]
+shader = SubResource( 111 )
+
+[sub_resource type="VisualShaderNodeCustom" id=113]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0, 0, 0 ), 2, 0.0 ]
+script = ExtResource( 24 )
+
+[sub_resource type="VisualShader" id=114]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:21
+	vec3 n_out21p0;
+	n_out21p0 = vec3(UV,0.0);
+
+// RandomGoldRatio:23
+	vec3 n_in23p1 = vec3(0.00000,0.00000,0.00000);
+	float n_in23p2 = 0.00000;
+	float n_out23p0;
+	{
+		float PHI_goldenRati0 = 1.61803398874989484820459 * 00000.1;
+		float PI_goldenRati0  = 3.14159265358979323846264 * 00000.1;
+		float SQ2_goldenRati0 = 1.41421356237309504880169 * 10000.0;
+		n_out23p0 = fract(tan(distance((n_out21p0.xy+n_in23p1.xy)*(n_in23p2+PHI_goldenRati0), vec2(PHI_goldenRati0, PI_goldenRati0)))*SQ2_goldenRati0);
+	}
+// Output:0
+	COLOR.rgb = vec3(n_out23p0);
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -230, -222 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 0 )
+nodes/fragment/21/node = SubResource( 110 )
+nodes/fragment/21/position = Vector2( -20, 0 )
+nodes/fragment/23/node = SubResource( 113 )
+nodes/fragment/23/position = Vector2( 180, 0 )
+nodes/fragment/connections = PoolIntArray( 23, 0, 0, 0, 21, 0, 23, 0 )
+
+[sub_resource type="ShaderMaterial" id=115]
+shader = SubResource( 114 )
+
+[sub_resource type="VisualShaderNodeCustom" id=116]
+default_input_values = [ 1, 0.0, 2, 1.0, 3, -1.0, 4, 1.0 ]
+script = ExtResource( 26 )
+
+[sub_resource type="VisualShaderNodeTexture" id=117]
+source = 2
+
+[sub_resource type="VisualShader" id=118]
+code = "shader_type canvas_item;
+
+
+// Remap
+
+vec3 remapFunc(vec3 _inpt_r4p, vec2 _fr0m_r4p, vec2 _t0_r4p){
+	return _t0_r4p.x + ((_inpt_r4p - _fr0m_r4p.x) * (_t0_r4p.y - _t0_r4p.x)) / (_fr0m_r4p.y - _fr0m_r4p.x);
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:21
+	vec3 n_out21p0;
+	n_out21p0 = vec3(UV,0.0);
+
+// Remap:24
+	float n_in24p1 = 0.00000;
+	float n_in24p2 = 1.00000;
+	float n_in24p3 = -1.00000;
+	float n_in24p4 = 1.00000;
+	vec3 n_out24p0;
+	{
+		n_out24p0 = remapFunc(n_out21p0, vec2(n_in24p1, n_in24p2), vec2(n_in24p3, n_in24p4));
+	}
+// Texture:25
+	vec3 n_out25p0;
+	float n_out25p1;
+	{
+		vec4 _tex_read = texture( TEXTURE , n_out24p0.xy );
+		n_out25p0 = _tex_read.rgb;
+		n_out25p1 = _tex_read.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out25p0;
+	COLOR.a = n_out25p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -87, -230 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 600, 0 )
+nodes/fragment/21/node = SubResource( 110 )
+nodes/fragment/21/position = Vector2( 0, 0 )
+nodes/fragment/24/node = SubResource( 116 )
+nodes/fragment/24/position = Vector2( 200, 0 )
+nodes/fragment/25/node = SubResource( 117 )
+nodes/fragment/25/position = Vector2( 400, 0 )
+nodes/fragment/connections = PoolIntArray( 21, 0, 24, 0, 24, 0, 25, 0, 25, 0, 0, 0, 25, 1, 0, 1 )
+
+[sub_resource type="ShaderMaterial" id=119]
+shader = SubResource( 118 )
+
+[sub_resource type="VisualShaderNodeCustom" id=120]
+default_input_values = [ 0, 1.0, 1, 1.0 ]
+script = ExtResource( 16 )
+
+[sub_resource type="VisualShader" id=121]
+code = "shader_type canvas_item;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// SinTIME:26
+	float n_in26p0 = 1.00000;
+	float n_in26p1 = 1.00000;
+	float n_out26p0;
+	{
+		n_out26p0 = n_in26p1 * sin(n_in26p0 * TIME);
+	}
+// Output:0
+	COLOR.rgb = vec3(n_out26p0);
+	COLOR.a = n_out26p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -63, -241 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 600, 0 )
+nodes/fragment/26/node = SubResource( 120 )
+nodes/fragment/26/position = Vector2( 340, 0 )
+nodes/fragment/connections = PoolIntArray( 26, 0, 0, 1, 26, 0, 0, 0 )
+
+[sub_resource type="ShaderMaterial" id=122]
+shader = SubResource( 121 )
+
+[sub_resource type="VisualShaderNodeCustom" id=123]
+default_input_values = [ 0, 1.0, 1, 0.0 ]
+script = ExtResource( 25 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=124]
+constant = 1.0
+
+[sub_resource type="VisualShaderNodeInput" id=125]
+input_name = "time"
+
+[sub_resource type="VisualShader" id=126]
+code = "shader_type canvas_item;
+
+
+// vec2Compose
+
+vec2 vec2ComposeFunc(float _vec2_length, float _vec2_angl_rad){
+	return vec2(cos(_vec2_angl_rad), sin(_vec2_angl_rad)) * _vec2_length;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Scalar:3
+	float n_out3p0;
+	n_out3p0 = 1.000000;
+
+// Input:4
+	float n_out4p0;
+	n_out4p0 = TIME;
+
+// vec2Compose:2
+	vec3 n_out2p0;
+	{
+		n_out2p0.xy = vec2ComposeFunc(n_out3p0, n_out4p0);
+	}
+// Output:0
+	COLOR.rgb = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -206, -214 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 580, 0 )
+nodes/fragment/2/node = SubResource( 123 )
+nodes/fragment/2/position = Vector2( 340, 0 )
+nodes/fragment/3/node = SubResource( 124 )
+nodes/fragment/3/position = Vector2( 120, -40 )
+nodes/fragment/4/node = SubResource( 125 )
+nodes/fragment/4/position = Vector2( 140, 60 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 3, 0, 2, 0, 4, 0, 2, 1 )
+
+[sub_resource type="ShaderMaterial" id=127]
+shader = SubResource( 126 )
+
+[sub_resource type="VisualShaderNodeCustom" id=128]
+default_input_values = [ 2, -1.0, 3, 0.5 ]
+script = ExtResource( 27 )
+
+[sub_resource type="VisualShaderNodeInput" id=129]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeInput" id=130]
+input_name = "texture"
+
+[sub_resource type="VisualShader" id=131]
+code = "shader_type canvas_item;
+
+
+// BlurBasic
+
+vec4 blur9sampleFunc(sampler2D _samp_b1ur, vec2 _uv_b1ur, float _lod_b1ur, float _rad_b1ur){
+	vec4 _c01r_b1ur = vec4(0.0);
+	if (_lod_b1ur < 0.0){
+		_c01r_b1ur = texture(_samp_b1ur, _uv_b1ur);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(0, - _rad_b1ur) * 0.01);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(0, _rad_b1ur) * 0.01);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, 0) * 0.01);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, 0) * 0.01);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, - _rad_b1ur) * 0.01);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, _rad_b1ur) * 0.01);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, _rad_b1ur) * 0.01);
+		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, -_rad_b1ur) * 0.01);
+	}else{
+		_c01r_b1ur = textureLod(_samp_b1ur, _uv_b1ur, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(0, - _rad_b1ur) * 0.01, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(0, _rad_b1ur) * 0.01, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, 0) * 0.01, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, 0) * 0.01, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, - _rad_b1ur) * 0.01, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, _rad_b1ur) * 0.01, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, _rad_b1ur) * 0.01, _lod_b1ur);
+		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, -_rad_b1ur) * 0.01, _lod_b1ur);
+	}
+	_c01r_b1ur /= 9.0;
+	return _c01r_b1ur;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:7
+
+// Input:6
+	vec3 n_out6p0;
+	n_out6p0 = vec3(UV,0.0);
+
+// BlurBasic:5
+	float n_in5p2 = -1.00000;
+	float n_in5p3 = 0.50000;
+	vec3 n_out5p0;
+	float n_out5p1;
+	{
+		vec4 n_out5p0n_out5p1 = blur9sampleFunc(TEXTURE, n_out6p0.xy, n_in5p2, n_in5p3);
+		n_out5p0 = n_out5p0n_out5p1.rgb;
+		n_out5p1 = n_out5p0n_out5p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out5p0;
+	COLOR.a = n_out5p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -492, -302 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 120, -120 )
+nodes/fragment/5/node = SubResource( 128 )
+nodes/fragment/5/position = Vector2( -139, -121 )
+nodes/fragment/6/node = SubResource( 129 )
+nodes/fragment/6/position = Vector2( -351, -23 )
+nodes/fragment/7/node = SubResource( 130 )
+nodes/fragment/7/position = Vector2( -361, -149 )
+nodes/fragment/connections = PoolIntArray( 6, 0, 5, 1, 7, 0, 5, 0, 5, 0, 0, 0, 5, 1, 0, 1 )
+
+[sub_resource type="ShaderMaterial" id=132]
+shader = SubResource( 131 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=133]
+constant = 0.005
+
+[sub_resource type="VisualShaderNodeCustom" id=134]
+default_input_values = [ 2, -1.0, 3, 5, 4, 0.001 ]
+script = ExtResource( 28 )
+
+[sub_resource type="VisualShaderNodeCustom" id=135]
+default_input_values = [ 0, 1.0, 1, 1.0 ]
+script = ExtResource( 16 )
+
+[sub_resource type="VisualShader" id=136]
+code = "shader_type canvas_item;
+
+
+// BlurCustom
+
+vec4 blurWithAmountFunc(sampler2D _tex_b1r_cst, vec2 _uv_b1r_cst, float _l0d_b1r_cst, int _amnt_b1r_cst, float _0ffst_b1r_cst) {
+	vec4 _c0l_b1r_cst = vec4(0, 0, 0, 0);
+	_amnt_b1r_cst = int(max(min(float(_amnt_b1r_cst), 20.0), 0.0)); // have to do this int() float() shit because of gles2 
+																	// max _amnt_b1r_cst is 20 for not to kill PC
+	for(int x = -_amnt_b1r_cst; x <= _amnt_b1r_cst; x++) {
+		for(int y = -_amnt_b1r_cst; y <= _amnt_b1r_cst; y++) {
+			vec2 _c00rd_b1r_cst = _uv_b1r_cst + vec2(float(x), float(y)) * _0ffst_b1r_cst;
+			if (_l0d_b1r_cst < 0.0){
+				_c0l_b1r_cst += texture(_tex_b1r_cst, _c00rd_b1r_cst);
+			}else{
+				_c0l_b1r_cst += textureLod(_tex_b1r_cst, _c00rd_b1r_cst, _l0d_b1r_cst);
+			}
+		}
+	}
+	int _nmb_ne1ghb0urs_b1r_cst = (_amnt_b1r_cst * 2 + 1) * (_amnt_b1r_cst * 2 + 1);
+	_c0l_b1r_cst /= float(_nmb_ne1ghb0urs_b1r_cst);
+	return _c0l_b1r_cst;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:7
+
+// Input:6
+	vec3 n_out6p0;
+	n_out6p0 = vec3(UV,0.0);
+
+// Scalar:10
+	float n_out10p0;
+	n_out10p0 = 0.005000;
+
+// SinTIME:9
+	float n_in9p0 = 1.00000;
+	float n_out9p0;
+	{
+		n_out9p0 = n_out10p0 * sin(n_in9p0 * TIME);
+	}
+// BlurCustom:8
+	float n_in8p2 = -1.00000;
+	float n_in8p3 = 5.00000;
+	vec3 n_out8p0;
+	float n_out8p1;
+	{
+		vec4 n_out8p0n_out8p1 = blurWithAmountFunc(TEXTURE, n_out6p0.xy, n_in8p2, int(n_in8p3), n_out9p0);
+		n_out8p0 = n_out8p0n_out8p1.rgb;
+		n_out8p1 = n_out8p0n_out8p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out8p0;
+	COLOR.a = n_out8p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -808, -159 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 120, -120 )
+nodes/fragment/6/node = SubResource( 129 )
+nodes/fragment/6/position = Vector2( -351, -23 )
+nodes/fragment/7/node = SubResource( 130 )
+nodes/fragment/7/position = Vector2( -360, -140 )
+nodes/fragment/8/node = SubResource( 134 )
+nodes/fragment/8/position = Vector2( -120, -120 )
+nodes/fragment/9/node = SubResource( 135 )
+nodes/fragment/9/position = Vector2( -360, 140 )
+nodes/fragment/10/node = SubResource( 133 )
+nodes/fragment/10/position = Vector2( -571, 220 )
+nodes/fragment/connections = PoolIntArray( 8, 0, 0, 0, 8, 1, 0, 1, 7, 0, 8, 0, 6, 0, 8, 1, 9, 0, 8, 4, 10, 0, 9, 1 )
+
+[sub_resource type="ShaderMaterial" id=137]
+shader = SubResource( 136 )
+
+[sub_resource type="VisualShaderNodeCustom" id=138]
+default_input_values = [ 2, -1.0, 3, Vector3( 0.5, 0.5, 0 ), 4, 20.0, 5, 0.005 ]
+script = ExtResource( 29 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=141]
+constant = 0.1
+
+[sub_resource type="VisualShader" id=139]
+code = "shader_type canvas_item;
+
+
+// ZoomBlur
+
+vec4 zoomBlurFunc(sampler2D _tex_z00m_blur, vec2 _uv_z00m_blur, int _amount_z00m_blur, vec2 _center_zoom, float _lgt_z00m_blur, float _lod_z00m_blur){
+	vec4 _col_z00m_blur;
+	if (_lod_z00m_blur < 0.0){
+		_col_z00m_blur = texture(_tex_z00m_blur, _uv_z00m_blur);
+		for (int i = 1; i <= _amount_z00m_blur; i++){
+			float _temp_d_z00m_blur = _lgt_z00m_blur * float(i);
+			vec2 px = _uv_z00m_blur * (1.0 - _temp_d_z00m_blur) + _center_zoom * _temp_d_z00m_blur;
+			_col_z00m_blur += texture(_tex_z00m_blur, px);
+		}
+	}else{
+		_col_z00m_blur = textureLod(_tex_z00m_blur, _uv_z00m_blur, _lod_z00m_blur);
+		for (int i = 1; i <= _amount_z00m_blur; i++){
+			float _temp_d_z00m_blur = _lgt_z00m_blur * float(i);
+			vec2 px = _uv_z00m_blur * (1.0 - _temp_d_z00m_blur) + _center_zoom * _temp_d_z00m_blur;
+			_col_z00m_blur += textureLod(_tex_z00m_blur, px, _lod_z00m_blur);
+		}
+	}
+	_col_z00m_blur = _col_z00m_blur / float(_amount_z00m_blur + 1);
+	return _col_z00m_blur;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:7
+
+// Input:6
+	vec3 n_out6p0;
+	n_out6p0 = vec3(UV,0.0);
+
+// Scalar:12
+	float n_out12p0;
+	n_out12p0 = 0.100000;
+
+// SinTIME:9
+	float n_in9p0 = 1.00000;
+	float n_out9p0;
+	{
+		n_out9p0 = n_out12p0 * sin(n_in9p0 * TIME);
+	}
+// ZoomBlur:11
+	float n_in11p2 = -1.00000;
+	vec3 n_in11p3 = vec3(0.50000,0.50000,0.00000);
+	float n_in11p4 = 20.00000;
+	vec3 n_out11p0;
+	float n_out11p1;
+	{
+		vec4 n_out11p0n_out11p1 = zoomBlurFunc(TEXTURE, n_out6p0.xy, int(n_in11p4), n_in11p3.xy, n_out9p0, n_in11p2);
+		n_out11p0 = n_out11p0n_out11p1.rgb;
+		n_out11p1 = n_out11p0n_out11p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out11p0;
+	COLOR.a = n_out11p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -808, -159 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 120, -120 )
+nodes/fragment/6/node = SubResource( 129 )
+nodes/fragment/6/position = Vector2( -351, -23 )
+nodes/fragment/7/node = SubResource( 130 )
+nodes/fragment/7/position = Vector2( -360, -140 )
+nodes/fragment/9/node = SubResource( 135 )
+nodes/fragment/9/position = Vector2( -360, 140 )
+nodes/fragment/11/node = SubResource( 138 )
+nodes/fragment/11/position = Vector2( -120, -120 )
+nodes/fragment/12/node = SubResource( 141 )
+nodes/fragment/12/position = Vector2( -640, 220 )
+nodes/fragment/connections = PoolIntArray( 12, 0, 9, 1, 11, 0, 0, 0, 11, 1, 0, 1, 7, 0, 11, 0, 6, 0, 11, 1, 9, 0, 11, 5 )
+
+[sub_resource type="ShaderMaterial" id=140]
+shader = SubResource( 139 )
+
+[sub_resource type="VisualShaderNodeCustom" id=142]
+default_input_values = [ 2, -1.0, 3, 1.0, 4, 1.0, 5, 1.0, 6, Vector3( 1, 1, 1 ), 7, 1.0 ]
+script = ExtResource( 31 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=143]
+constant = Color( 1, 0, 0, 1 )
+
+[sub_resource type="VisualShader" id=144]
+code = "shader_type canvas_item;
+
+
+// GlowEmpty
+
+vec4 inoutGl0wEmptyFunc(sampler2D _samp_1ngl0wEmpt, vec2 _uv_1ngl0wEmpt, float _l0d_gl0wEmpt,
+float _rad_in0ut_Empty, float _intens_inner_gl0wEmpt, float _intens_outer_gl0wEmpt, vec4 _c0l_1ngl0wEmpt){
+	_rad_in0ut_Empty = abs(_rad_in0ut_Empty);
+	
+	vec4 _c01r_orig_gl0w = vec4(0.0);
+	float _a1pha_gl0w_1nv = 0.0;
+	float _a1pha_gl0w_blured = 0.0;
+	int gl0w_amount = 3;
+	
+	if (_l0d_gl0wEmpt < 0.0)
+		_c01r_orig_gl0w = texture(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt);
+	else
+		_c01r_orig_gl0w = textureLod(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt, _l0d_gl0wEmpt);
+	
+	gl0w_amount = int(min(_rad_in0ut_Empty + 7.0, 14.0));
+	for(int x = - gl0w_amount; x <= gl0w_amount; x++) {
+		for(int y = - gl0w_amount; y <= gl0w_amount; y++) {
+			vec2 _c00rd_b1r_cst = _uv_1ngl0wEmpt + vec2(float(x), float(y)) * _rad_in0ut_Empty * 0.01;
+			_a1pha_gl0w_blured += textureLod(_samp_1ngl0wEmpt, _c00rd_b1r_cst, 0.0).a;
+		}
+	}
+	int _nmb_ne1ghb0urs_b1r_cst = (gl0w_amount * 2 + 1) * (gl0w_amount * 2 + 1);
+	_a1pha_gl0w_blured /= float(_nmb_ne1ghb0urs_b1r_cst);
+	
+	_a1pha_gl0w_1nv = _a1pha_gl0w_blured;
+	_a1pha_gl0w_1nv *= (1.0 - _c01r_orig_gl0w.a);
+	
+	float in_a1pha_gl0w_1nv = 1.0 - _a1pha_gl0w_blured;
+	in_a1pha_gl0w_1nv *= _c01r_orig_gl0w.a;
+	
+	if (_a1pha_gl0w_1nv > 0.0)
+		_a1pha_gl0w_1nv *= (_intens_outer_gl0wEmpt + 1.0);
+	
+	if (in_a1pha_gl0w_1nv > 0.0)
+		in_a1pha_gl0w_1nv *= (_intens_inner_gl0wEmpt + 1.0);
+	
+	return vec4(_c0l_1ngl0wEmpt.rgb, (_a1pha_gl0w_1nv + in_a1pha_gl0w_1nv) * _c0l_1ngl0wEmpt.a);
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:7
+
+// Input:6
+	vec3 n_out6p0;
+	n_out6p0 = vec3(UV,0.0);
+
+// Color:14
+	vec3 n_out14p0;
+	float n_out14p1;
+	n_out14p0 = vec3(1.000000,0.000000,0.000000);
+	n_out14p1 = 1.000000;
+
+// GlowEmpty:13
+	float n_in13p2 = -1.00000;
+	float n_in13p3 = 1.00000;
+	float n_in13p4 = 1.00000;
+	float n_in13p5 = 1.00000;
+	vec3 n_out13p0;
+	float n_out13p1;
+	{
+		vec4 n_out13p0n_out13p1 = inoutGl0wEmptyFunc(TEXTURE, n_out6p0.xy, n_in13p2, n_in13p3, n_in13p4, n_in13p5, vec4(n_out14p0, n_out14p1));
+		n_out13p0 = n_out13p0n_out13p1.rgb;
+		n_out13p1 = n_out13p0n_out13p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out13p0;
+	COLOR.a = n_out13p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -505, -25 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 200, 0 )
+nodes/fragment/6/node = SubResource( 129 )
+nodes/fragment/6/position = Vector2( -260, 20 )
+nodes/fragment/7/node = SubResource( 130 )
+nodes/fragment/7/position = Vector2( -260, -60 )
+nodes/fragment/13/node = SubResource( 142 )
+nodes/fragment/13/position = Vector2( -40, 0 )
+nodes/fragment/14/node = SubResource( 143 )
+nodes/fragment/14/position = Vector2( -260, 220 )
+nodes/fragment/connections = PoolIntArray( 13, 0, 0, 0, 13, 1, 0, 1, 7, 0, 13, 0, 6, 0, 13, 1, 14, 0, 13, 6, 14, 1, 13, 7 )
+
+[sub_resource type="ShaderMaterial" id=145]
+shader = SubResource( 144 )
+
+[sub_resource type="VisualShaderNodeCustom" id=146]
+default_input_values = [ 2, -1.0, 3, 1.0, 4, 1.0, 5, Vector3( 1, 1, 1 ), 6, 1.0 ]
+script = ExtResource( 30 )
+
+[sub_resource type="VisualShader" id=147]
+code = "shader_type canvas_item;
+
+
+// InnerGlow
+
+vec4 innerGl0wFunc(sampler2D _samp_1ngl0w, vec2 _uv_1ngl0w, float _l0d_1ngl0w, float _rad_1ngl0w, float _1ntns_1ngl0w, vec4 _c0l_1ngl0w){
+	_rad_1ngl0w = abs(_rad_1ngl0w);
+	
+	vec4 _c01r_1ngl0w = vec4(0.0);
+	float _a1pha_1nv = 0.0;
+	float _a1pha_1ngl0w_b1 = 0.0;
+	int _am0nt_1ngl0w = 3;
+	
+	if (_l0d_1ngl0w < 0.0)
+		_c01r_1ngl0w = texture(_samp_1ngl0w, _uv_1ngl0w);
+	else
+		_c01r_1ngl0w = textureLod(_samp_1ngl0w, _uv_1ngl0w, _l0d_1ngl0w);
+	
+	_am0nt_1ngl0w = int(min(_rad_1ngl0w + 7.0, 14.0));
+	for(int x = - _am0nt_1ngl0w; x <= _am0nt_1ngl0w; x++) {
+		for(int y = - _am0nt_1ngl0w; y <= _am0nt_1ngl0w; y++) {
+			vec2 _c00rd_b1r_cst = _uv_1ngl0w + vec2(float(x), float(y)) * _rad_1ngl0w * 0.01;
+			_a1pha_1ngl0w_b1 += textureLod(_samp_1ngl0w, _c00rd_b1r_cst, 0.0).a;
+		}
+	}
+	int _nmb_ne1ghb0urs_b1r_cst = (_am0nt_1ngl0w * 2 + 1) * (_am0nt_1ngl0w * 2 + 1);
+	_a1pha_1ngl0w_b1 /= float(_nmb_ne1ghb0urs_b1r_cst);
+	
+	_a1pha_1nv = 1.0 - _a1pha_1ngl0w_b1; // inversion
+	_a1pha_1nv *= _c01r_1ngl0w.a; // masking
+	
+	if (_a1pha_1nv > 0.0)
+		_a1pha_1nv *= (_1ntns_1ngl0w + 1.0);
+	
+	return mix(_c01r_1ngl0w, _c0l_1ngl0w, _a1pha_1nv * _c0l_1ngl0w.a);
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:7
+
+// Input:6
+	vec3 n_out6p0;
+	n_out6p0 = vec3(UV,0.0);
+
+// Color:14
+	vec3 n_out14p0;
+	float n_out14p1;
+	n_out14p0 = vec3(1.000000,0.000000,0.000000);
+	n_out14p1 = 1.000000;
+
+// InnerGlow:15
+	float n_in15p2 = -1.00000;
+	float n_in15p3 = 1.00000;
+	float n_in15p4 = 1.00000;
+	vec3 n_out15p0;
+	float n_out15p1;
+	{
+		vec4 n_out15p0n_out15p1 = innerGl0wFunc(TEXTURE, n_out6p0.xy, n_in15p2, n_in15p3, n_in15p4, vec4(n_out14p0, n_out14p1));
+		n_out15p0 = n_out15p0n_out15p1.rgb;
+		n_out15p1 = n_out15p0n_out15p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out15p0;
+	COLOR.a = n_out15p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -853, -117 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 200, 0 )
+nodes/fragment/6/node = SubResource( 129 )
+nodes/fragment/6/position = Vector2( -260, 20 )
+nodes/fragment/7/node = SubResource( 130 )
+nodes/fragment/7/position = Vector2( -260, -60 )
+nodes/fragment/14/node = SubResource( 143 )
+nodes/fragment/14/position = Vector2( -260, 220 )
+nodes/fragment/15/node = SubResource( 146 )
+nodes/fragment/15/position = Vector2( -40, 0 )
+nodes/fragment/connections = PoolIntArray( 7, 0, 15, 0, 6, 0, 15, 1, 15, 0, 0, 0, 15, 1, 0, 1, 14, 0, 15, 5, 14, 1, 15, 6 )
+
+[sub_resource type="ShaderMaterial" id=148]
+shader = SubResource( 147 )
+
+[sub_resource type="VisualShaderNodeCustom" id=149]
+default_input_values = [ 2, -1.0, 3, 1.0, 4, 1.0, 5, Vector3( 1, 1, 1 ), 6, 1.0 ]
+script = ExtResource( 32 )
+
+[sub_resource type="VisualShaderNodeInput" id=150]
+input_name = "texture"
+
+[sub_resource type="VisualShaderNodeInput" id=151]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeColorConstant" id=158]
+constant = Color( 1, 0, 0, 1 )
+
+[sub_resource type="VisualShader" id=159]
+code = "shader_type canvas_item;
+
+
+// InnerGlowEmpty
+
+vec4 innerGl0wEmptyFunc(sampler2D _samp_1ngl0wEmpt, vec2 _uv_1ngl0wEmpt, float _l0d_1ngl0wEmpt, float _rad_1ngl0wEmpt, float _1ntns_1ngl0wEmpt, vec4 _c0l_1ngl0wEmpt){
+	_rad_1ngl0wEmpt = abs(_rad_1ngl0wEmpt);
+	
+	vec4 _c01r_1ngl0w = vec4(0.0);
+	float _a1pha_1ngl0w_1nv = 0.0;
+	float _a1pha_1ngl0w_b1 = 0.0;
+	int _am0nt_1ngl0w = 3;
+	
+	if (_l0d_1ngl0wEmpt < 0.0)
+		_c01r_1ngl0w = texture(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt);
+	else
+		_c01r_1ngl0w = textureLod(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt, _l0d_1ngl0wEmpt);
+	
+	_am0nt_1ngl0w = int(min(_rad_1ngl0wEmpt + 7.0, 14.0));
+	for(int x = - _am0nt_1ngl0w; x <= _am0nt_1ngl0w; x++) {
+		for(int y = - _am0nt_1ngl0w; y <= _am0nt_1ngl0w; y++) {
+			vec2 _c00rd_b1r_cst = _uv_1ngl0wEmpt + vec2(float(x), float(y)) * _rad_1ngl0wEmpt * 0.01;
+			_a1pha_1ngl0w_b1 += textureLod(_samp_1ngl0wEmpt, _c00rd_b1r_cst, 0.0).a;
+		}
+	}
+	int _nmb_ne1ghb0urs_b1r_cst = (_am0nt_1ngl0w * 2 + 1) * (_am0nt_1ngl0w * 2 + 1);
+	_a1pha_1ngl0w_b1 /= float(_nmb_ne1ghb0urs_b1r_cst);
+	
+	_a1pha_1ngl0w_1nv = 1.0 - _a1pha_1ngl0w_b1; // inversion
+	_a1pha_1ngl0w_1nv *= _c01r_1ngl0w.a; // masking
+	
+	if (_a1pha_1ngl0w_1nv > 0.0)
+		_a1pha_1ngl0w_1nv *= (_1ntns_1ngl0wEmpt + 1.0);
+	
+	return vec4(_c0l_1ngl0wEmpt.rgb, _a1pha_1ngl0w_1nv * _c0l_1ngl0wEmpt.a);
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+
+// Input:4
+	vec3 n_out4p0;
+	n_out4p0 = vec3(UV,0.0);
+
+// Color:5
+	vec3 n_out5p0;
+	float n_out5p1;
+	n_out5p0 = vec3(1.000000,0.000000,0.000000);
+	n_out5p1 = 1.000000;
+
+// InnerGlowEmpty:2
+	float n_in2p2 = -1.00000;
+	float n_in2p3 = 1.00000;
+	float n_in2p4 = 1.00000;
+	vec3 n_out2p0;
+	float n_out2p1;
+	{
+		vec4 n_out2p0n_out2p1 = innerGl0wEmptyFunc(TEXTURE, n_out4p0.xy, n_in2p2, n_in2p3, n_in2p4, vec4(n_out5p0, n_out5p1));
+		n_out2p0 = n_out2p0n_out2p1.rgb;
+		n_out2p1 = n_out2p0n_out2p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out2p0;
+	COLOR.a = n_out2p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -496, 27 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 200 )
+nodes/fragment/2/node = SubResource( 149 )
+nodes/fragment/2/position = Vector2( 160, 200 )
+nodes/fragment/3/node = SubResource( 150 )
+nodes/fragment/3/position = Vector2( -60, 140 )
+nodes/fragment/4/node = SubResource( 151 )
+nodes/fragment/4/position = Vector2( -60, 240 )
+nodes/fragment/5/node = SubResource( 158 )
+nodes/fragment/5/position = Vector2( -40, 340 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 2, 1, 0, 1, 4, 0, 2, 1, 3, 0, 2, 0, 5, 0, 2, 5, 5, 1, 2, 6 )
+
+[sub_resource type="ShaderMaterial" id=160]
+shader = SubResource( 159 )
+
+[sub_resource type="VisualShaderNodeCustom" id=155]
+default_input_values = [ 2, -1.0, 3, 1.0, 4, 1.0, 5, Vector3( 1, 1, 1 ), 6, 1.0 ]
+script = ExtResource( 33 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=161]
+constant = Color( 1, 0, 0, 1 )
+
+[sub_resource type="VisualShader" id=156]
+code = "shader_type canvas_item;
+
+
+// OuterGlow
+
+vec4 outerGl0wFunc(sampler2D _samp_1ngl0w, vec2 _uv_1ngl0w, float _l0d_1ngl0w, float _rad_1ngl0w, float _1ntns_1ngl0w, vec4 _c0l_1ngl0w){
+	_rad_1ngl0w = abs(_rad_1ngl0w);
+	
+	vec4 _c01r_1ngl0w = vec4(0.0);
+	float _a1pha_1nv = 0.0;
+	float _a1pha_1ngl0w_b1 = 0.0;
+	int _am0nt_1ngl0w = 3;
+	
+	if (_l0d_1ngl0w < 0.0)
+		_c01r_1ngl0w = texture(_samp_1ngl0w, _uv_1ngl0w);
+	else
+		_c01r_1ngl0w = textureLod(_samp_1ngl0w, _uv_1ngl0w, _l0d_1ngl0w);
+	
+	_am0nt_1ngl0w = int(min(_rad_1ngl0w + 7.0, 14.0));
+	for(int x = - _am0nt_1ngl0w; x <= _am0nt_1ngl0w; x++) {
+		for(int y = - _am0nt_1ngl0w; y <= _am0nt_1ngl0w; y++) {
+			vec2 _c00rd_b1r_cst = _uv_1ngl0w + vec2(float(x), float(y)) * _rad_1ngl0w * 0.01;
+			_a1pha_1ngl0w_b1 += textureLod(_samp_1ngl0w, _c00rd_b1r_cst, 0.0).a;
+		}
+	}
+	int _nmb_ne1ghb0urs_b1r_cst = (_am0nt_1ngl0w * 2 + 1) * (_am0nt_1ngl0w * 2 + 1);
+	_a1pha_1ngl0w_b1 /= float(_nmb_ne1ghb0urs_b1r_cst);
+	
+	_a1pha_1nv = _a1pha_1ngl0w_b1; // inversion
+	_a1pha_1nv *= (1.0 - _c01r_1ngl0w.a); // masking
+	
+	if (_a1pha_1nv > 0.0)
+		_a1pha_1nv *= (_1ntns_1ngl0w + 1.0);
+	
+	vec4 _gl0w_c0l_result = vec4(_c0l_1ngl0w.rgb, _a1pha_1nv * _c0l_1ngl0w.a);
+	return mix(_gl0w_c0l_result, _c01r_1ngl0w, _c01r_1ngl0w.a);
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+
+// Input:4
+	vec3 n_out4p0;
+	n_out4p0 = vec3(UV,0.0);
+
+// Color:7
+	vec3 n_out7p0;
+	float n_out7p1;
+	n_out7p0 = vec3(1.000000,0.000000,0.000000);
+	n_out7p1 = 1.000000;
+
+// OuterGlow:6
+	float n_in6p2 = -1.00000;
+	float n_in6p3 = 1.00000;
+	float n_in6p4 = 1.00000;
+	vec3 n_out6p0;
+	float n_out6p1;
+	{
+		vec4 n_out6p0n_out6p1 = outerGl0wFunc(TEXTURE, n_out4p0.xy, n_in6p2, n_in6p3, n_in6p4, vec4(n_out7p0, n_out7p1));
+		n_out6p0 = n_out6p0n_out6p1.rgb;
+		n_out6p1 = n_out6p0n_out6p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out6p0;
+	COLOR.a = n_out6p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -496, 27 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 200 )
+nodes/fragment/3/node = SubResource( 150 )
+nodes/fragment/3/position = Vector2( -60, 140 )
+nodes/fragment/4/node = SubResource( 151 )
+nodes/fragment/4/position = Vector2( -60, 240 )
+nodes/fragment/6/node = SubResource( 155 )
+nodes/fragment/6/position = Vector2( 160, 200 )
+nodes/fragment/7/node = SubResource( 161 )
+nodes/fragment/7/position = Vector2( -60, 360 )
+nodes/fragment/connections = PoolIntArray( 6, 0, 0, 0, 6, 1, 0, 1, 3, 0, 6, 0, 4, 0, 6, 1, 7, 0, 6, 5, 7, 1, 6, 6 )
+
+[sub_resource type="ShaderMaterial" id=157]
+shader = SubResource( 156 )
+
+[sub_resource type="VisualShaderNodeCustom" id=162]
+default_input_values = [ 2, -1.0, 3, 1.0, 4, 1.0, 5, Vector3( 1, 1, 1 ), 6, 1.0 ]
+script = ExtResource( 34 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=163]
+constant = Color( 1, 0, 0, 1 )
+
+[sub_resource type="VisualShader" id=164]
+code = "shader_type canvas_item;
+
+
+// OuterGlowEmpty
+
+vec4 outerGl0wEmptyFunc(sampler2D _samp_1ngl0wEmpt, vec2 _uv_1ngl0wEmpt, float _l0d_1ngl0wEmpt, float _rad_1ngl0wEmpt, float _1ntns_1ngl0wEmpt, vec4 _c0l_1ngl0wEmpt){
+	_rad_1ngl0wEmpt = abs(_rad_1ngl0wEmpt);
+	
+	vec4 _c01r_1ngl0w = vec4(0.0);
+	float _a1pha_1ngl0w_1nv = 0.0;
+	float _a1pha_1ngl0w_b1 = 0.0;
+	int _am0nt_1ngl0w = 3;
+	
+	if (_l0d_1ngl0wEmpt < 0.0)
+		_c01r_1ngl0w = texture(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt);
+	else
+		_c01r_1ngl0w = textureLod(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt, _l0d_1ngl0wEmpt);
+	
+	_am0nt_1ngl0w = int(min(_rad_1ngl0wEmpt + 7.0, 14.0));
+	for(int x = - _am0nt_1ngl0w; x <= _am0nt_1ngl0w; x++) {
+		for(int y = - _am0nt_1ngl0w; y <= _am0nt_1ngl0w; y++) {
+			vec2 _c00rd_b1r_cst = _uv_1ngl0wEmpt + vec2(float(x), float(y)) * _rad_1ngl0wEmpt * 0.01;
+			_a1pha_1ngl0w_b1 += textureLod(_samp_1ngl0wEmpt, _c00rd_b1r_cst, 0.0).a;
+		}
+	}
+	int _nmb_ne1ghb0urs_b1r_cst = (_am0nt_1ngl0w * 2 + 1) * (_am0nt_1ngl0w * 2 + 1);
+	_a1pha_1ngl0w_b1 /= float(_nmb_ne1ghb0urs_b1r_cst);
+	
+	_a1pha_1ngl0w_1nv = _a1pha_1ngl0w_b1; // inversion
+	_a1pha_1ngl0w_1nv *= (1.0 - _c01r_1ngl0w.a); // masking
+	
+	if (_a1pha_1ngl0w_1nv > 0.0)
+		_a1pha_1ngl0w_1nv *= (_1ntns_1ngl0wEmpt + 1.0);
+	
+	return vec4(_c0l_1ngl0wEmpt.rgb, _a1pha_1ngl0w_1nv * _c0l_1ngl0wEmpt.a);
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+
+// Input:4
+	vec3 n_out4p0;
+	n_out4p0 = vec3(UV,0.0);
+
+// Color:8
+	vec3 n_out8p0;
+	float n_out8p1;
+	n_out8p0 = vec3(1.000000,0.000000,0.000000);
+	n_out8p1 = 1.000000;
+
+// OuterGlowEmpty:7
+	float n_in7p2 = -1.00000;
+	float n_in7p3 = 1.00000;
+	float n_in7p4 = 1.00000;
+	vec3 n_out7p0;
+	float n_out7p1;
+	{
+		vec4 n_out7p0n_out7p1 = outerGl0wEmptyFunc(TEXTURE, n_out4p0.xy, n_in7p2, n_in7p3, n_in7p4, vec4(n_out8p0, n_out8p1));
+		n_out7p0 = n_out7p0n_out7p1.rgb;
+		n_out7p1 = n_out7p0n_out7p1.a;
+	}
+// Output:0
+	COLOR.rgb = n_out7p0;
+	COLOR.a = n_out7p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -496, 27 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 200 )
+nodes/fragment/3/node = SubResource( 150 )
+nodes/fragment/3/position = Vector2( -60, 140 )
+nodes/fragment/4/node = SubResource( 151 )
+nodes/fragment/4/position = Vector2( -60, 240 )
+nodes/fragment/7/node = SubResource( 162 )
+nodes/fragment/7/position = Vector2( 180, 200 )
+nodes/fragment/8/node = SubResource( 163 )
+nodes/fragment/8/position = Vector2( -40, 380 )
+nodes/fragment/connections = PoolIntArray( 7, 0, 0, 0, 7, 1, 0, 1, 3, 0, 7, 0, 4, 0, 7, 1, 8, 0, 7, 5, 8, 1, 7, 6 )
+
+[sub_resource type="ShaderMaterial" id=165]
+shader = SubResource( 164 )
+
+[node name="root" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="container" type="GridContainer" parent="."]
+margin_right = 1450.0
+margin_bottom = 1080.0
+custom_constants/vseparation = 0
+custom_constants/hseparation = -5
+columns = 16
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item1" type="VBoxContainer" parent="container"]
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item1"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Distortion UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item1"]
+material = SubResource( 18 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item2" type="VBoxContainer" parent="container"]
+margin_left = 115.0
+margin_right = 235.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item2"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Flip UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item2"]
+material = SubResource( 25 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item3" type="VBoxContainer" parent="container"]
+margin_left = 230.0
+margin_right = 350.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item3"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Lens Distortion"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item3"]
+material = SubResource( 29 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item4" type="VBoxContainer" parent="container"]
+margin_left = 345.0
+margin_right = 465.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item4"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Pixelate UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item4"]
+material = SubResource( 33 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item5" type="VBoxContainer" parent="container"]
+margin_left = 460.0
+margin_right = 580.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item5"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Rotate UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item5"]
+material = SubResource( 37 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item6" type="VBoxContainer" parent="container"]
+margin_left = 575.0
+margin_right = 695.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item6"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Scale UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item6"]
+material = SubResource( 45 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item7" type="VBoxContainer" parent="container"]
+margin_left = 690.0
+margin_right = 810.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item7"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Scale UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item7"]
+material = SubResource( 48 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item8" type="VBoxContainer" parent="container"]
+margin_left = 805.0
+margin_right = 925.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item8"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Tile UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item8"]
+material = SubResource( 54 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item9" type="VBoxContainer" parent="container"]
+margin_left = 920.0
+margin_right = 1040.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item9"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Tiling & Offset UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item9"]
+material = SubResource( 59 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item10" type="VBoxContainer" parent="container"]
+margin_left = 1035.0
+margin_right = 1155.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item10"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Transform UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item10"]
+material = SubResource( 66 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item11" type="VBoxContainer" parent="container"]
+margin_left = 1150.0
+margin_right = 1270.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item11"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Twirl UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item11"]
+material = SubResource( 71 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item12" type="VBoxContainer" parent="container"]
+margin_left = 1265.0
+margin_right = 1385.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item12"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Distortion UV
+Animated"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item12"]
+material = SubResource( 69 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item13" type="VBoxContainer" parent="container"]
+margin_left = 1380.0
+margin_right = 1500.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item13"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Doodle UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item13"]
+material = SubResource( 82 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item14" type="VBoxContainer" parent="container"]
+margin_left = 1495.0
+margin_right = 1615.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item14"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Rotate UV
+Animated"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item14"]
+material = SubResource( 85 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item15" type="VBoxContainer" parent="container"]
+margin_left = 1610.0
+margin_right = 1730.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item15"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Swirl UV"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item15"]
+material = SubResource( 91 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item16" type="VBoxContainer" parent="container"]
+margin_left = 1725.0
+margin_right = 1845.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item16"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Tiling & Offset UV
+Animated"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item16"]
+material = SubResource( 96 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item17" type="VBoxContainer" parent="container"]
+margin_top = 95.0
+margin_right = 120.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item17"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Hash Random 1D"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item17"]
+material = SubResource( 99 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item18" type="VBoxContainer" parent="container"]
+margin_left = 115.0
+margin_top = 95.0
+margin_right = 235.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item18"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Hash Random 2D"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item18"]
+material = SubResource( 101 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item19" type="VBoxContainer" parent="container"]
+margin_left = 230.0
+margin_top = 95.0
+margin_right = 350.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item19"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Hash Random 
+Vector 2D"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item19"]
+material = SubResource( 105 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item20" type="VBoxContainer" parent="container"]
+margin_left = 345.0
+margin_top = 95.0
+margin_right = 465.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item20"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Random Float"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item20"]
+material = SubResource( 108 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item21" type="VBoxContainer" parent="container"]
+margin_left = 460.0
+margin_top = 95.0
+margin_right = 580.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item21"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Random Float
+(with input port)"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item21"]
+material = SubResource( 112 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item22" type="VBoxContainer" parent="container"]
+margin_left = 575.0
+margin_top = 95.0
+margin_right = 695.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item22"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Random Float
+(Gold Noise)"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item22"]
+material = SubResource( 115 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item23" type="VBoxContainer" parent="container"]
+margin_left = 690.0
+margin_top = 95.0
+margin_right = 810.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item23"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Remap Vector"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item23"]
+material = SubResource( 119 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item24" type="VBoxContainer" parent="container"]
+margin_left = 805.0
+margin_top = 95.0
+margin_right = 925.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item24"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "SinTIME"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item24"]
+material = SubResource( 122 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item25" type="VBoxContainer" parent="container"]
+margin_left = 920.0
+margin_top = 95.0
+margin_right = 1040.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item25"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Vector2 Compose"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item25"]
+material = SubResource( 127 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item26" type="VBoxContainer" parent="container"]
+margin_left = 1035.0
+margin_top = 95.0
+margin_right = 1155.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item26"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Basic Blur"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item26"]
+material = SubResource( 132 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item27" type="VBoxContainer" parent="container"]
+margin_left = 1150.0
+margin_top = 95.0
+margin_right = 1270.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item27"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Blur Custom"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item27"]
+material = SubResource( 137 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item28" type="VBoxContainer" parent="container"]
+margin_left = 1265.0
+margin_top = 95.0
+margin_right = 1385.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item28"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Zoom Blur"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item28"]
+material = SubResource( 140 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item29" type="VBoxContainer" parent="container"]
+margin_left = 1380.0
+margin_top = 95.0
+margin_right = 1500.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item29"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Glow Empty"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item29"]
+material = SubResource( 145 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item30" type="VBoxContainer" parent="container"]
+margin_left = 1495.0
+margin_top = 95.0
+margin_right = 1615.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item30"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Inner Glow"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item30"]
+material = SubResource( 148 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item31" type="VBoxContainer" parent="container"]
+margin_left = 1610.0
+margin_top = 95.0
+margin_right = 1730.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item31"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Inner Glow
+Empty"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item31"]
+material = SubResource( 160 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item32" type="VBoxContainer" parent="container"]
+margin_left = 1725.0
+margin_top = 95.0
+margin_right = 1845.0
+margin_bottom = 190.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item32"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 70, 0 )
+text = "Outer Glow"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item32"]
+material = SubResource( 157 )
+margin_top = 26.0
+margin_right = 120.0
+margin_bottom = 86.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item33" type="VBoxContainer" parent="container"]
+margin_top = 190.0
+margin_right = 120.0
+margin_bottom = 285.0
+rect_min_size = Vector2( 120, 95 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item33"]
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Outer Glow
+Empty"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item33"]
+material = SubResource( 165 )
+margin_top = 35.0
+margin_right = 120.0
+margin_bottom = 95.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
