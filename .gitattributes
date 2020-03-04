@@ -7,5 +7,5 @@
 /.gitattributes                               export-ignore
 /.gitignore                                   export-ignore
 /README.md                                    export-ignore
-/shaderV_icon.png                             export-ignore
-/editor_screenshot_2019-11-01T194454+0300.png export-ignore
+/preview.gif                                  export-ignore
+/LICENSE                                      export-ignore
