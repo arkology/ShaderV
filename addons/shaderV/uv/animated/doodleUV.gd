@@ -36,7 +36,7 @@ func _get_input_port_name(port: int):
 		2:
 			return "frameCount"
 		3:
-			return "scale"
+			return "lacunarity"
 		4:
 			return "maxOffset"
 		5:

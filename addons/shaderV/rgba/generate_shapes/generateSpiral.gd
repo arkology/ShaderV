@@ -58,7 +58,7 @@ func _get_input_port_type(port: int):
 		1:
 			return VisualShaderNode.PORT_TYPE_VECTOR
 		2:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_SCALAR
 		3:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		4:
