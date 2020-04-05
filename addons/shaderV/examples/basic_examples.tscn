@@ -1,4 +1,4 @@
-[gd_scene load_steps=661 format=2]
+[gd_scene load_steps=703 format=2]
 
 [ext_resource path="res://addons/shaderV/shaderV_icon.png" type="Texture" id=1]
 [ext_resource path="res://addons/shaderV/uv/tilingNoffset.gd" type="Script" id=2]
@@ -17,13 +17,13 @@
 [ext_resource path="res://addons/shaderV/uv/animated/tilingNoffsetAnimated.gd" type="Script" id=15]
 [ext_resource path="res://addons/shaderV/tools/sinTime.gd" type="Script" id=16]
 [ext_resource path="res://addons/shaderV/uv/animated/rotateAnimated.gd" type="Script" id=17]
-[ext_resource path="res://addons/shaderV/tools/hash1d.gd" type="Script" id=18]
+[ext_resource path="res://addons/shaderV/tools/random/hash1d.gd" type="Script" id=18]
 [ext_resource path="res://addons/shaderV/uv/animated/swirlUV.gd" type="Script" id=19]
-[ext_resource path="res://addons/shaderV/tools/hash2d.gd" type="Script" id=20]
-[ext_resource path="res://addons/shaderV/tools/hash2dvector.gd" type="Script" id=21]
-[ext_resource path="res://addons/shaderV/tools/randomFloat.gd" type="Script" id=22]
-[ext_resource path="res://addons/shaderV/tools/randomFloatInput.gd" type="Script" id=23]
-[ext_resource path="res://addons/shaderV/tools/randomGoldNoiseFloat.gd" type="Script" id=24]
+[ext_resource path="res://addons/shaderV/tools/random/hash2d.gd" type="Script" id=20]
+[ext_resource path="res://addons/shaderV/tools/random/hash2dvector.gd" type="Script" id=21]
+[ext_resource path="res://addons/shaderV/tools/random/randomFloat.gd" type="Script" id=22]
+[ext_resource path="res://addons/shaderV/tools/random/randomFloatInput.gd" type="Script" id=23]
+[ext_resource path="res://addons/shaderV/tools/random/randomGoldNoiseFloat.gd" type="Script" id=24]
 [ext_resource path="res://addons/shaderV/tools/vec2Compose.gd" type="Script" id=25]
 [ext_resource path="res://addons/shaderV/tools/remap.gd" type="Script" id=26]
 [ext_resource path="res://addons/shaderV/rgba/blur/blur9sample.gd" type="Script" id=27]
@@ -87,6 +87,13 @@
 [ext_resource path="res://addons/shaderV/rgba/noise/fractal/simplex3d_fractal.gd" type="Script" id=85]
 [ext_resource path="res://addons/shaderV/rgba/noise/fractal/perlin4d_fractal.gd" type="Script" id=86]
 [ext_resource path="res://addons/shaderV/rgba/noise/fractal/simplex4d_fractal.gd" type="Script" id=87]
+[ext_resource path="res://addons/shaderV/rgba/normalFromHeightmap.gd" type="Script" id=88]
+[ext_resource path="res://addons/shaderV/tools/transformCoordinates/cartesianToPolar.gd" type="Script" id=89]
+[ext_resource path="res://addons/shaderV/tools/transformCoordinates/sphericalToCartesian.gd" type="Script" id=90]
+[ext_resource path="res://addons/shaderV/tools/transformCoordinates/cartesianToSpherical.gd" type="Script" id=91]
+[ext_resource path="res://addons/shaderV/tools/transformCoordinates/polarToCartesian.gd" type="Script" id=92]
+[ext_resource path="res://addons/shaderV/rgba/generate_shapes/gridShape.gd" type="Script" id=93]
+[ext_resource path="res://addons/shaderV/rgba/sobelEdge.gd" type="Script" id=94]
 
 [sub_resource type="VisualShaderNodeCustom" id=1]
 default_input_values = [ 1, 0, 2, 0, 3, 0, 4, 0 ]
@@ -492,7 +499,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -380, -159 )
+graph_offset = Vector2( -390, -60 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 600, 0 )
@@ -1578,14 +1585,14 @@ void fragment() {
 // Input:3
 	vec3 n_out3p0 = vec3(UV, 0.0);
 
-// HashRandom1d:16
-	float n_out16p0;
+// HashRandom1d:17
+	float n_out17p0;
 	{
-		n_out16p0 = fract(sin(dot(n_out3p0, vec3(0.333333, 0.333333, 0.333333))) * 1e4);
+		n_out17p0 = fract(sin(dot(n_out3p0, vec3(0.333333, 0.333333, 0.333333))) * 1e4);
 	}
 
 // Output:0
-	COLOR.rgb = vec3(n_out16p0);
+	COLOR.rgb = vec3(n_out17p0);
 
 }
 
@@ -1594,15 +1601,15 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -557, -173 )
+graph_offset = Vector2( -140, -83 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 540, 0 )
 nodes/fragment/3/node = SubResource( 9 )
 nodes/fragment/3/position = Vector2( 60, 0 )
-nodes/fragment/16/node = SubResource( 99 )
-nodes/fragment/16/position = Vector2( 280, 0 )
-nodes/fragment/connections = PoolIntArray( 16, 0, 0, 0, 3, 0, 16, 0 )
+nodes/fragment/17/node = SubResource( 99 )
+nodes/fragment/17/position = Vector2( 280, 0 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 17, 0, 17, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=101]
 shader = SubResource( 100 )
@@ -1624,14 +1631,14 @@ void fragment() {
 // Input:3
 	vec3 n_out3p0 = vec3(UV, 0.0);
 
-// HashRandom2d:17
-	float n_out17p0;
+// HashRandom2d:18
+	float n_out18p0;
 	{
-		n_out17p0 = fract(1e4 * sin(17.0 * n_out3p0.x + n_out3p0.y * 0.1) * (0.1 + abs(sin(n_out3p0.y * 13.0 + n_out3p0.x))));
+		n_out18p0 = fract(1e4 * sin(17.0 * n_out3p0.x + n_out3p0.y * 0.1) * (0.1 + abs(sin(n_out3p0.y * 13.0 + n_out3p0.x))));
 	}
 
 // Output:0
-	COLOR.rgb = vec3(n_out17p0);
+	COLOR.rgb = vec3(n_out18p0);
 
 }
 
@@ -1640,15 +1647,15 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -557, -173 )
+graph_offset = Vector2( -140, -83 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 480, 0 )
 nodes/fragment/3/node = SubResource( 9 )
 nodes/fragment/3/position = Vector2( 0, 0 )
-nodes/fragment/17/node = SubResource( 102 )
-nodes/fragment/17/position = Vector2( 220, 0 )
-nodes/fragment/connections = PoolIntArray( 17, 0, 0, 0, 3, 0, 17, 0 )
+nodes/fragment/18/node = SubResource( 102 )
+nodes/fragment/18/position = Vector2( 220, 0 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 18, 0, 18, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=104]
 shader = SubResource( 103 )
@@ -1677,14 +1684,14 @@ void fragment() {
 // Input:3
 	vec3 n_out3p0 = vec3(UV, 0.0);
 
-// HashRandom2dVec:18
-	vec3 n_out18p0;
+// HashRandom2dVec:19
+	vec3 n_out19p0;
 	{
-		n_out18p0.xy = hash2v(n_out3p0.xy);
+		n_out19p0.xy = hash2v(n_out3p0.xy);
 	}
 
 // Output:0
-	COLOR.rgb = n_out18p0;
+	COLOR.rgb = n_out19p0;
 
 }
 
@@ -1693,15 +1700,15 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -557, -173 )
+graph_offset = Vector2( -140, -83 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 480, 0 )
 nodes/fragment/3/node = SubResource( 9 )
 nodes/fragment/3/position = Vector2( 0, 0 )
-nodes/fragment/18/node = SubResource( 105 )
-nodes/fragment/18/position = Vector2( 200, 0 )
-nodes/fragment/connections = PoolIntArray( 3, 0, 18, 0, 18, 0, 0, 0 )
+nodes/fragment/19/node = SubResource( 105 )
+nodes/fragment/19/position = Vector2( 200, 0 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 19, 0, 19, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=107]
 shader = SubResource( 106 )
@@ -1720,14 +1727,14 @@ void vertex() {
 }
 
 void fragment() {
-// RandomFloat:19
-	float n_out19p0;
+// RandomFloat:20
+	float n_out20p0;
 	{
-		n_out19p0 = fract(sin(dot(UV, vec2(12.9898, 78.233))) * 43758.5453123);
+		n_out20p0 = fract(sin(dot(UV, vec2(12.9898, 78.233))) * 43758.5453123);
 	}
 
 // Output:0
-	COLOR.rgb = vec3(n_out19p0);
+	COLOR.rgb = vec3(n_out20p0);
 
 }
 
@@ -1736,23 +1743,23 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -557, -173 )
+graph_offset = Vector2( -140, -83 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 400, 0 )
-nodes/fragment/19/node = SubResource( 108 )
-nodes/fragment/19/position = Vector2( 200, 0 )
-nodes/fragment/connections = PoolIntArray( 19, 0, 0, 0 )
+nodes/fragment/20/node = SubResource( 108 )
+nodes/fragment/20/position = Vector2( 200, 0 )
+nodes/fragment/connections = PoolIntArray( 20, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=110]
 shader = SubResource( 109 )
 
-[sub_resource type="VisualShaderNodeCustom" id=111]
+[sub_resource type="VisualShaderNodeInput" id=111]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeCustom" id=112]
 default_input_values = [ 0, Vector3( 0, 0, 0 ) ]
 script = ExtResource( 23 )
-
-[sub_resource type="VisualShaderNodeInput" id=112]
-input_name = "uv"
 
 [sub_resource type="VisualShader" id=113]
 code = "shader_type canvas_item;
@@ -1768,14 +1775,14 @@ void fragment() {
 // Input:21
 	vec3 n_out21p0 = vec3(UV, 0.0);
 
-// RandomFloatInput:20
-	float n_out20p0;
+// RandomFloatInput:22
+	float n_out22p0;
 	{
-		n_out20p0 = fract(sin(dot(n_out21p0.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+		n_out22p0 = fract(sin(dot(n_out21p0.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 	}
 
 // Output:0
-	COLOR.rgb = vec3(n_out20p0);
+	COLOR.rgb = vec3(n_out22p0);
 
 }
 
@@ -1784,30 +1791,39 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -557, -173 )
+graph_offset = Vector2( -195, -136 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 400, 0 )
-nodes/fragment/20/node = SubResource( 111 )
-nodes/fragment/20/position = Vector2( 180, 0 )
-nodes/fragment/21/node = SubResource( 112 )
-nodes/fragment/21/position = Vector2( -62, 48 )
-nodes/fragment/connections = PoolIntArray( 20, 0, 0, 0, 21, 0, 20, 0 )
+nodes/fragment/21/node = SubResource( 111 )
+nodes/fragment/21/position = Vector2( 0, 0 )
+nodes/fragment/22/node = SubResource( 112 )
+nodes/fragment/22/position = Vector2( 180, 0 )
+nodes/fragment/connections = PoolIntArray( 21, 0, 22, 0, 22, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=114]
 shader = SubResource( 113 )
 
-[sub_resource type="VisualShaderNodeCustom" id=115]
+[sub_resource type="VisualShaderNodeVec3Constant" id=115]
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=116]
+
+[sub_resource type="VisualShaderNodeCustom" id=117]
 default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0, 0, 0 ), 2, 0.0 ]
 script = ExtResource( 24 )
-
-[sub_resource type="VisualShaderNodeVec3Constant" id=116]
-
-[sub_resource type="VisualShaderNodeScalarConstant" id=117]
 
 [sub_resource type="VisualShader" id=118]
 code = "shader_type canvas_item;
 
+
+// RandomGoldRatio
+
+float randomGoldRatioFunc(vec2 _coord_gn, vec2 _scale_gn, float _seed_gn){
+	float PHI = 1.6180339887; 
+	float PI  = 3.1415926536;
+	float SQ2 = 1.4142135624;
+	return fract(tan(distance((_coord_gn+_scale_gn)*(_seed_gn+PHI), vec2(PHI, PI)))*SQ2);
+}
 
 
 void vertex() {
@@ -1825,17 +1841,14 @@ void fragment() {
 // Scalar:25
 	float n_out25p0 = 0.000000;
 
-// RandomGoldRatio:23
-	float n_out23p0;
+// RandomGoldRatio:26
+	float n_out26p0;
 	{
-		float PHI_goldenRati0 = 1.61803398874989484820459 * 00000.1;
-		float PI_goldenRati0  = 3.14159265358979323846264 * 00000.1;
-		float SQ2_goldenRati0 = 1.41421356237309504880169 * 10000.0;
-		n_out23p0 = fract(tan(distance((n_out21p0.xy+n_out24p0.xy)*(n_out25p0+PHI_goldenRati0), vec2(PHI_goldenRati0, PI_goldenRati0)))*SQ2_goldenRati0);
+		n_out26p0 = randomGoldRatioFunc(n_out21p0.xy, n_out24p0.xy, n_out25p0)
 	}
 
 // Output:0
-	COLOR.rgb = vec3(n_out23p0);
+	COLOR.rgb = vec3(n_out26p0);
 
 }
 
@@ -1844,19 +1857,19 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -557, -173 )
+graph_offset = Vector2( -140, -83 )
 mode = 1
 flags/light_only = false
-nodes/fragment/0/position = Vector2( 400, 0 )
-nodes/fragment/21/node = SubResource( 112 )
+nodes/fragment/0/position = Vector2( 460, 0 )
+nodes/fragment/21/node = SubResource( 111 )
 nodes/fragment/21/position = Vector2( -20, -80 )
-nodes/fragment/23/node = SubResource( 115 )
-nodes/fragment/23/position = Vector2( 180, 0 )
-nodes/fragment/24/node = SubResource( 116 )
+nodes/fragment/24/node = SubResource( 115 )
 nodes/fragment/24/position = Vector2( -180, 0 )
-nodes/fragment/25/node = SubResource( 117 )
+nodes/fragment/25/node = SubResource( 116 )
 nodes/fragment/25/position = Vector2( -20, 100 )
-nodes/fragment/connections = PoolIntArray( 23, 0, 0, 0, 21, 0, 23, 0, 24, 0, 23, 1, 25, 0, 23, 2 )
+nodes/fragment/26/node = SubResource( 117 )
+nodes/fragment/26/position = Vector2( 200, 0 )
+nodes/fragment/connections = PoolIntArray( 21, 0, 26, 0, 24, 0, 26, 1, 25, 0, 26, 2, 26, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=119]
 shader = SubResource( 118 )
@@ -1941,7 +1954,7 @@ graph_offset = Vector2( -549, -123 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 600, 0 )
-nodes/fragment/21/node = SubResource( 112 )
+nodes/fragment/21/node = SubResource( 111 )
 nodes/fragment/21/position = Vector2( 0, -100 )
 nodes/fragment/24/node = SubResource( 120 )
 nodes/fragment/24/position = Vector2( 200, 0 )
@@ -9308,7 +9321,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -342, -216 )
+graph_offset = Vector2( -543, 191 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 480, 200 )
@@ -9338,6 +9351,450 @@ nodes/fragment/connections = PoolIntArray( 3, 0, 2, 0, 2, 0, 0, 0, 4, 0, 2, 9, 7
 
 [sub_resource type="ShaderMaterial" id=573]
 shader = SubResource( 572 )
+
+[sub_resource type="VisualShaderNodeCustom" id=574]
+default_input_values = [ 2, Vector3( 64, 64, 0 ), 3, 10, 4, false, 5, false, 6, false ]
+script = ExtResource( 88 )
+
+[sub_resource type="VisualShaderNodeInput" id=575]
+input_name = "texture"
+
+[sub_resource type="VisualShaderNodeInput" id=576]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=577]
+constant = Vector3( 68, 68, 0 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=578]
+constant = 10.0
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id=579]
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id=580]
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id=581]
+
+[sub_resource type="VisualShader" id=582]
+code = "shader_type canvas_item;
+
+
+// NormalFromHeightmap
+
+vec3 normalFromHeightmapFunc(vec2 _hm_uv, sampler2D _hm_tex, vec2 _hm_size, float _norm_hm_strgth, bool _conv_hm_gray, bool _inv_x_norm, bool _inv_y_norm){
+	vec3 _hm_down = textureLod(_hm_tex, _hm_uv + vec2(0.0, 1.0 / _hm_size.y), 0.0).rgb;
+	vec3 _hm_up = textureLod(_hm_tex, _hm_uv - vec2(0.0, 1.0 / _hm_size.y), 0.0).rgb;
+	vec3 _hm_right = textureLod(_hm_tex, _hm_uv + vec2(1.0 / _hm_size.x, 0.0), 0.0).rgb;
+	vec3 _hm_left = textureLod(_hm_tex, _hm_uv - vec2(1.0 / _hm_size.x, 0.0), 0.0).rgb;
+	
+	if (_conv_hm_gray) {
+		_hm_down.r = 0.2126 * _hm_down.r + 0.7152 * _hm_down.g + 0.0722 * _hm_down.b;
+		_hm_up.r = 0.2126 * _hm_up.r + 0.7152 * _hm_up.g + 0.0722 * _hm_up.b;
+		_hm_right.r = 0.2126 * _hm_right.r + 0.7152 * _hm_right.g + 0.0722 * _hm_right.b;
+		_hm_left.r = 0.2126 * _hm_left.r + 0.7152 * _hm_left.g + 0.0722 * _hm_left.b;
+	}
+	
+	float dx = (1.0 - float(_inv_x_norm)) * (_hm_left.r - _hm_right.r) + 
+				(float(_inv_x_norm)) * (-_hm_left.r + _hm_right.r);
+	float dy = (1.0 - float(_inv_y_norm)) * (_hm_up.r - _hm_down.r) + 
+				(float(_inv_y_norm)) * (-_hm_up.r + _hm_down.r);
+	
+	return normalize(vec3(dx, dy, 1.0 / _norm_hm_strgth));
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+
+// Input:4
+	vec3 n_out4p0 = vec3(UV, 0.0);
+
+// Vector:5
+	vec3 n_out5p0 = vec3(68.000000, 68.000000, 0.000000);
+
+// Scalar:6
+	float n_out6p0 = 10.000000;
+
+// Boolean:7
+	bool n_out7p0 = false;
+
+// Boolean:8
+	bool n_out8p0 = false;
+
+// Boolean:9
+	bool n_out9p0 = false;
+
+// NormalFromHeightmap:2
+	vec3 n_out2p0;
+	{
+		n_out2p0 = normalFromHeightmapFunc(n_out4p0.xy, TEXTURE, n_out5p0.xy, n_out6p0, n_out7p0, n_out8p0, n_out9p0);
+	}
+
+// Output:0
+	COLOR.rgb = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -549, 103 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 420, 200 )
+nodes/fragment/2/node = SubResource( 574 )
+nodes/fragment/2/position = Vector2( 80, 200 )
+nodes/fragment/3/node = SubResource( 575 )
+nodes/fragment/3/position = Vector2( -120, 60 )
+nodes/fragment/4/node = SubResource( 576 )
+nodes/fragment/4/position = Vector2( -120, 120 )
+nodes/fragment/5/node = SubResource( 577 )
+nodes/fragment/5/position = Vector2( -300, 180 )
+nodes/fragment/6/node = SubResource( 578 )
+nodes/fragment/6/position = Vector2( -140, 260 )
+nodes/fragment/7/node = SubResource( 579 )
+nodes/fragment/7/position = Vector2( -120, 320 )
+nodes/fragment/8/node = SubResource( 580 )
+nodes/fragment/8/position = Vector2( -120, 380 )
+nodes/fragment/9/node = SubResource( 581 )
+nodes/fragment/9/position = Vector2( -120, 440 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 3, 0, 2, 0, 4, 0, 2, 1, 5, 0, 2, 2, 6, 0, 2, 3, 7, 0, 2, 4, 8, 0, 2, 5, 9, 0, 2, 6 )
+
+[sub_resource type="ShaderMaterial" id=583]
+shader = SubResource( 582 )
+
+[sub_resource type="VisualShaderNodeCustom" id=584]
+output_port_for_preview = 0
+default_input_values = [ 0, Vector3( 1, 1, 0 ) ]
+script = ExtResource( 89 )
+
+[sub_resource type="VisualShaderNodeCustom" id=585]
+output_port_for_preview = 0
+default_input_values = [ 0, Vector3( 1, 1, 1 ) ]
+script = ExtResource( 91 )
+
+[sub_resource type="VisualShaderNodeCustom" id=586]
+output_port_for_preview = 0
+default_input_values = [ 0, Vector3( 1, 1, 0 ) ]
+script = ExtResource( 92 )
+
+[sub_resource type="VisualShaderNodeCustom" id=587]
+output_port_for_preview = 0
+default_input_values = [ 0, Vector3( 1, 1, 1 ) ]
+script = ExtResource( 90 )
+
+[sub_resource type="VisualShaderNodeInput" id=588]
+output_port_for_preview = 0
+input_name = "uv"
+
+[sub_resource type="VisualShader" id=589]
+code = "shader_type canvas_item;
+
+
+// CartesianToSpherical
+
+vec3 cartesianToSphericalFunc(vec3 _cartesian_vec3){
+//	(x, y, z) -> (r, theta, phi)
+	return vec3(length(_cartesian_vec3),
+				atan(_cartesian_vec3.y / _cartesian_vec3.x),
+				atan(length(_cartesian_vec3.xy)/ _cartesian_vec3.z));
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:6
+	vec3 n_out6p0 = vec3(UV, 0.0);
+
+// CartesianToSpherical:3
+	vec3 n_out3p0;
+	{
+		n_out3p0 = cartesianToSphericalFunc(n_out6p0);
+	}
+
+// Output:0
+	COLOR.rgb = n_out3p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -480, -206 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 480, 20 )
+nodes/fragment/2/node = SubResource( 584 )
+nodes/fragment/2/position = Vector2( 0, -160 )
+nodes/fragment/3/node = SubResource( 585 )
+nodes/fragment/3/position = Vector2( 0, 20 )
+nodes/fragment/4/node = SubResource( 586 )
+nodes/fragment/4/position = Vector2( 240, -160 )
+nodes/fragment/5/node = SubResource( 587 )
+nodes/fragment/5/position = Vector2( 240, 120 )
+nodes/fragment/6/node = SubResource( 588 )
+nodes/fragment/6/position = Vector2( -260, 0 )
+nodes/fragment/connections = PoolIntArray( 6, 0, 2, 0, 2, 0, 4, 0, 6, 0, 3, 0, 3, 0, 0, 0, 3, 0, 5, 0 )
+
+[sub_resource type="ShaderMaterial" id=590]
+shader = SubResource( 589 )
+
+[sub_resource type="VisualShaderNodeCustom" id=591]
+default_input_values = [ 1, Vector3( 8, 8, 0 ), 2, Vector3( 0.2, 0.2, 0 ), 3, Vector3( 0.01, 0.01, 0 ), 4, Vector3( 1, 1, 1 ), 5, 1.0, 6, Vector3( 0, 0, 0 ), 7, 0.0 ]
+script = ExtResource( 93 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=592]
+constant = Color( 1, 0, 0, 1 )
+
+[sub_resource type="VisualShaderNodeColorConstant" id=593]
+constant = Color( 1, 1, 0, 0 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=594]
+constant = Vector3( 0.05, 0.05, 0 )
+
+[sub_resource type="VisualShaderNodeInput" id=595]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=596]
+constant = Vector3( 0.2, 0.2, 0 )
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=597]
+constant = Vector3( 8, 8, 0 )
+
+[sub_resource type="VisualShader" id=598]
+code = "shader_type canvas_item;
+
+
+// GridShape
+
+vec4 gridFunc(vec2 _grid_uv, vec2 _gridline_thickness, vec2 _gridline_smooth, vec2 _gridcell_count, vec4 _grid_col, vec4 _grid_bg_col){
+	vec2 _grid_vec = fract(_grid_uv * _gridcell_count);
+	_grid_vec = min(_grid_vec, vec2(1.0) - _grid_vec);
+	_grid_vec = smoothstep(_grid_vec - _gridline_smooth, _grid_vec + _gridline_smooth, _gridline_thickness / vec2(2.0));
+	return mix(_grid_bg_col, _grid_col, clamp(_grid_vec.x + _grid_vec.y, 0.0, 1.0));
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:6
+	vec3 n_out6p0 = vec3(UV, 0.0);
+
+// Vector:8
+	vec3 n_out8p0 = vec3(8.000000, 8.000000, 0.000000);
+
+// Vector:7
+	vec3 n_out7p0 = vec3(0.200000, 0.200000, 0.000000);
+
+// Vector:5
+	vec3 n_out5p0 = vec3(0.050000, 0.050000, 0.000000);
+
+// Color:3
+	vec3 n_out3p0 = vec3(1.000000, 0.000000, 0.000000);
+	float n_out3p1 = 1.000000;
+
+// Color:4
+	vec3 n_out4p0 = vec3(1.000000, 1.000000, 0.000000);
+	float n_out4p1 = 0.000000;
+
+// GridShape:2
+	vec3 n_out2p0;
+	float n_out2p1;
+	{
+		vec4 n_out2p0n_out2p1 = gridFunc(n_out6p0.xy, n_out7p0.xy, n_out5p0.xy, n_out8p0.xy, vec4(n_out3p0, n_out3p1), vec4(n_out4p0, n_out4p1));
+		n_out2p0 = n_out2p0n_out2p1.rgb;
+		n_out2p1 = n_out2p0n_out2p1.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out2p0;
+	COLOR.a = n_out2p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -440, 64.5 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 200 )
+nodes/fragment/2/node = SubResource( 591 )
+nodes/fragment/2/position = Vector2( 100, 200 )
+nodes/fragment/3/node = SubResource( 592 )
+nodes/fragment/3/position = Vector2( -160, 400 )
+nodes/fragment/4/node = SubResource( 593 )
+nodes/fragment/4/position = Vector2( -160, 500 )
+nodes/fragment/5/node = SubResource( 594 )
+nodes/fragment/5/position = Vector2( -320, 300 )
+nodes/fragment/6/node = SubResource( 595 )
+nodes/fragment/6/position = Vector2( -180, 60 )
+nodes/fragment/7/node = SubResource( 596 )
+nodes/fragment/7/position = Vector2( -320, 220 )
+nodes/fragment/8/node = SubResource( 597 )
+nodes/fragment/8/position = Vector2( -320, 140 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 2, 1, 0, 1, 3, 0, 2, 4, 3, 1, 2, 5, 4, 0, 2, 6, 4, 1, 2, 7, 5, 0, 2, 3, 6, 0, 2, 0, 7, 0, 2, 2, 8, 0, 2, 1 )
+
+[sub_resource type="ShaderMaterial" id=599]
+shader = SubResource( 598 )
+
+[sub_resource type="VisualShaderNodeCustom" id=600]
+default_input_values = [ 2, -1.0, 3, 0.001, 4, false, 5, false ]
+script = ExtResource( 94 )
+
+[sub_resource type="VisualShaderNodeInput" id=601]
+input_name = "texture"
+
+[sub_resource type="VisualShaderNodeInput" id=602]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=603]
+constant = -1.0
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=604]
+constant = 0.005
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id=605]
+
+[sub_resource type="VisualShaderNodeBooleanConstant" id=606]
+
+[sub_resource type="VisualShader" id=607]
+code = "shader_type canvas_item;
+
+
+// SobelEdge
+
+float sobelEngeFunc(sampler2D _tex_sobel, vec2 _uv_sobel, float _lod_sobel, float _ofst_sobel, bool _preconv_grayscale_sobel, bool _use_scharr){
+	vec3 s00 = vec3(0.0);
+	vec3 s01 = vec3(0.0);
+	vec3 s02 = vec3(0.0);
+	vec3 s10 = vec3(0.0);
+	vec3 s12 = vec3(0.0);
+	vec3 s20 = vec3(0.0);
+	vec3 s21 = vec3(0.0);
+	vec3 s22 = vec3(0.0);
+	if (_lod_sobel < 0.0){
+		s00 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0, -1.0)).rgb;
+		s01 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0, -1.0)).rgb;
+		s02 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0, -1.0)).rgb;
+		s10 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  0.0)).rgb;
+		s12 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  0.0)).rgb;
+		s20 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  1.0)).rgb;
+		s21 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0,  1.0)).rgb;
+		s22 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  1.0)).rgb;
+	}else{
+		s00 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0, -1.0), _lod_sobel).rgb;
+		s01 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0, -1.0), _lod_sobel).rgb;
+		s02 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0, -1.0), _lod_sobel).rgb;
+		s10 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  0.0), _lod_sobel).rgb;
+		s12 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  0.0), _lod_sobel).rgb;
+		s20 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  1.0), _lod_sobel).rgb;
+		s21 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0,  1.0), _lod_sobel).rgb;
+		s22 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  1.0), _lod_sobel).rgb;
+	}
+	if (_preconv_grayscale_sobel){
+		s00.x = 0.2126 * s00.r + 0.7152 * s00.g + 0.0722 * s00.b;
+		s01.x = 0.2126 * s01.r + 0.7152 * s01.g + 0.0722 * s01.b;
+		s02.x = 0.2126 * s02.r + 0.7152 * s02.g + 0.0722 * s02.b;
+		s10.x = 0.2126 * s10.r + 0.7152 * s10.g + 0.0722 * s10.b;
+		s12.x = 0.2126 * s12.r + 0.7152 * s12.g + 0.0722 * s12.b;
+		s20.x = 0.2126 * s20.r + 0.7152 * s20.g + 0.0722 * s20.b;
+		s21.x = 0.2126 * s21.r + 0.7152 * s21.g + 0.0722 * s21.b;
+		s22.x = 0.2126 * s22.r + 0.7152 * s22.g + 0.0722 * s22.b;
+	}
+	float edgeSqr = 0.0;
+	if (!_use_scharr) {
+		float sobelX = s00.x + 2.0 * s10.x + s20.x - s02.x - 2.0 * s12.x - s22.x;
+		float sobelY = s00.x + 2.0 * s01.x + s02.x - s20.x - 2.0 * s21.x - s22.x;
+		edgeSqr = (sobelX * sobelX + sobelY * sobelY);
+	}else{
+		float scharrX = 3.0 * s00.x + 10.0 * s10.x + 3.0 * s20.x - 3.0 * s02.x - 10.0 * s12.x - 3.0 * s22.x;
+		float scharrY = 3.0 * s00.x + 10.0 * s01.x + 3.0 * s02.x - 3.0 * s20.x - 10.0 * s21.x - 3.0 * s22.x;
+		edgeSqr = (scharrX * scharrX + scharrY * scharrY);
+	}
+	return edgeSqr;
+}
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+
+// Input:4
+	vec3 n_out4p0 = vec3(UV, 0.0);
+
+// Scalar:5
+	float n_out5p0 = -1.000000;
+
+// Scalar:6
+	float n_out6p0 = 0.005000;
+
+// Boolean:7
+	bool n_out7p0 = false;
+
+// Boolean:8
+	bool n_out8p0 = false;
+
+// SobelEdge:2
+	float n_out2p0;
+	{
+		n_out2p0 = sobelEngeFunc(TEXTURE, n_out4p0.xy, n_out5p0, n_out6p0, n_out7p0, n_out8p0);
+	}
+
+// Output:0
+	COLOR.a = n_out2p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -245, 12 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 200 )
+nodes/fragment/2/node = SubResource( 600 )
+nodes/fragment/2/position = Vector2( 100, 200 )
+nodes/fragment/3/node = SubResource( 601 )
+nodes/fragment/3/position = Vector2( -100, 80 )
+nodes/fragment/4/node = SubResource( 602 )
+nodes/fragment/4/position = Vector2( -100, 140 )
+nodes/fragment/5/node = SubResource( 603 )
+nodes/fragment/5/position = Vector2( -120, 200 )
+nodes/fragment/6/node = SubResource( 604 )
+nodes/fragment/6/position = Vector2( -120, 260 )
+nodes/fragment/7/node = SubResource( 605 )
+nodes/fragment/7/position = Vector2( -100, 320 )
+nodes/fragment/8/node = SubResource( 606 )
+nodes/fragment/8/position = Vector2( -100, 380 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 1, 3, 0, 2, 0, 4, 0, 2, 1, 5, 0, 2, 2, 6, 0, 2, 3, 7, 0, 2, 4, 8, 0, 2, 5 )
+
+[sub_resource type="ShaderMaterial" id=608]
+shader = SubResource( 607 )
 
 [node name="root" type="Control"]
 anchor_right = 1.0
@@ -9545,7 +10002,7 @@ __meta__ = {
 
 [node name="item6" type="VBoxContainer" parent="container"]
 margin_left = 545.0
-margin_right = 665.0
+margin_right = 681.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9556,7 +10013,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item6"]
 margin_top = 11.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Scale UV"
@@ -9568,7 +10025,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item6"]
 material = SubResource( 34 )
 margin_top = 23.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -9581,8 +10038,8 @@ __meta__ = {
 }
 
 [node name="item7" type="VBoxContainer" parent="container"]
-margin_left = 654.0
-margin_right = 774.0
+margin_left = 670.0
+margin_right = 790.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9618,8 +10075,8 @@ __meta__ = {
 }
 
 [node name="item8" type="VBoxContainer" parent="container"]
-margin_left = 763.0
-margin_right = 883.0
+margin_left = 779.0
+margin_right = 899.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9655,8 +10112,8 @@ __meta__ = {
 }
 
 [node name="item9" type="VBoxContainer" parent="container"]
-margin_left = 872.0
-margin_right = 992.0
+margin_left = 888.0
+margin_right = 1008.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9692,8 +10149,8 @@ __meta__ = {
 }
 
 [node name="item10" type="VBoxContainer" parent="container"]
-margin_left = 981.0
-margin_right = 1101.0
+margin_left = 997.0
+margin_right = 1117.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9729,8 +10186,8 @@ __meta__ = {
 }
 
 [node name="item11" type="VBoxContainer" parent="container"]
-margin_left = 1090.0
-margin_right = 1210.0
+margin_left = 1106.0
+margin_right = 1226.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9766,8 +10223,8 @@ __meta__ = {
 }
 
 [node name="item12" type="VBoxContainer" parent="container"]
-margin_left = 1199.0
-margin_right = 1319.0
+margin_left = 1215.0
+margin_right = 1335.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9804,8 +10261,8 @@ __meta__ = {
 }
 
 [node name="item13" type="VBoxContainer" parent="container"]
-margin_left = 1308.0
-margin_right = 1428.0
+margin_left = 1324.0
+margin_right = 1444.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9841,8 +10298,8 @@ __meta__ = {
 }
 
 [node name="item14" type="VBoxContainer" parent="container"]
-margin_left = 1417.0
-margin_right = 1537.0
+margin_left = 1433.0
+margin_right = 1553.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9879,8 +10336,8 @@ __meta__ = {
 }
 
 [node name="item15" type="VBoxContainer" parent="container"]
-margin_left = 1526.0
-margin_right = 1646.0
+margin_left = 1542.0
+margin_right = 1662.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9916,8 +10373,8 @@ __meta__ = {
 }
 
 [node name="item16" type="VBoxContainer" parent="container"]
-margin_left = 1635.0
-margin_right = 1782.0
+margin_left = 1651.0
+margin_right = 1798.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10149,7 +10606,7 @@ __meta__ = {
 [node name="item22" type="VBoxContainer" parent="container"]
 margin_left = 545.0
 margin_top = 97.0
-margin_right = 665.0
+margin_right = 681.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10161,7 +10618,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item22"]
 margin_top = 3.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Random Float
@@ -10174,7 +10631,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item22"]
 material = SubResource( 119 )
 margin_top = 32.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10187,9 +10644,9 @@ __meta__ = {
 }
 
 [node name="item23" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 670.0
 margin_top = 97.0
-margin_right = 774.0
+margin_right = 790.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10226,9 +10683,9 @@ __meta__ = {
 }
 
 [node name="item24" type="VBoxContainer" parent="container"]
-margin_left = 763.0
+margin_left = 779.0
 margin_top = 97.0
-margin_right = 883.0
+margin_right = 899.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10265,9 +10722,9 @@ __meta__ = {
 }
 
 [node name="item25" type="VBoxContainer" parent="container"]
-margin_left = 872.0
+margin_left = 888.0
 margin_top = 97.0
-margin_right = 992.0
+margin_right = 1008.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10304,9 +10761,9 @@ __meta__ = {
 }
 
 [node name="item26" type="VBoxContainer" parent="container"]
-margin_left = 981.0
+margin_left = 997.0
 margin_top = 97.0
-margin_right = 1101.0
+margin_right = 1117.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10343,9 +10800,9 @@ __meta__ = {
 }
 
 [node name="item27" type="VBoxContainer" parent="container"]
-margin_left = 1090.0
+margin_left = 1106.0
 margin_top = 97.0
-margin_right = 1210.0
+margin_right = 1226.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10382,9 +10839,9 @@ __meta__ = {
 }
 
 [node name="item28" type="VBoxContainer" parent="container"]
-margin_left = 1199.0
+margin_left = 1215.0
 margin_top = 97.0
-margin_right = 1319.0
+margin_right = 1335.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10421,9 +10878,9 @@ __meta__ = {
 }
 
 [node name="item29" type="VBoxContainer" parent="container"]
-margin_left = 1308.0
+margin_left = 1324.0
 margin_top = 97.0
-margin_right = 1428.0
+margin_right = 1444.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10460,9 +10917,9 @@ __meta__ = {
 }
 
 [node name="item30" type="VBoxContainer" parent="container"]
-margin_left = 1417.0
+margin_left = 1433.0
 margin_top = 97.0
-margin_right = 1537.0
+margin_right = 1553.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10499,9 +10956,9 @@ __meta__ = {
 }
 
 [node name="item31" type="VBoxContainer" parent="container"]
-margin_left = 1526.0
+margin_left = 1542.0
 margin_top = 97.0
-margin_right = 1646.0
+margin_right = 1662.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10539,9 +10996,9 @@ __meta__ = {
 }
 
 [node name="item32" type="VBoxContainer" parent="container"]
-margin_left = 1635.0
+margin_left = 1651.0
 margin_top = 97.0
-margin_right = 1782.0
+margin_right = 1798.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10776,7 +11233,7 @@ __meta__ = {
 [node name="item38" type="VBoxContainer" parent="container"]
 margin_left = 545.0
 margin_top = 194.0
-margin_right = 665.0
+margin_right = 681.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10788,7 +11245,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item38"]
 margin_top = 3.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Regular Ngon
@@ -10801,7 +11258,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item38"]
 material = SubResource( 233 )
 margin_top = 32.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10814,9 +11271,9 @@ __meta__ = {
 }
 
 [node name="item39" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 670.0
 margin_top = 194.0
-margin_right = 774.0
+margin_right = 790.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10853,9 +11310,9 @@ __meta__ = {
 }
 
 [node name="item40" type="VBoxContainer" parent="container"]
-margin_left = 763.0
+margin_left = 779.0
 margin_top = 194.0
-margin_right = 883.0
+margin_right = 899.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10893,9 +11350,9 @@ __meta__ = {
 }
 
 [node name="item41" type="VBoxContainer" parent="container"]
-margin_left = 872.0
+margin_left = 888.0
 margin_top = 194.0
-margin_right = 992.0
+margin_right = 1008.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10933,9 +11390,9 @@ __meta__ = {
 }
 
 [node name="item42" type="VBoxContainer" parent="container"]
-margin_left = 981.0
+margin_left = 997.0
 margin_top = 194.0
-margin_right = 1101.0
+margin_right = 1117.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10973,9 +11430,9 @@ __meta__ = {
 }
 
 [node name="item43" type="VBoxContainer" parent="container"]
-margin_left = 1090.0
+margin_left = 1106.0
 margin_top = 194.0
-margin_right = 1210.0
+margin_right = 1226.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11013,9 +11470,9 @@ __meta__ = {
 }
 
 [node name="item44" type="VBoxContainer" parent="container"]
-margin_left = 1199.0
+margin_left = 1215.0
 margin_top = 194.0
-margin_right = 1319.0
+margin_right = 1335.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11053,9 +11510,9 @@ __meta__ = {
 }
 
 [node name="item45" type="VBoxContainer" parent="container"]
-margin_left = 1308.0
+margin_left = 1324.0
 margin_top = 194.0
-margin_right = 1428.0
+margin_right = 1444.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11093,9 +11550,9 @@ __meta__ = {
 }
 
 [node name="item46" type="VBoxContainer" parent="container"]
-margin_left = 1417.0
+margin_left = 1433.0
 margin_top = 194.0
-margin_right = 1537.0
+margin_right = 1553.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11133,9 +11590,9 @@ __meta__ = {
 }
 
 [node name="item47" type="VBoxContainer" parent="container"]
-margin_left = 1526.0
+margin_left = 1542.0
 margin_top = 194.0
-margin_right = 1646.0
+margin_right = 1662.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11173,9 +11630,9 @@ __meta__ = {
 }
 
 [node name="item48" type="VBoxContainer" parent="container"]
-margin_left = 1635.0
+margin_left = 1651.0
 margin_top = 194.0
-margin_right = 1782.0
+margin_right = 1798.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11414,7 +11871,7 @@ __meta__ = {
 [node name="item54" type="VBoxContainer" parent="container"]
 margin_left = 545.0
 margin_top = 291.0
-margin_right = 665.0
+margin_right = 681.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11426,7 +11883,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item54"]
 margin_top = 11.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "BCS Adjustment"
@@ -11438,7 +11895,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item54"]
 material = SubResource( 337 )
 margin_top = 23.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -11451,9 +11908,9 @@ __meta__ = {
 }
 
 [node name="item55" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 670.0
 margin_top = 291.0
-margin_right = 774.0
+margin_right = 790.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11490,9 +11947,9 @@ __meta__ = {
 }
 
 [node name="item56" type="VBoxContainer" parent="container"]
-margin_left = 763.0
+margin_left = 779.0
 margin_top = 291.0
-margin_right = 883.0
+margin_right = 899.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11529,9 +11986,9 @@ __meta__ = {
 }
 
 [node name="item57" type="VBoxContainer" parent="container"]
-margin_left = 872.0
+margin_left = 888.0
 margin_top = 291.0
-margin_right = 992.0
+margin_right = 1008.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11568,9 +12025,9 @@ __meta__ = {
 }
 
 [node name="item58" type="VBoxContainer" parent="container"]
-margin_left = 981.0
+margin_left = 997.0
 margin_top = 291.0
-margin_right = 1101.0
+margin_right = 1117.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11608,9 +12065,9 @@ __meta__ = {
 }
 
 [node name="item59" type="VBoxContainer" parent="container"]
-margin_left = 1090.0
+margin_left = 1106.0
 margin_top = 291.0
-margin_right = 1210.0
+margin_right = 1226.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11648,9 +12105,9 @@ __meta__ = {
 }
 
 [node name="item60" type="VBoxContainer" parent="container"]
-margin_left = 1199.0
+margin_left = 1215.0
 margin_top = 291.0
-margin_right = 1319.0
+margin_right = 1335.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11688,9 +12145,9 @@ __meta__ = {
 }
 
 [node name="item61" type="VBoxContainer" parent="container"]
-margin_left = 1308.0
+margin_left = 1324.0
 margin_top = 291.0
-margin_right = 1428.0
+margin_right = 1444.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11727,9 +12184,9 @@ __meta__ = {
 }
 
 [node name="item62" type="VBoxContainer" parent="container"]
-margin_left = 1417.0
+margin_left = 1433.0
 margin_top = 291.0
-margin_right = 1537.0
+margin_right = 1553.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11766,9 +12223,9 @@ __meta__ = {
 }
 
 [node name="item63" type="VBoxContainer" parent="container"]
-margin_left = 1526.0
+margin_left = 1542.0
 margin_top = 291.0
-margin_right = 1646.0
+margin_right = 1662.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11806,9 +12263,9 @@ __meta__ = {
 }
 
 [node name="item64" type="VBoxContainer" parent="container"]
-margin_left = 1635.0
+margin_left = 1651.0
 margin_top = 291.0
-margin_right = 1782.0
+margin_right = 1798.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12042,7 +12499,7 @@ __meta__ = {
 [node name="item70" type="VBoxContainer" parent="container"]
 margin_left = 545.0
 margin_top = 388.0
-margin_right = 665.0
+margin_right = 681.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12054,7 +12511,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item70"]
 margin_top = 11.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Shift HSV"
@@ -12066,7 +12523,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item70"]
 material = SubResource( 436 )
 margin_top = 23.0
-margin_right = 120.0
+margin_right = 136.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -12079,9 +12536,9 @@ __meta__ = {
 }
 
 [node name="item71" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 670.0
 margin_top = 388.0
-margin_right = 774.0
+margin_right = 790.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12118,9 +12575,9 @@ __meta__ = {
 }
 
 [node name="item72" type="VBoxContainer" parent="container"]
-margin_left = 763.0
+margin_left = 779.0
 margin_top = 388.0
-margin_right = 883.0
+margin_right = 899.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12157,9 +12614,9 @@ __meta__ = {
 }
 
 [node name="item73" type="VBoxContainer" parent="container"]
-margin_left = 872.0
+margin_left = 888.0
 margin_top = 388.0
-margin_right = 992.0
+margin_right = 1008.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12196,9 +12653,9 @@ __meta__ = {
 }
 
 [node name="item74" type="VBoxContainer" parent="container"]
-margin_left = 981.0
+margin_left = 997.0
 margin_top = 388.0
-margin_right = 1101.0
+margin_right = 1117.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12235,9 +12692,9 @@ __meta__ = {
 }
 
 [node name="item75" type="VBoxContainer" parent="container"]
-margin_left = 1090.0
+margin_left = 1106.0
 margin_top = 388.0
-margin_right = 1210.0
+margin_right = 1226.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12275,9 +12732,9 @@ __meta__ = {
 }
 
 [node name="item76" type="VBoxContainer" parent="container"]
-margin_left = 1199.0
+margin_left = 1215.0
 margin_top = 388.0
-margin_right = 1319.0
+margin_right = 1335.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12315,9 +12772,9 @@ __meta__ = {
 }
 
 [node name="item77" type="VBoxContainer" parent="container"]
-margin_left = 1308.0
+margin_left = 1324.0
 margin_top = 388.0
-margin_right = 1428.0
+margin_right = 1444.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12355,9 +12812,9 @@ __meta__ = {
 }
 
 [node name="item78" type="VBoxContainer" parent="container"]
-margin_left = 1417.0
+margin_left = 1433.0
 margin_top = 388.0
-margin_right = 1537.0
+margin_right = 1553.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12395,9 +12852,9 @@ __meta__ = {
 }
 
 [node name="item79" type="VBoxContainer" parent="container"]
-margin_left = 1526.0
+margin_left = 1542.0
 margin_top = 388.0
-margin_right = 1646.0
+margin_right = 1662.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12435,9 +12892,9 @@ __meta__ = {
 }
 
 [node name="item80" type="VBoxContainer" parent="container"]
-margin_left = 1635.0
+margin_left = 1651.0
 margin_top = 388.0
-margin_right = 1782.0
+margin_right = 1798.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12477,7 +12934,7 @@ __meta__ = {
 [node name="item81" type="VBoxContainer" parent="container"]
 margin_top = 485.0
 margin_right = 120.0
-margin_bottom = 580.0
+margin_bottom = 591.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12487,9 +12944,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item81"]
-margin_top = 3.0
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Perlin3D Noise"
@@ -12500,9 +12957,9 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/item81"]
 material = SubResource( 535 )
-margin_top = 32.0
+margin_top = 37.0
 margin_right = 120.0
-margin_bottom = 92.0
+margin_bottom = 97.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
@@ -12517,7 +12974,7 @@ __meta__ = {
 margin_left = 109.0
 margin_top = 485.0
 margin_right = 229.0
-margin_bottom = 580.0
+margin_bottom = 591.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12527,9 +12984,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item82"]
-margin_top = 3.0
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Simplex3D Noise"
@@ -12540,9 +12997,9 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/item82"]
 material = SubResource( 547 )
-margin_top = 32.0
+margin_top = 37.0
 margin_right = 120.0
-margin_bottom = 92.0
+margin_bottom = 97.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
@@ -12557,7 +13014,7 @@ __meta__ = {
 margin_left = 218.0
 margin_top = 485.0
 margin_right = 338.0
-margin_bottom = 580.0
+margin_bottom = 591.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12567,9 +13024,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item83"]
-margin_top = 3.0
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Perlin4D Noise"
@@ -12580,9 +13037,9 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/item83"]
 material = SubResource( 560 )
-margin_top = 32.0
+margin_top = 37.0
 margin_right = 120.0
-margin_bottom = 92.0
+margin_bottom = 97.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
@@ -12597,7 +13054,7 @@ __meta__ = {
 margin_left = 327.0
 margin_top = 485.0
 margin_right = 447.0
-margin_bottom = 580.0
+margin_bottom = 591.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12607,9 +13064,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item84"]
-margin_top = 3.0
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Simplex4D Noise"
@@ -12620,9 +13077,167 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/item84"]
 material = SubResource( 573 )
-margin_top = 32.0
+margin_top = 37.0
 margin_right = 120.0
-margin_bottom = 92.0
+margin_bottom = 97.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item85" type="VBoxContainer" parent="container"]
+margin_left = 436.0
+margin_top = 485.0
+margin_right = 556.0
+margin_bottom = 591.0
+rect_min_size = Vector2( 120, 95 )
+custom_constants/separation = -2
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item85"]
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 39.0
+rect_min_size = Vector2( 70, 0 )
+text = "Normal From
+Heightmap"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item85"]
+material = SubResource( 583 )
+margin_top = 37.0
+margin_right = 120.0
+margin_bottom = 97.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item86" type="VBoxContainer" parent="container"]
+margin_left = 545.0
+margin_top = 485.0
+margin_right = 681.0
+margin_bottom = 591.0
+rect_min_size = Vector2( 120, 95 )
+custom_constants/separation = -2
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item86"]
+margin_right = 136.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 70, 0 )
+text = "Cartesian Coords To
+Polar/Spherical
+and back to Cartesian"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item86"]
+material = SubResource( 590 )
+margin_top = 46.0
+margin_right = 136.0
+margin_bottom = 106.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item87" type="VBoxContainer" parent="container"]
+margin_left = 670.0
+margin_top = 485.0
+margin_right = 790.0
+margin_bottom = 591.0
+rect_min_size = Vector2( 120, 95 )
+custom_constants/separation = -2
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item87"]
+margin_top = 17.0
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Grid Shape"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item87"]
+material = SubResource( 599 )
+margin_top = 29.0
+margin_right = 120.0
+margin_bottom = 89.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="item88" type="VBoxContainer" parent="container"]
+margin_left = 779.0
+margin_top = 485.0
+margin_right = 899.0
+margin_bottom = 591.0
+rect_min_size = Vector2( 120, 95 )
+custom_constants/separation = -2
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/item88"]
+margin_top = 17.0
+margin_right = 120.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 70, 0 )
+text = "Sobel Edge"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/item88"]
+material = SubResource( 608 )
+margin_top = 29.0
+margin_right = 120.0
+margin_bottom = 89.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
