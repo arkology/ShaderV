@@ -669,7 +669,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -427, -120 )
+graph_offset = Vector2( -68, -84 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 600, 0 )
@@ -1791,7 +1791,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -195, -136 )
+graph_offset = Vector2( -444, -115 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 400, 0 )
@@ -2537,7 +2537,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -688.592, -54.99 )
+graph_offset = Vector2( -535, 125 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 200, 0 )
@@ -9809,7 +9809,7 @@ margin_right = 1450.0
 margin_bottom = 1080.0
 custom_constants/vseparation = 2
 custom_constants/hseparation = -11
-columns = 16
+columns = 11
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false,
@@ -10002,7 +10002,7 @@ __meta__ = {
 
 [node name="item6" type="VBoxContainer" parent="container"]
 margin_left = 545.0
-margin_right = 681.0
+margin_right = 665.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10013,7 +10013,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item6"]
 margin_top = 11.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Scale UV"
@@ -10025,7 +10025,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item6"]
 material = SubResource( 34 )
 margin_top = 23.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10038,8 +10038,8 @@ __meta__ = {
 }
 
 [node name="item7" type="VBoxContainer" parent="container"]
-margin_left = 670.0
-margin_right = 790.0
+margin_left = 654.0
+margin_right = 774.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10053,7 +10053,7 @@ margin_top = 11.0
 margin_right = 120.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
-text = "Scale UV"
+text = "Spherical UV"
 align = 1
 __meta__ = {
 "_editor_description_": ""
@@ -10075,8 +10075,8 @@ __meta__ = {
 }
 
 [node name="item8" type="VBoxContainer" parent="container"]
-margin_left = 779.0
-margin_right = 899.0
+margin_left = 763.0
+margin_right = 883.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10112,8 +10112,8 @@ __meta__ = {
 }
 
 [node name="item9" type="VBoxContainer" parent="container"]
-margin_left = 888.0
-margin_right = 1008.0
+margin_left = 872.0
+margin_right = 1019.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10124,7 +10124,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item9"]
 margin_top = 11.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Tiling & Offset UV"
@@ -10136,7 +10136,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item9"]
 material = SubResource( 51 )
 margin_top = 23.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10149,8 +10149,8 @@ __meta__ = {
 }
 
 [node name="item10" type="VBoxContainer" parent="container"]
-margin_left = 997.0
-margin_right = 1117.0
+margin_left = 1008.0
+margin_right = 1128.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10186,8 +10186,8 @@ __meta__ = {
 }
 
 [node name="item11" type="VBoxContainer" parent="container"]
-margin_left = 1106.0
-margin_right = 1226.0
+margin_left = 1117.0
+margin_right = 1237.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10223,9 +10223,9 @@ __meta__ = {
 }
 
 [node name="item12" type="VBoxContainer" parent="container"]
-margin_left = 1215.0
-margin_right = 1335.0
-margin_bottom = 95.0
+margin_top = 97.0
+margin_right = 120.0
+margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10261,9 +10261,10 @@ __meta__ = {
 }
 
 [node name="item13" type="VBoxContainer" parent="container"]
-margin_left = 1324.0
-margin_right = 1444.0
-margin_bottom = 95.0
+margin_left = 109.0
+margin_top = 97.0
+margin_right = 229.0
+margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10298,9 +10299,10 @@ __meta__ = {
 }
 
 [node name="item14" type="VBoxContainer" parent="container"]
-margin_left = 1433.0
-margin_right = 1553.0
-margin_bottom = 95.0
+margin_left = 218.0
+margin_top = 97.0
+margin_right = 338.0
+margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10336,9 +10338,10 @@ __meta__ = {
 }
 
 [node name="item15" type="VBoxContainer" parent="container"]
-margin_left = 1542.0
-margin_right = 1662.0
-margin_bottom = 95.0
+margin_left = 327.0
+margin_top = 97.0
+margin_right = 447.0
+margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10373,9 +10376,10 @@ __meta__ = {
 }
 
 [node name="item16" type="VBoxContainer" parent="container"]
-margin_left = 1651.0
-margin_right = 1798.0
-margin_bottom = 95.0
+margin_left = 436.0
+margin_top = 97.0
+margin_right = 556.0
+margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10385,7 +10389,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item16"]
 margin_top = 3.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Tiling & Offset UV
@@ -10398,7 +10402,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item16"]
 material = SubResource( 98 )
 margin_top = 32.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10411,8 +10415,9 @@ __meta__ = {
 }
 
 [node name="item17" type="VBoxContainer" parent="container"]
+margin_left = 545.0
 margin_top = 97.0
-margin_right = 120.0
+margin_right = 665.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10449,9 +10454,9 @@ __meta__ = {
 }
 
 [node name="item18" type="VBoxContainer" parent="container"]
-margin_left = 109.0
+margin_left = 654.0
 margin_top = 97.0
-margin_right = 229.0
+margin_right = 774.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10488,9 +10493,9 @@ __meta__ = {
 }
 
 [node name="item19" type="VBoxContainer" parent="container"]
-margin_left = 218.0
+margin_left = 763.0
 margin_top = 97.0
-margin_right = 338.0
+margin_right = 883.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10527,9 +10532,9 @@ __meta__ = {
 }
 
 [node name="item20" type="VBoxContainer" parent="container"]
-margin_left = 327.0
+margin_left = 872.0
 margin_top = 97.0
-margin_right = 447.0
+margin_right = 1019.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10540,7 +10545,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item20"]
 margin_top = 11.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Random Float"
@@ -10552,7 +10557,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item20"]
 material = SubResource( 110 )
 margin_top = 23.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10565,9 +10570,9 @@ __meta__ = {
 }
 
 [node name="item21" type="VBoxContainer" parent="container"]
-margin_left = 436.0
+margin_left = 1008.0
 margin_top = 97.0
-margin_right = 556.0
+margin_right = 1128.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10604,9 +10609,9 @@ __meta__ = {
 }
 
 [node name="item22" type="VBoxContainer" parent="container"]
-margin_left = 545.0
+margin_left = 1117.0
 margin_top = 97.0
-margin_right = 681.0
+margin_right = 1237.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10618,7 +10623,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item22"]
 margin_top = 3.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Random Float
@@ -10631,7 +10636,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item22"]
 material = SubResource( 119 )
 margin_top = 32.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10644,10 +10649,9 @@ __meta__ = {
 }
 
 [node name="item23" type="VBoxContainer" parent="container"]
-margin_left = 670.0
-margin_top = 97.0
-margin_right = 790.0
-margin_bottom = 192.0
+margin_top = 194.0
+margin_right = 120.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10683,10 +10687,10 @@ __meta__ = {
 }
 
 [node name="item24" type="VBoxContainer" parent="container"]
-margin_left = 779.0
-margin_top = 97.0
-margin_right = 899.0
-margin_bottom = 192.0
+margin_left = 109.0
+margin_top = 194.0
+margin_right = 229.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10722,10 +10726,10 @@ __meta__ = {
 }
 
 [node name="item25" type="VBoxContainer" parent="container"]
-margin_left = 888.0
-margin_top = 97.0
-margin_right = 1008.0
-margin_bottom = 192.0
+margin_left = 218.0
+margin_top = 194.0
+margin_right = 338.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10761,10 +10765,10 @@ __meta__ = {
 }
 
 [node name="item26" type="VBoxContainer" parent="container"]
-margin_left = 997.0
-margin_top = 97.0
-margin_right = 1117.0
-margin_bottom = 192.0
+margin_left = 327.0
+margin_top = 194.0
+margin_right = 447.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10800,10 +10804,10 @@ __meta__ = {
 }
 
 [node name="item27" type="VBoxContainer" parent="container"]
-margin_left = 1106.0
-margin_top = 97.0
-margin_right = 1226.0
-margin_bottom = 192.0
+margin_left = 436.0
+margin_top = 194.0
+margin_right = 556.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10839,10 +10843,10 @@ __meta__ = {
 }
 
 [node name="item28" type="VBoxContainer" parent="container"]
-margin_left = 1215.0
-margin_top = 97.0
-margin_right = 1335.0
-margin_bottom = 192.0
+margin_left = 545.0
+margin_top = 194.0
+margin_right = 665.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10878,10 +10882,10 @@ __meta__ = {
 }
 
 [node name="item29" type="VBoxContainer" parent="container"]
-margin_left = 1324.0
-margin_top = 97.0
-margin_right = 1444.0
-margin_bottom = 192.0
+margin_left = 654.0
+margin_top = 194.0
+margin_right = 774.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10917,10 +10921,10 @@ __meta__ = {
 }
 
 [node name="item30" type="VBoxContainer" parent="container"]
-margin_left = 1433.0
-margin_top = 97.0
-margin_right = 1553.0
-margin_bottom = 192.0
+margin_left = 763.0
+margin_top = 194.0
+margin_right = 883.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10956,10 +10960,10 @@ __meta__ = {
 }
 
 [node name="item31" type="VBoxContainer" parent="container"]
-margin_left = 1542.0
-margin_top = 97.0
-margin_right = 1662.0
-margin_bottom = 192.0
+margin_left = 872.0
+margin_top = 194.0
+margin_right = 1019.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10970,7 +10974,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item31"]
 margin_top = 3.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Inner Glow
@@ -10983,7 +10987,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item31"]
 material = SubResource( 181 )
 margin_top = 32.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10996,10 +11000,10 @@ __meta__ = {
 }
 
 [node name="item32" type="VBoxContainer" parent="container"]
-margin_left = 1651.0
-margin_top = 97.0
-margin_right = 1798.0
-margin_bottom = 192.0
+margin_left = 1008.0
+margin_top = 194.0
+margin_right = 1128.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11010,7 +11014,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item32"]
 margin_top = 11.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Outer Glow"
@@ -11022,7 +11026,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item32"]
 material = SubResource( 188 )
 margin_top = 23.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -11035,8 +11039,9 @@ __meta__ = {
 }
 
 [node name="item33" type="VBoxContainer" parent="container"]
+margin_left = 1117.0
 margin_top = 194.0
-margin_right = 120.0
+margin_right = 1237.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11074,10 +11079,9 @@ __meta__ = {
 }
 
 [node name="item34" type="VBoxContainer" parent="container"]
-margin_left = 109.0
-margin_top = 194.0
-margin_right = 229.0
-margin_bottom = 289.0
+margin_top = 291.0
+margin_right = 120.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11114,10 +11118,10 @@ __meta__ = {
 }
 
 [node name="item35" type="VBoxContainer" parent="container"]
-margin_left = 218.0
-margin_top = 194.0
-margin_right = 338.0
-margin_bottom = 289.0
+margin_left = 109.0
+margin_top = 291.0
+margin_right = 229.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11153,10 +11157,10 @@ __meta__ = {
 }
 
 [node name="item36" type="VBoxContainer" parent="container"]
-margin_left = 327.0
-margin_top = 194.0
-margin_right = 447.0
-margin_bottom = 289.0
+margin_left = 218.0
+margin_top = 291.0
+margin_right = 338.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11192,10 +11196,10 @@ __meta__ = {
 }
 
 [node name="item37" type="VBoxContainer" parent="container"]
-margin_left = 436.0
-margin_top = 194.0
-margin_right = 556.0
-margin_bottom = 289.0
+margin_left = 327.0
+margin_top = 291.0
+margin_right = 447.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11231,10 +11235,10 @@ __meta__ = {
 }
 
 [node name="item38" type="VBoxContainer" parent="container"]
-margin_left = 545.0
-margin_top = 194.0
-margin_right = 681.0
-margin_bottom = 289.0
+margin_left = 436.0
+margin_top = 291.0
+margin_right = 556.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11245,7 +11249,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item38"]
 margin_top = 3.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Regular Ngon
@@ -11258,7 +11262,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item38"]
 material = SubResource( 233 )
 margin_top = 32.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -11271,10 +11275,10 @@ __meta__ = {
 }
 
 [node name="item39" type="VBoxContainer" parent="container"]
-margin_left = 670.0
-margin_top = 194.0
-margin_right = 790.0
-margin_bottom = 289.0
+margin_left = 545.0
+margin_top = 291.0
+margin_right = 665.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11310,10 +11314,10 @@ __meta__ = {
 }
 
 [node name="item40" type="VBoxContainer" parent="container"]
-margin_left = 779.0
-margin_top = 194.0
-margin_right = 899.0
-margin_bottom = 289.0
+margin_left = 654.0
+margin_top = 291.0
+margin_right = 774.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11350,10 +11354,10 @@ __meta__ = {
 }
 
 [node name="item41" type="VBoxContainer" parent="container"]
-margin_left = 888.0
-margin_top = 194.0
-margin_right = 1008.0
-margin_bottom = 289.0
+margin_left = 763.0
+margin_top = 291.0
+margin_right = 883.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11390,10 +11394,10 @@ __meta__ = {
 }
 
 [node name="item42" type="VBoxContainer" parent="container"]
-margin_left = 997.0
-margin_top = 194.0
-margin_right = 1117.0
-margin_bottom = 289.0
+margin_left = 872.0
+margin_top = 291.0
+margin_right = 1019.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11404,7 +11408,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item42"]
 margin_top = 3.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Generic 2D
@@ -11417,7 +11421,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item42"]
 material = SubResource( 263 )
 margin_top = 32.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -11430,10 +11434,10 @@ __meta__ = {
 }
 
 [node name="item43" type="VBoxContainer" parent="container"]
-margin_left = 1106.0
-margin_top = 194.0
-margin_right = 1226.0
-margin_bottom = 289.0
+margin_left = 1008.0
+margin_top = 291.0
+margin_right = 1128.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11470,10 +11474,10 @@ __meta__ = {
 }
 
 [node name="item44" type="VBoxContainer" parent="container"]
-margin_left = 1215.0
-margin_top = 194.0
-margin_right = 1335.0
-margin_bottom = 289.0
+margin_left = 1117.0
+margin_top = 291.0
+margin_right = 1237.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11510,10 +11514,9 @@ __meta__ = {
 }
 
 [node name="item45" type="VBoxContainer" parent="container"]
-margin_left = 1324.0
-margin_top = 194.0
-margin_right = 1444.0
-margin_bottom = 289.0
+margin_top = 388.0
+margin_right = 120.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11550,10 +11553,10 @@ __meta__ = {
 }
 
 [node name="item46" type="VBoxContainer" parent="container"]
-margin_left = 1433.0
-margin_top = 194.0
-margin_right = 1553.0
-margin_bottom = 289.0
+margin_left = 109.0
+margin_top = 388.0
+margin_right = 229.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11590,10 +11593,10 @@ __meta__ = {
 }
 
 [node name="item47" type="VBoxContainer" parent="container"]
-margin_left = 1542.0
-margin_top = 194.0
-margin_right = 1662.0
-margin_bottom = 289.0
+margin_left = 218.0
+margin_top = 388.0
+margin_right = 338.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11630,10 +11633,10 @@ __meta__ = {
 }
 
 [node name="item48" type="VBoxContainer" parent="container"]
-margin_left = 1651.0
-margin_top = 194.0
-margin_right = 1798.0
-margin_bottom = 289.0
+margin_left = 327.0
+margin_top = 388.0
+margin_right = 447.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11644,7 +11647,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item48"]
 margin_top = 3.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Simplex 3D
@@ -11657,7 +11660,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item48"]
 material = SubResource( 299 )
 margin_top = 32.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -11670,9 +11673,10 @@ __meta__ = {
 }
 
 [node name="item49" type="VBoxContainer" parent="container"]
-margin_top = 291.0
-margin_right = 120.0
-margin_bottom = 386.0
+margin_left = 436.0
+margin_top = 388.0
+margin_right = 556.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11709,10 +11713,10 @@ __meta__ = {
 }
 
 [node name="item50" type="VBoxContainer" parent="container"]
-margin_left = 109.0
-margin_top = 291.0
-margin_right = 229.0
-margin_bottom = 386.0
+margin_left = 545.0
+margin_top = 388.0
+margin_right = 665.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11749,10 +11753,10 @@ __meta__ = {
 }
 
 [node name="item51" type="VBoxContainer" parent="container"]
-margin_left = 218.0
-margin_top = 291.0
-margin_right = 338.0
-margin_bottom = 386.0
+margin_left = 654.0
+margin_top = 388.0
+margin_right = 774.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11789,10 +11793,10 @@ __meta__ = {
 }
 
 [node name="item52" type="VBoxContainer" parent="container"]
-margin_left = 327.0
-margin_top = 291.0
-margin_right = 447.0
-margin_bottom = 386.0
+margin_left = 763.0
+margin_top = 388.0
+margin_right = 883.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11829,10 +11833,10 @@ __meta__ = {
 }
 
 [node name="item53" type="VBoxContainer" parent="container"]
-margin_left = 436.0
-margin_top = 291.0
-margin_right = 556.0
-margin_bottom = 386.0
+margin_left = 872.0
+margin_top = 388.0
+margin_right = 1019.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11843,7 +11847,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item53"]
 margin_top = 3.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Worley 3D
@@ -11856,7 +11860,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item53"]
 material = SubResource( 330 )
 margin_top = 32.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -11869,10 +11873,10 @@ __meta__ = {
 }
 
 [node name="item54" type="VBoxContainer" parent="container"]
-margin_left = 545.0
-margin_top = 291.0
-margin_right = 681.0
-margin_bottom = 386.0
+margin_left = 1008.0
+margin_top = 388.0
+margin_right = 1128.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11883,7 +11887,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item54"]
 margin_top = 11.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "BCS Adjustment"
@@ -11895,7 +11899,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item54"]
 material = SubResource( 337 )
 margin_top = 23.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -11908,10 +11912,10 @@ __meta__ = {
 }
 
 [node name="item55" type="VBoxContainer" parent="container"]
-margin_left = 670.0
-margin_top = 291.0
-margin_right = 790.0
-margin_bottom = 386.0
+margin_left = 1117.0
+margin_top = 388.0
+margin_right = 1237.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11947,10 +11951,9 @@ __meta__ = {
 }
 
 [node name="item56" type="VBoxContainer" parent="container"]
-margin_left = 779.0
-margin_top = 291.0
-margin_right = 899.0
-margin_bottom = 386.0
+margin_top = 485.0
+margin_right = 120.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11986,10 +11989,10 @@ __meta__ = {
 }
 
 [node name="item57" type="VBoxContainer" parent="container"]
-margin_left = 888.0
-margin_top = 291.0
-margin_right = 1008.0
-margin_bottom = 386.0
+margin_left = 109.0
+margin_top = 485.0
+margin_right = 229.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12025,10 +12028,10 @@ __meta__ = {
 }
 
 [node name="item58" type="VBoxContainer" parent="container"]
-margin_left = 997.0
-margin_top = 291.0
-margin_right = 1117.0
-margin_bottom = 386.0
+margin_left = 218.0
+margin_top = 485.0
+margin_right = 338.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12065,10 +12068,10 @@ __meta__ = {
 }
 
 [node name="item59" type="VBoxContainer" parent="container"]
-margin_left = 1106.0
-margin_top = 291.0
-margin_right = 1226.0
-margin_bottom = 386.0
+margin_left = 327.0
+margin_top = 485.0
+margin_right = 447.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12105,10 +12108,10 @@ __meta__ = {
 }
 
 [node name="item60" type="VBoxContainer" parent="container"]
-margin_left = 1215.0
-margin_top = 291.0
-margin_right = 1335.0
-margin_bottom = 386.0
+margin_left = 436.0
+margin_top = 485.0
+margin_right = 556.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12145,10 +12148,10 @@ __meta__ = {
 }
 
 [node name="item61" type="VBoxContainer" parent="container"]
-margin_left = 1324.0
-margin_top = 291.0
-margin_right = 1444.0
-margin_bottom = 386.0
+margin_left = 545.0
+margin_top = 485.0
+margin_right = 665.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12184,10 +12187,10 @@ __meta__ = {
 }
 
 [node name="item62" type="VBoxContainer" parent="container"]
-margin_left = 1433.0
-margin_top = 291.0
-margin_right = 1553.0
-margin_bottom = 386.0
+margin_left = 654.0
+margin_top = 485.0
+margin_right = 774.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12223,10 +12226,10 @@ __meta__ = {
 }
 
 [node name="item63" type="VBoxContainer" parent="container"]
-margin_left = 1542.0
-margin_top = 291.0
-margin_right = 1662.0
-margin_bottom = 386.0
+margin_left = 763.0
+margin_top = 485.0
+margin_right = 883.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12263,10 +12266,10 @@ __meta__ = {
 }
 
 [node name="item64" type="VBoxContainer" parent="container"]
-margin_left = 1651.0
-margin_top = 291.0
-margin_right = 1798.0
-margin_bottom = 386.0
+margin_left = 872.0
+margin_top = 485.0
+margin_right = 1019.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12303,9 +12306,10 @@ __meta__ = {
 }
 
 [node name="item65" type="VBoxContainer" parent="container"]
-margin_top = 388.0
-margin_right = 120.0
-margin_bottom = 483.0
+margin_left = 1008.0
+margin_top = 485.0
+margin_right = 1128.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12341,10 +12345,10 @@ __meta__ = {
 }
 
 [node name="item66" type="VBoxContainer" parent="container"]
-margin_left = 109.0
-margin_top = 388.0
-margin_right = 229.0
-margin_bottom = 483.0
+margin_left = 1117.0
+margin_top = 485.0
+margin_right = 1237.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12380,10 +12384,9 @@ __meta__ = {
 }
 
 [node name="item67" type="VBoxContainer" parent="container"]
-margin_left = 218.0
-margin_top = 388.0
-margin_right = 338.0
-margin_bottom = 483.0
+margin_top = 582.0
+margin_right = 120.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12419,10 +12422,10 @@ __meta__ = {
 }
 
 [node name="item68" type="VBoxContainer" parent="container"]
-margin_left = 327.0
-margin_top = 388.0
-margin_right = 447.0
-margin_bottom = 483.0
+margin_left = 109.0
+margin_top = 582.0
+margin_right = 229.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12458,10 +12461,10 @@ __meta__ = {
 }
 
 [node name="item69" type="VBoxContainer" parent="container"]
-margin_left = 436.0
-margin_top = 388.0
-margin_right = 556.0
-margin_bottom = 483.0
+margin_left = 218.0
+margin_top = 582.0
+margin_right = 338.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12497,10 +12500,10 @@ __meta__ = {
 }
 
 [node name="item70" type="VBoxContainer" parent="container"]
-margin_left = 545.0
-margin_top = 388.0
-margin_right = 681.0
-margin_bottom = 483.0
+margin_left = 327.0
+margin_top = 582.0
+margin_right = 447.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12511,7 +12514,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item70"]
 margin_top = 11.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Shift HSV"
@@ -12523,7 +12526,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item70"]
 material = SubResource( 436 )
 margin_top = 23.0
-margin_right = 136.0
+margin_right = 120.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -12536,10 +12539,10 @@ __meta__ = {
 }
 
 [node name="item71" type="VBoxContainer" parent="container"]
-margin_left = 670.0
-margin_top = 388.0
-margin_right = 790.0
-margin_bottom = 483.0
+margin_left = 436.0
+margin_top = 582.0
+margin_right = 556.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12575,10 +12578,10 @@ __meta__ = {
 }
 
 [node name="item72" type="VBoxContainer" parent="container"]
-margin_left = 779.0
-margin_top = 388.0
-margin_right = 899.0
-margin_bottom = 483.0
+margin_left = 545.0
+margin_top = 582.0
+margin_right = 665.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12614,10 +12617,10 @@ __meta__ = {
 }
 
 [node name="item73" type="VBoxContainer" parent="container"]
-margin_left = 888.0
-margin_top = 388.0
-margin_right = 1008.0
-margin_bottom = 483.0
+margin_left = 654.0
+margin_top = 582.0
+margin_right = 774.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12653,10 +12656,10 @@ __meta__ = {
 }
 
 [node name="item74" type="VBoxContainer" parent="container"]
-margin_left = 997.0
-margin_top = 388.0
-margin_right = 1117.0
-margin_bottom = 483.0
+margin_left = 763.0
+margin_top = 582.0
+margin_right = 883.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12692,10 +12695,10 @@ __meta__ = {
 }
 
 [node name="item75" type="VBoxContainer" parent="container"]
-margin_left = 1106.0
-margin_top = 388.0
-margin_right = 1226.0
-margin_bottom = 483.0
+margin_left = 872.0
+margin_top = 582.0
+margin_right = 1019.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12706,7 +12709,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/item75"]
 margin_top = 3.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "GameBoy
@@ -12719,7 +12722,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item75"]
 material = SubResource( 464 )
 margin_top = 32.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -12732,10 +12735,10 @@ __meta__ = {
 }
 
 [node name="item76" type="VBoxContainer" parent="container"]
-margin_left = 1215.0
-margin_top = 388.0
-margin_right = 1335.0
-margin_bottom = 483.0
+margin_left = 1008.0
+margin_top = 582.0
+margin_right = 1128.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12772,10 +12775,10 @@ __meta__ = {
 }
 
 [node name="item77" type="VBoxContainer" parent="container"]
-margin_left = 1324.0
-margin_top = 388.0
-margin_right = 1444.0
-margin_bottom = 483.0
+margin_left = 1117.0
+margin_top = 582.0
+margin_right = 1237.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12812,10 +12815,9 @@ __meta__ = {
 }
 
 [node name="item78" type="VBoxContainer" parent="container"]
-margin_left = 1433.0
-margin_top = 388.0
-margin_right = 1553.0
-margin_bottom = 483.0
+margin_top = 679.0
+margin_right = 120.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12825,9 +12827,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item78"]
-margin_top = 3.0
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Worley2D Noise"
@@ -12838,9 +12840,9 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/item78"]
 material = SubResource( 498 )
-margin_top = 32.0
+margin_top = 37.0
 margin_right = 120.0
-margin_bottom = 92.0
+margin_bottom = 97.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
@@ -12852,10 +12854,10 @@ __meta__ = {
 }
 
 [node name="item79" type="VBoxContainer" parent="container"]
-margin_left = 1542.0
-margin_top = 388.0
-margin_right = 1662.0
-margin_bottom = 483.0
+margin_left = 109.0
+margin_top = 679.0
+margin_right = 229.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12865,9 +12867,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item79"]
-margin_top = 3.0
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Simplex2D Noise"
@@ -12878,9 +12880,9 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/item79"]
 material = SubResource( 509 )
-margin_top = 32.0
+margin_top = 37.0
 margin_right = 120.0
-margin_bottom = 92.0
+margin_bottom = 97.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
@@ -12892,10 +12894,10 @@ __meta__ = {
 }
 
 [node name="item80" type="VBoxContainer" parent="container"]
-margin_left = 1651.0
-margin_top = 388.0
-margin_right = 1798.0
-margin_bottom = 483.0
+margin_left = 218.0
+margin_top = 679.0
+margin_right = 338.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12905,9 +12907,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item80"]
-margin_top = 3.0
-margin_right = 147.0
-margin_bottom = 34.0
+margin_top = 8.0
+margin_right = 120.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Worley3D Noise"
@@ -12918,9 +12920,9 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/item80"]
 material = SubResource( 523 )
-margin_top = 32.0
-margin_right = 147.0
-margin_bottom = 92.0
+margin_top = 37.0
+margin_right = 120.0
+margin_bottom = 97.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
@@ -12932,9 +12934,10 @@ __meta__ = {
 }
 
 [node name="item81" type="VBoxContainer" parent="container"]
-margin_top = 485.0
-margin_right = 120.0
-margin_bottom = 591.0
+margin_left = 327.0
+margin_top = 679.0
+margin_right = 447.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12971,10 +12974,10 @@ __meta__ = {
 }
 
 [node name="item82" type="VBoxContainer" parent="container"]
-margin_left = 109.0
-margin_top = 485.0
-margin_right = 229.0
-margin_bottom = 591.0
+margin_left = 436.0
+margin_top = 679.0
+margin_right = 556.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -13011,10 +13014,10 @@ __meta__ = {
 }
 
 [node name="item83" type="VBoxContainer" parent="container"]
-margin_left = 218.0
-margin_top = 485.0
-margin_right = 338.0
-margin_bottom = 591.0
+margin_left = 545.0
+margin_top = 679.0
+margin_right = 665.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -13051,10 +13054,10 @@ __meta__ = {
 }
 
 [node name="item84" type="VBoxContainer" parent="container"]
-margin_left = 327.0
-margin_top = 485.0
-margin_right = 447.0
-margin_bottom = 591.0
+margin_left = 654.0
+margin_top = 679.0
+margin_right = 774.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -13091,10 +13094,10 @@ __meta__ = {
 }
 
 [node name="item85" type="VBoxContainer" parent="container"]
-margin_left = 436.0
-margin_top = 485.0
-margin_right = 556.0
-margin_bottom = 591.0
+margin_left = 763.0
+margin_top = 679.0
+margin_right = 883.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -13131,10 +13134,10 @@ __meta__ = {
 }
 
 [node name="item86" type="VBoxContainer" parent="container"]
-margin_left = 545.0
-margin_top = 485.0
-margin_right = 681.0
-margin_bottom = 591.0
+margin_left = 872.0
+margin_top = 679.0
+margin_right = 1019.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -13144,7 +13147,7 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/item86"]
-margin_right = 136.0
+margin_right = 147.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 70, 0 )
 text = "Cartesian Coords To
@@ -13158,7 +13161,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/item86"]
 material = SubResource( 590 )
 margin_top = 46.0
-margin_right = 136.0
+margin_right = 147.0
 margin_bottom = 106.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -13171,10 +13174,10 @@ __meta__ = {
 }
 
 [node name="item87" type="VBoxContainer" parent="container"]
-margin_left = 670.0
-margin_top = 485.0
-margin_right = 790.0
-margin_bottom = 591.0
+margin_left = 1008.0
+margin_top = 679.0
+margin_right = 1128.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -13210,10 +13213,10 @@ __meta__ = {
 }
 
 [node name="item88" type="VBoxContainer" parent="container"]
-margin_left = 779.0
-margin_top = 485.0
-margin_right = 899.0
-margin_bottom = 591.0
+margin_left = 1117.0
+margin_top = 679.0
+margin_right = 1237.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
