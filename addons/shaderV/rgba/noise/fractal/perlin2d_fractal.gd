@@ -134,6 +134,11 @@ float perlinNoise2DFBM(vec2 _uv_pn2fbm, int _oct_pn2fbm, vec2 _per_pn2fbm, float
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s = perlinNoise2DFBM(%s.xy, int(%s), %s.xy, %s, %s, %s, %s, %s.xy);" % [
-	output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[3],
+	output_vars[0], uv, input_vars[1], input_vars[2], input_vars[3],
 	input_vars[4], input_vars[5], input_vars[6], input_vars[7]]

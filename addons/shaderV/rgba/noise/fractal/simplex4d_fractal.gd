@@ -176,6 +176,11 @@ float simplexNoise4DFBM(vec2 _uv_sn4fbm, int _oct_sn4fbm, vec2 _per_sn4fbm, floa
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s = simplexNoise4DFBM(%s.xy, int(%s), %s.xy, %s, %s, %s, %s, %s.xy, %s, %s);" % [
-	output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[3],
+	output_vars[0], uv, input_vars[1], input_vars[2], input_vars[3],
 	input_vars[4], input_vars[5], input_vars[6], input_vars[7], input_vars[9], input_vars[8]]

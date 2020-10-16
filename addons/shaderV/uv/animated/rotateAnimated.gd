@@ -70,5 +70,10 @@ vec2 r0tateUVAnimatedFunc(vec2 _uv_r0tate, vec2 _pivot_r0tate, float _r0tation_r
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return output_vars[0] + " = vec3(r0tateUVAnimatedFunc(%s.xy, %s.xy, 0.0, %s, %s), 0);" % [
-	input_vars[0], input_vars[2], input_vars[1], input_vars[3]]
+	uv, input_vars[2], input_vars[1], input_vars[3]]

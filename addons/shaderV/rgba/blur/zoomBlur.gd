@@ -99,9 +99,17 @@ vec4 zoomBlurFunc(sampler2D _tex_z00m_blur, vec2 _uv_z00m_blur, int _amount_z00m
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var texture = "TEXTURE"
+	var uv = "UV"
+	
+	if input_vars[0]:
+		texture = input_vars[0]
+	if input_vars[1]:
+		uv = input_vars[1]
+	
 	return """vec4 %s%s = zoomBlurFunc(%s, %s.xy, int(%s), %s.xy, %s, %s);
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[4], input_vars[3], input_vars[5], input_vars[2],
+output_vars[0], output_vars[1], texture, uv, input_vars[4], input_vars[3], input_vars[5], input_vars[2],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

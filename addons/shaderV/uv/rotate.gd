@@ -64,4 +64,9 @@ vec3 r0tateUVFunc(vec3 _uv_r0tate, vec2 _pivot_r0tate, float _r0tation_r0tate){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return output_vars[0] + " = r0tateUVFunc(%s, %s.xy, %s);" % [input_vars[0], input_vars[2], input_vars[1]]
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
+	return output_vars[0] + " = r0tateUVFunc(%s, %s.xy, %s);" % [uv, input_vars[2], input_vars[1]]

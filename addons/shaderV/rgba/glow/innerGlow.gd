@@ -114,9 +114,17 @@ vec4 innerGl0wFunc(sampler2D _samp_1ngl0w, vec2 _uv_1ngl0w, float _l0d_1ngl0w, f
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var texture = "TEXTURE"
+	var uv = "UV"
+	
+	if input_vars[0]:
+		texture = input_vars[0]
+	if input_vars[1]:
+		uv = input_vars[1]
+	
 	return """vec4 %s%s = innerGl0wFunc(%s, %s.xy, %s, %s, %s, vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[6],
+output_vars[0], output_vars[1], texture, uv, input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[6],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

@@ -140,5 +140,10 @@ float perlin3dPeriodicN0iseFunc(vec3 P, vec3 rep) {
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s = perlin3dPeriodicN0iseFunc(vec3((%s.xy + %s.xy) * %s, %s), %s);" % [
-output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[4], input_vars[3]]
+output_vars[0], uv, input_vars[1], input_vars[2], input_vars[4], input_vars[3]]

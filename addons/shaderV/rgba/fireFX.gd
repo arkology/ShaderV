@@ -211,10 +211,15 @@ vec4 fireFXFunc(vec2 _uv_fire, vec2 _dir_fire, float _speed_fire, float _time_fi
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return """vec4 %s%s = fireFXFunc(%s.xy, %s.xy, %s, %s, vec4(%s, %s), vec4(%s, %s), vec4(%s, %s), %s, %s, %s);
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[12], input_vars[3], input_vars[4],
+output_vars[0], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[12], input_vars[3], input_vars[4],
 				input_vars[5], input_vars[6], input_vars[7], input_vars[8], input_vars[9], input_vars[10], input_vars[11], 
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

@@ -122,5 +122,13 @@ float sobelEngeFunc(sampler2D _tex_sobel, vec2 _uv_sobel, float _lod_sobel, floa
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var texture = "TEXTURE"
+	var uv = "UV"
+	
+	if input_vars[0]:
+		texture = input_vars[0]
+	if input_vars[1]:
+		uv = input_vars[1]
+	
 	return "%s = sobelEngeFunc(%s, %s.xy, %s, %s, %s, %s);" % [
-output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5]]
+output_vars[0], texture, uv, input_vars[2], input_vars[3], input_vars[4], input_vars[5]]

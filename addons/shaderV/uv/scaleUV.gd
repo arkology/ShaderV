@@ -52,5 +52,10 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s.xy = (%s.xy - %s.xy) * %s.xy + %s.xy;" % [
-	output_vars[0], input_vars[0], input_vars[2], input_vars[1], input_vars[2]]
+	output_vars[0], uv, input_vars[2], input_vars[1], input_vars[2]]

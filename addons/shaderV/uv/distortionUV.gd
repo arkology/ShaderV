@@ -71,5 +71,10 @@ vec2 d1stort1onUVFunc(vec2 _uv_d1st, float _d1stX_d1st, float _d1stY_d1st, float
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s.xy = d1stort1onUVFunc(%s.xy, %s, %s, %s, %s);" % [
-	output_vars[0], input_vars[0], input_vars[3], input_vars[4], input_vars[1], input_vars[2]]
+	output_vars[0], uv, input_vars[3], input_vars[4], input_vars[1], input_vars[2]]

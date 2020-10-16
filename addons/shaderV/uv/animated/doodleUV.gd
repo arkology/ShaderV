@@ -90,5 +90,10 @@ vec2 d00dleUVFunc(vec2 _uv_d00dle, float _max_offset_d00dle, float _time_d00dle,
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s.xy = d00dleUVFunc(%s.xy, %s, %s, %s, int(%s), %s);" % [
-	output_vars[0], input_vars[0], input_vars[4], input_vars[5], input_vars[1], input_vars[2], input_vars[3]]
+	output_vars[0], uv, input_vars[4], input_vars[5], input_vars[1], input_vars[2], input_vars[3]]

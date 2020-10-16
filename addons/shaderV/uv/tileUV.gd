@@ -72,5 +72,10 @@ vec2 t1leMapUV(vec2 _uv_t1le_t1mp, float _w1dth_t1mp, float _he1ght_t1mp, float 
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s.xy = t1leMapUV(%s.xy, %s, %s, %s);" % [
-output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[3]]
+output_vars[0], uv, input_vars[1], input_vars[2], input_vars[3]]

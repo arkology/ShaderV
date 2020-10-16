@@ -108,9 +108,14 @@ vec2 cellular2dNoiseFunc(vec2 P, float _jitter_w2d) {
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return """vec2 %s%s = cellular2dNoiseFunc((%s.xy+%s.xy)*%s, min(max(%s, 0.0), 1.0));
 %s = %s%s.x;
 %s = %s%s.y;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3],
+output_vars[0], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

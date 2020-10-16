@@ -74,5 +74,10 @@ float genericNoise2D(vec2 _x_gener1c2D) {
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s = genericNoise2D((%s.xy + %s.xy) * %s);" % [
-	output_vars[0], input_vars[0], input_vars[1], input_vars[2]]
+	output_vars[0], uv, input_vars[1], input_vars[2]]

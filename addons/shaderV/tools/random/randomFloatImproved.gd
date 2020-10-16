@@ -1,13 +1,13 @@
 tool
 extends VisualShaderNodeCustom
-class_name VisualShaderToolsRandomFloat_I
+class_name VisualShaderToolsRandomFloatImproved
 
 func _init() -> void:
 	set_input_port_default_value(1, 1.0)
 	set_input_port_default_value(2, Vector3(0.0, 0.0, 0.0))
 
 func _get_name() -> String:
-	return "RandomFloat_I"
+	return "RandomFloatImproved"
 
 func _get_category() -> String:
 	return "Tools"
@@ -64,5 +64,10 @@ highp float randImpr0vedFunc(vec2 _c0_rnd){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s = randImpr0vedFunc(%s.xy * %s + %s.xy);" % [
-output_vars[0], input_vars[0], input_vars[1], input_vars[2]]
+output_vars[0], uv, input_vars[1], input_vars[2]]

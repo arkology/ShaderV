@@ -102,10 +102,15 @@ vec4 generateSp1ralFunc(vec2 _uv_genSp1r, vec2 _p1v0t_genSp1r, float _s1ze_genSp
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return """vec4 %s%s = generateSp1ralFunc(%s.xy, %s.xy, %s, %s, %s, %s, %s, vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[5],
+output_vars[0], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3], input_vars[5],
 								input_vars[4], input_vars[6], input_vars[7], input_vars[8],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

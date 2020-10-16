@@ -97,5 +97,10 @@ float simplex2dN0iseFunc(vec2 v) {
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s = simplex2dN0iseFunc((%s.xy+%s.xy)*%s);" % [
-output_vars[0], input_vars[0], input_vars[1], input_vars[2]]
+output_vars[0], uv, input_vars[1], input_vars[2]]

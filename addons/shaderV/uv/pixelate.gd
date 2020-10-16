@@ -55,4 +55,9 @@ vec2 pixelateFunc(vec2 _uv_p1xelate, vec2 _effect_factor_p1xelate){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = pixelateFunc(%s.xy, %s.xy);" % [output_vars[0], input_vars[0], input_vars[1]]
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
+	return "%s.xy = pixelateFunc(%s.xy, %s.xy);" % [output_vars[0], uv, input_vars[1]]

@@ -62,4 +62,9 @@ vec2 lensD1st0rti0nFunc(vec2 _uv_d1s_1en5, float _fctr_d1s_1en5){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = lensD1st0rti0nFunc(%s.xy, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
+	return "%s.xy = lensD1st0rti0nFunc(%s.xy, %s);" % [output_vars[0], uv, input_vars[1]]

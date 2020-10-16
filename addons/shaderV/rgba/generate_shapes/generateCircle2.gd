@@ -96,10 +96,15 @@ vec4 generateCircle2Func(vec2 _uv_gc2, vec2 _p0s_gc2, vec2 _sca1e_gc2, float _ra
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return """vec4 %s%s = generateCircle2Func(%s.xy, %s.xy, %s.xy, %s, %s, %s, vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3],
+output_vars[0], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3],
 								input_vars[4], input_vars[5], input_vars[6], input_vars[7],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

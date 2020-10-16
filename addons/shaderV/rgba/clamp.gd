@@ -55,4 +55,10 @@ float clampAlphaBorderFunc(float _color_alpha_clamp, vec2 _uv_clamp){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return output_vars[0] + " = clampAlphaBorderFunc(%s, (%s).xy);" % [input_vars[0], input_vars[1]]
+	var texture = "TEXTURE"
+	var uv = "UV"
+	
+	if input_vars[1]:
+		uv = input_vars[1]
+	
+	return output_vars[0] + " = clampAlphaBorderFunc(%s, (%s).xy);" % [input_vars[0], uv]

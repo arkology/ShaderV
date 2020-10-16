@@ -54,4 +54,9 @@ vec2 ti1ingN0ffsetFunc(vec2 _uv_tN0, vec2 _offset_tN0){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return output_vars[0] + " = vec3(ti1ingN0ffsetFunc(%s.xy, %s.xy), 0);" % [input_vars[0], input_vars[1]]
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
+	return output_vars[0] + " = vec3(ti1ingN0ffsetFunc(%s.xy, %s.xy), 0);" % [uv, input_vars[1]]

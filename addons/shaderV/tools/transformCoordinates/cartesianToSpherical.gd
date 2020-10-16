@@ -15,7 +15,7 @@ func _get_subcategory():
 	return "TransformCoordinates"
 
 func _get_description() -> String:
-	return "Cartesian (x, y, z) -> Spherical (r, theta, phi)"
+	return "Cartesian (x, y, z) -> Spherical (r, theta, phi). By default (x, y, z) is UV."
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -50,5 +50,10 @@ vec3 cartesianToSphericalFunc(vec3 _cartesian_vec3){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = cartesianToSphericalFunc(%s);" % [output_vars[0], input_vars[0]]
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
+	return "%s = cartesianToSphericalFunc(%s);" % [output_vars[0], uv]
 

@@ -218,9 +218,14 @@ vec2 cellular3dNoiseFunc(vec3 P, float _jitter_w3d) {
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return """vec2 %s%s = cellular3dNoiseFunc(vec3((%s.xy+%s.xy)*%s, %s), min(max(%s, 0.0), 1.0));
 %s = %s%s.x;
 %s = %s%s.y;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[4], input_vars[3],
+output_vars[0], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[4], input_vars[3],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

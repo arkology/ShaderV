@@ -15,7 +15,7 @@ func _get_subcategory():
 	return "TransformCoordinates"
 
 func _get_description() -> String:
-	return "Cartesian (x, y) -> Polar (r, theta)"
+	return "Cartesian (x, y) -> Polar (r, theta). By default (x, y) is UV."
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -49,5 +49,10 @@ vec2 cartesianToPolarFunc(vec2 _cartesian_vec2){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = cartesianToPolarFunc(%s.xy);" % [output_vars[0], input_vars[0]]
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
+	return "%s.xy = cartesianToPolarFunc(%s.xy);" % [output_vars[0], uv]
 

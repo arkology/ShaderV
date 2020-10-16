@@ -98,7 +98,12 @@ float p0lyg0nFunc(vec2 _uv_p0lyg0n, vec2 _pos_p0lyg0n, vec2 _size_p0lyg0n, float
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return """%s = %s;
 %s = p0lyg0nFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s) * %s;""" % [
 output_vars[0], input_vars[6],
-output_vars[1], input_vars[0], input_vars[1], input_vars[3], input_vars[2], input_vars[4], input_vars[5], input_vars[7]]
+output_vars[1], uv, input_vars[1], input_vars[3], input_vars[2], input_vars[4], input_vars[5], input_vars[7]]

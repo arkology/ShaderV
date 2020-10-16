@@ -101,6 +101,11 @@ vec4 generateCirc1eFunc(vec2 _uv_circ1e, vec2 _center_circ1e, vec2 _scale_factor
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return """%s = %s;
 %s = generateCirc1eFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s).a * %s;""" % [output_vars[0],
-input_vars[6], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[7]]
+input_vars[6], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[7]]

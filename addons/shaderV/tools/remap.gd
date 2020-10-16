@@ -18,7 +18,7 @@ func _get_category() -> String:
 #	return ""
 
 func _get_description() -> String:
-	return "Remaps input value from ( [inMin], [inMax] ) range to ( [outMin], [outMax] )"
+	return "Remaps input value from ( [inMin], [inMax] ) range to ( [outMin], [outMax] ). UV is default input value."
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -70,8 +70,13 @@ vec3 remapFunc(vec3 _inpt_r4p, vec2 _fr0m_r4p, vec2 _t0_r4p){
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return output_vars[0] + " = remapFunc(%s, vec2(%s, %s), vec2(%s, %s));" % [
-	input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4]]
+	uv, input_vars[1], input_vars[2], input_vars[3], input_vars[4]]
 
 
 

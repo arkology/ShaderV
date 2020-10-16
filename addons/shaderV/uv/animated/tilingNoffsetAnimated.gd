@@ -59,5 +59,10 @@ vec2 tilingNoffsetAnimatedFunc(vec2 _uv_tN0A, float _t1me_tN0A, vec2 _offset_tN0
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s.xy = %s.xy + tilingNoffsetAnimatedFunc(%s.xy, %s, %s.xy);" % [
-output_vars[0], output_vars[0], input_vars[0], input_vars[2], input_vars[1]]
+output_vars[0], output_vars[0], uv, input_vars[2], input_vars[1]]

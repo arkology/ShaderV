@@ -95,9 +95,17 @@ vec4 blur9sampleFunc(sampler2D _samp_b1ur, vec2 _uv_b1ur, float _lod_b1ur, float
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var texture = "TEXTURE"
+	var uv = "UV"
+	
+	if input_vars[0]:
+		texture = input_vars[0]
+	if input_vars[1]:
+		uv = input_vars[1]
+	
 	return """vec4 %s%s = blur9sampleFunc(%s, %s.xy, %s, %s);
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3],
+output_vars[0], output_vars[1], texture, uv, input_vars[2], input_vars[3],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

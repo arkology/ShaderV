@@ -91,9 +91,17 @@ vec4 chr0maticAberrati0nFunc(sampler2D _texture_chr_aberrat1on, vec2 _uv_chr_abe
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var texture = "TEXTURE"
+	var uv = "UV"
+	
+	if input_vars[0]:
+		texture = input_vars[0]
+	if input_vars[1]:
+		uv = input_vars[1]
+	
 	return """vec4 %s%s = chr0maticAberrati0nFunc(%s, %s.xy, vec3(%s, %s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[3], input_vars[4], input_vars[2],
+output_vars[0], output_vars[1], texture, uv, input_vars[3], input_vars[4], input_vars[2],
 output_vars[0], output_vars[0], output_vars[1],
 output_vars[1], output_vars[0], output_vars[1]]

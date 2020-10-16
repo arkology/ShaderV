@@ -79,5 +79,10 @@ vec2 transformUVFunc(vec2 _uv_transform, vec2 _scale_uv_, vec2 _pivot_scale_uv_,
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s.xy = transformUVFunc(%s.xy, %s.xy, %s.xy, %s.xy, %s, %s.xy);" % [
-output_vars[0], input_vars[0], input_vars[2], input_vars[3], input_vars[1], input_vars[4], input_vars[5]]
+output_vars[0], uv, input_vars[2], input_vars[3], input_vars[1], input_vars[4], input_vars[5]]

@@ -69,5 +69,10 @@ vec2 swirlUVFunc(vec2 _uv_sw1rl, float _t1me_sw1rl, vec2 _p1vot_sw1rl, float _am
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s.xy = swirlUVFunc(%s.xy, %s, %s.xy, %s);" % [
-	output_vars[0], input_vars[0], input_vars[3], input_vars[1], input_vars[2]]
+	output_vars[0], uv, input_vars[3], input_vars[1], input_vars[2]]

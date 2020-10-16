@@ -100,5 +100,10 @@ float cellular2x2x2NoiseFunc(vec3 P, float _jitter_w2x2x2) {
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var uv = "UV"
+	
+	if input_vars[0]:
+		uv = input_vars[0]
+	
 	return "%s = cellular2x2x2NoiseFunc(vec3((%s.xy + %s.xy) * %s, %s), min(max(%s, 0.0), 1.0));" % [
-output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[4], input_vars[3]]
+output_vars[0], uv, input_vars[1], input_vars[2], input_vars[4], input_vars[3]]

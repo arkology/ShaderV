@@ -98,5 +98,13 @@ vec3 normalFromHeightmapFunc(vec2 _hm_uv, sampler2D _hm_tex, vec2 _hm_size, floa
 """
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+	var texture = "TEXTURE"
+	var uv = "UV"
+	
+	if input_vars[0]:
+		texture = input_vars[0]
+	if input_vars[1]:
+		uv = input_vars[1]
+	
 	return "%s = normalFromHeightmapFunc(%s.xy, %s, %s.xy, %s, %s, %s, %s);" % [
-output_vars[0], input_vars[1], input_vars[0], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[6]]
+output_vars[0], uv, texture, input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[6]]
