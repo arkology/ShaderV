@@ -566,4 +566,6 @@ _global_script_class_icons={
 
 [application]
 
+config/name="ShaderV"
 run/main_scene="res://addons/shaderV/examples/basic_examples.tscn"
+config/icon="res://addons/shaderV/shaderV_icon.png"
