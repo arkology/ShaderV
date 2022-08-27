@@ -70,12 +70,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-float generateRand0mStripesFunc(vec2 _uv_stripes, float _fill_stripes, float _amount_stripes){
-	_fill_stripes = min(max(_fill_stripes, 0.0), 1.0);
-	return 1.0 - step(_fill_stripes, fract(sin(dot(floor(vec2(_uv_stripes.y) * _amount_stripes), vec2(12.9898, 78.233))) * 43758.5453123));
-}
-"""
+	var code : String = preload("stripesRandom.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -84,5 +81,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 		uv = input_vars[0]
 	
 	return """%s = %s;
-%s = generateRand0mStripesFunc(%s.xy, %s, %s) * %s;""" % [output_vars[0], input_vars[3],
+%s = _generateRandomStripesFunc(%s.xy, %s, %s) * %s;""" % [output_vars[0], input_vars[3],
 output_vars[1], uv, input_vars[1], input_vars[2], input_vars[4]]

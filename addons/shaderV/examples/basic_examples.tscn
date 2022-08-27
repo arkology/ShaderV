@@ -2994,6 +2994,7 @@ constant = Color( 0, 1, 0.5, 1 )
 
 [sub_resource type="VisualShaderNodeCustom" id=198]
 default_input_values = [ 1, Vector3( 8, 8, 0 ), 2, Vector3( 1, 1, 1 ), 3, 1 ]
+initialized = true
 script = ExtResource( 35 )
 
 [sub_resource type="VisualShader" id=199]
@@ -3001,12 +3002,10 @@ code = "shader_type canvas_item;
 
 
 // CheckerboardShape
-
-float checkerb0ardPatternFunc(vec2 uv, vec2 _checker_size){
+float _checkerboardPatternFunc(vec2 uv, vec2 _checker_size){
 	float fmodRes = mod(floor(_checker_size.x * uv.x) + floor(_checker_size.y * uv.y), 2.0);
 	return max(sign(fmodRes), 0.0);
 }
-
 
 void vertex() {
 // Output:0
@@ -3029,7 +3028,7 @@ void fragment() {
 	float n_out9p1;
 	{
 		n_out9p0 = n_out8p0;
-		n_out9p1 = checkerb0ardPatternFunc(n_out4p0.xy, n_out10p0.xy) * n_out8p1;
+		n_out9p1 = _checkerboardPatternFunc(n_out4p0.xy, n_out10p0.xy) * n_out8p1;
 	}
 
 // Output:0
@@ -3043,7 +3042,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -474.592, 69.01 )
+graph_offset = Vector2( -347.371, 159.313 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 420, 220 )
@@ -3055,13 +3054,14 @@ nodes/fragment/9/node = SubResource( 198 )
 nodes/fragment/9/position = Vector2( 180, 220 )
 nodes/fragment/10/node = SubResource( 196 )
 nodes/fragment/10/position = Vector2( -220, 220 )
-nodes/fragment/connections = PoolIntArray( 9, 0, 0, 0, 9, 1, 0, 1, 4, 0, 9, 0, 10, 0, 9, 1, 8, 0, 9, 2, 8, 1, 9, 3 )
+nodes/fragment/connections = PoolIntArray( 9, 1, 0, 1, 4, 0, 9, 0, 10, 0, 9, 1, 8, 0, 9, 2, 8, 1, 9, 3, 9, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=200]
 shader = SubResource( 199 )
 
 [sub_resource type="VisualShaderNodeCustom" id=201]
 default_input_values = [ 1, Vector3( 0.5, 0.5, 0 ), 2, Vector3( 1, 1, 0 ), 3, 0.0, 4, 0.5, 5, 0.5, 6, Vector3( 1, 1, 1 ), 7, 1.0 ]
+initialized = true
 script = ExtResource( 36 )
 
 [sub_resource type="VisualShaderNodeColorConstant" id=202]
@@ -3086,15 +3086,13 @@ code = "shader_type canvas_item;
 
 
 // CircleShape2
-
-vec4 generateCircle2Func(vec2 _uv_gc2, vec2 _p0s_gc2, vec2 _sca1e_gc2, float _rad_gc2,
+vec4 _generateCircle2Func(vec2 _uv_gc2, vec2 _p0s_gc2, vec2 _sca1e_gc2, float _rad_gc2,
 						 float _b0rdIn_gc2, float _b0rdOut_gc2, vec4 _c0l_gc2){
 	float _dst_gc2 = length((_uv_gc2 - _p0s_gc2) * _sca1e_gc2);
 	_c0l_gc2.a *= smoothstep(_rad_gc2 - _b0rdIn_gc2, _rad_gc2, _dst_gc2) 
 				 - smoothstep(_rad_gc2, _rad_gc2 + _b0rdOut_gc2, _dst_gc2);
 	return _c0l_gc2;
 }
-
 
 void vertex() {
 // Output:0
@@ -3128,7 +3126,7 @@ void fragment() {
 	vec3 n_out11p0;
 	float n_out11p1;
 	{
-		vec4 n_out11p0n_out11p1 = generateCircle2Func(n_out4p0.xy, n_out18p0.xy, n_out14p0.xy, n_out15p0, n_out16p0, n_out17p0, vec4(n_out12p0, n_out12p1));
+		vec4 n_out11p0n_out11p1 = _generateCircle2Func(n_out4p0.xy, n_out18p0.xy, n_out14p0.xy, n_out15p0, n_out16p0, n_out17p0, vec4(n_out12p0, n_out12p1));
 		n_out11p0 = n_out11p0n_out11p1.rgb;
 		n_out11p1 = n_out11p0n_out11p1.a;
 	}
@@ -3144,7 +3142,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -441.592, 178.01 )
+graph_offset = Vector2( -347.371, 159.313 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 540, 200 )
@@ -3164,13 +3162,14 @@ nodes/fragment/17/node = SubResource( 206 )
 nodes/fragment/17/position = Vector2( -20, 440 )
 nodes/fragment/18/node = SubResource( 207 )
 nodes/fragment/18/position = Vector2( -120, 80 )
-nodes/fragment/connections = PoolIntArray( 11, 0, 0, 0, 11, 1, 0, 1, 12, 0, 11, 6, 12, 1, 11, 7, 4, 0, 11, 0, 16, 0, 11, 4, 17, 0, 11, 5, 14, 0, 11, 2, 18, 0, 11, 1, 15, 0, 11, 3 )
+nodes/fragment/connections = PoolIntArray( 11, 1, 0, 1, 12, 0, 11, 6, 12, 1, 11, 7, 4, 0, 11, 0, 16, 0, 11, 4, 17, 0, 11, 5, 14, 0, 11, 2, 18, 0, 11, 1, 15, 0, 11, 3, 11, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=209]
 shader = SubResource( 208 )
 
 [sub_resource type="VisualShaderNodeCustom" id=210]
 default_input_values = [ 1, Vector3( 0.5, 0.5, 0 ), 2, Vector3( 1, 1, 0 ), 3, -0.5, 4, 0.5, 5, 1.0, 6, Vector3( 1, 1, 1 ), 7, 1.0 ]
+initialized = true
 script = ExtResource( 37 )
 
 [sub_resource type="VisualShaderNodeScalarConstant" id=211]
@@ -3196,20 +3195,18 @@ code = "shader_type canvas_item;
 
 
 // CircleShape
-
-vec4 generateCirc1eFunc(vec2 _uv_circ1e, vec2 _center_circ1e, vec2 _scale_factor_circ1e, float _innerRad_circ1e, float _outRad_circ1e, float _hard_circ1e) {
-	float _innerRadiusCheck0 = min(_innerRad_circ1e, _outRad_circ1e);
-	float _outerRadiusCheck0 = max(_innerRad_circ1e, _outRad_circ1e);
+vec4 _generateCircleFunc(vec2 _uv_circle, vec2 _center_circle, vec2 _scale_factor_circle, float _innerRad_circle, float _outRad_circle, float _hard_circle) {
+	float _innerRadiusCheck0 = min(_innerRad_circle, _outRad_circle);
+	float _outerRadiusCheck0 = max(_innerRad_circle, _outRad_circle);
 	
-	float currentP0sitionC1rcle = length((_uv_circ1e - _center_circ1e) * _scale_factor_circ1e);
-	float maxIntencityCenterC1rcle = (_outerRadiusCheck0 + _innerRadiusCheck0) * 0.5;
-	float rd0 = _outerRadiusCheck0 - maxIntencityCenterC1rcle;
-	float circ1eDistributi0n = min(max(abs(currentP0sitionC1rcle - maxIntencityCenterC1rcle) / rd0, 0.0), 1.0);
+	float currentPositionCircle = length((_uv_circle - _center_circle) * _scale_factor_circle);
+	float maxIntencityCenterCircle = (_outerRadiusCheck0 + _innerRadiusCheck0) * 0.5;
+	float rd0 = _outerRadiusCheck0 - maxIntencityCenterCircle;
+	float circleDistribution = min(max(abs(currentPositionCircle - maxIntencityCenterCircle) / rd0, 0.0), 1.0);
 	vec4 _outputColor0 = vec4(1.0);
-	_outputColor0.a = 1.0 - pow(circ1eDistributi0n, _hard_circ1e);
+	_outputColor0.a = 1.0 - pow(circleDistribution, _hard_circle);
 	return _outputColor0;
 }
-
 
 void vertex() {
 // Output:0
@@ -3244,7 +3241,7 @@ void fragment() {
 	float n_out18p1;
 	{
 		n_out18p0 = n_out22p0;
-		n_out18p1 = generateCirc1eFunc(n_out4p0.xy, n_out23p0.xy, n_out24p0.xy, n_out19p0, n_out20p0, n_out21p0).a * n_out22p1;
+		n_out18p1 = _generateCircleFunc(n_out4p0.xy, n_out23p0.xy, n_out24p0.xy, n_out19p0, n_out20p0, n_out21p0).a * n_out22p1;
 	}
 
 // Output:0
@@ -3258,7 +3255,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -423.592, 134.01 )
+graph_offset = Vector2( -347.371, 159.313 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 540, 180 )
@@ -3278,7 +3275,7 @@ nodes/fragment/23/node = SubResource( 215 )
 nodes/fragment/23/position = Vector2( -120, 80 )
 nodes/fragment/24/node = SubResource( 216 )
 nodes/fragment/24/position = Vector2( -120, 180 )
-nodes/fragment/connections = PoolIntArray( 4, 0, 18, 0, 19, 0, 18, 3, 20, 0, 18, 4, 21, 0, 18, 5, 22, 0, 18, 6, 22, 1, 18, 7, 18, 0, 0, 0, 18, 1, 0, 1, 23, 0, 18, 1, 24, 0, 18, 2 )
+nodes/fragment/connections = PoolIntArray( 4, 0, 18, 0, 19, 0, 18, 3, 20, 0, 18, 4, 21, 0, 18, 5, 22, 0, 18, 6, 22, 1, 18, 7, 18, 1, 0, 1, 23, 0, 18, 1, 24, 0, 18, 2, 18, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=218]
 shader = SubResource( 217 )
@@ -3288,6 +3285,7 @@ constant = Color( 1, 0.867188, 0, 1 )
 
 [sub_resource type="VisualShaderNodeCustom" id=226]
 default_input_values = [ 1, Vector3( 0.5, 0.5, 0 ), 2, 3, 3, Vector3( 1, 1, 0 ), 4, 0.0, 5, 0.0, 6, Vector3( 1, 1, 1 ), 7, 1.0 ]
+initialized = true
 script = ExtResource( 39 )
 
 [sub_resource type="VisualShaderNodeVec3Constant" id=227]
@@ -3300,6 +3298,7 @@ constant = Vector3( 1, 1, 0 )
 constant = 3.0
 
 [sub_resource type="VisualShaderNodeScalarConstant" id=230]
+constant = 0.064
 
 [sub_resource type="VisualShaderNodeScalarConstant" id=231]
 constant = 0.05
@@ -3309,17 +3308,15 @@ code = "shader_type canvas_item;
 
 
 // RegularPolygonShape
-
-float p0lyg0nFunc(vec2 _uv_p0lyg0n, vec2 _pos_p0lyg0n, vec2 _size_p0lyg0n, float _sides_p0lyg0n, float _angle_p0lyg0n, float _smooth_p0lyg0n){
-	_uv_p0lyg0n = (_uv_p0lyg0n - _pos_p0lyg0n) / (_size_p0lyg0n * 2.0);
-	float a_p0lyg0n = atan(_uv_p0lyg0n.x, _uv_p0lyg0n.y) + _angle_p0lyg0n;
-	float r_p0lyg0n = 6.28318530718 / float(int(max(_sides_p0lyg0n, 3.0)));
-	float d_p0lyg0n = cos(floor(0.5 + a_p0lyg0n / r_p0lyg0n) * r_p0lyg0n - a_p0lyg0n) * length(_uv_p0lyg0n);
-	return (max(sign(_smooth_p0lyg0n - 0.0), 0.0) * ( 1.0 - smoothstep(0.1 - 0.0001, 0.1 + _smooth_p0lyg0n, d_p0lyg0n) ) +
-			(max(sign(-_smooth_p0lyg0n + 0.0), 0.0)) * ( 1.0 - smoothstep(0.1 + _smooth_p0lyg0n - 0.0001, 0.1, d_p0lyg0n) ) +
-			(1.0 - abs(sign(_smooth_p0lyg0n - 0.0))) * ( 1.0 - step(0.1, d_p0lyg0n)) );
+float _polygonFunc(vec2 _uv_polygon, vec2 _pos_polygon, vec2 _size_polygon, float _sides_polygon, float _angle_polygon, float _smooth_polygon){
+	_uv_polygon = (_uv_polygon - _pos_polygon) / (_size_polygon * 2.0);
+	float a_polygon = atan(_uv_polygon.x, _uv_polygon.y) + _angle_polygon;
+	float r_polygon = 6.28318530718 / float(int(max(_sides_polygon, 3.0)));
+	float d_polygon = cos(floor(0.5 + a_polygon / r_polygon) * r_polygon - a_polygon) * length(_uv_polygon);
+	return (max(sign(_smooth_polygon - 0.0), 0.0) * ( 1.0 - smoothstep(0.1 - 0.0001, 0.1 + _smooth_polygon, d_polygon) ) +
+			(max(sign(-_smooth_polygon + 0.0), 0.0)) * ( 1.0 - smoothstep(0.1 + _smooth_polygon - 0.0001, 0.1, d_polygon) ) +
+			(1.0 - abs(sign(_smooth_polygon - 0.0))) * ( 1.0 - step(0.1, d_polygon)) );
 }
-
 
 void vertex() {
 // Output:0
@@ -3340,7 +3337,7 @@ void fragment() {
 	vec3 n_out29p0 = vec3(1.000000, 1.000000, 0.000000);
 
 // Scalar:32
-	float n_out32p0 = 0.000000;
+	float n_out32p0 = 0.064000;
 
 // Scalar:33
 	float n_out33p0 = 0.050000;
@@ -3354,7 +3351,7 @@ void fragment() {
 	float n_out27p1;
 	{
 		n_out27p0 = n_out26p0;
-		n_out27p1 = p0lyg0nFunc(n_out4p0.xy, n_out28p0.xy, n_out29p0.xy, n_out31p0, n_out32p0, n_out33p0) * n_out26p1;
+		n_out27p1 = _polygonFunc(n_out4p0.xy, n_out28p0.xy, n_out29p0.xy, n_out31p0, n_out32p0, n_out33p0) * n_out26p1;
 	}
 
 // Output:0
@@ -3368,7 +3365,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -246, 175 )
+graph_offset = Vector2( -316.371, -27.6874 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 540, 160 )
@@ -3388,7 +3385,7 @@ nodes/fragment/32/node = SubResource( 230 )
 nodes/fragment/32/position = Vector2( -20, 280 )
 nodes/fragment/33/node = SubResource( 231 )
 nodes/fragment/33/position = Vector2( 0, 360 )
-nodes/fragment/connections = PoolIntArray( 27, 0, 0, 0, 27, 1, 0, 1, 4, 0, 27, 0, 28, 0, 27, 1, 31, 0, 27, 2, 29, 0, 27, 3, 32, 0, 27, 4, 33, 0, 27, 5, 26, 0, 27, 6, 26, 1, 27, 7 )
+nodes/fragment/connections = PoolIntArray( 27, 1, 0, 1, 4, 0, 27, 0, 28, 0, 27, 1, 31, 0, 27, 2, 29, 0, 27, 3, 32, 0, 27, 4, 33, 0, 27, 5, 26, 0, 27, 6, 26, 1, 27, 7, 27, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=233]
 shader = SubResource( 232 )
@@ -3401,6 +3398,7 @@ constant = Vector3( 0.5, 0.5, 0 )
 
 [sub_resource type="VisualShaderNodeCustom" id=236]
 default_input_values = [ 1, Vector3( 0.5, 0.5, 0 ), 2, 70.0, 3, 1.0, 4, 1.0, 5, 0.0, 6, 0.0, 7, Vector3( 1, 1, 1 ), 8, 1.0 ]
+initialized = true
 script = ExtResource( 40 )
 
 [sub_resource type="VisualShaderNodeScalarConstant" id=237]
@@ -3423,16 +3421,14 @@ code = "shader_type canvas_item;
 
 
 // SpiralShape
-
-vec4 generateSp1ralFunc(vec2 _uv_genSp1r, vec2 _p1v0t_genSp1r, float _s1ze_genSp1r, float _l1neAmnt_genSp1r,
-						float _spd_genSp1r, float _s0ft_genSp1r, float _t1me_genSp1r, vec4 _c0l_genSp1r){
-	_uv_genSp1r -= _p1v0t_genSp1r;
-	float _va1ue_genSp1r = 1.0 - sin(length(_uv_genSp1r) * _s1ze_genSp1r +
-					floor(_l1neAmnt_genSp1r) * atan(_uv_genSp1r.x, _uv_genSp1r.y) +
-					_t1me_genSp1r * _spd_genSp1r ) / _s0ft_genSp1r;
-	return vec4(_c0l_genSp1r.rgb, _c0l_genSp1r.a * _va1ue_genSp1r);
+vec4 _generateSpiralFunc(vec2 _uv_genSpir, vec2 _pivot_genSpir, float _size_genSpir, float _lineAmnt_genSpir,
+						float _spd_genSpir, float _soft_genSpir, float _t1me_genSpir, vec4 _col_genSpir){
+	_uv_genSpir -= _pivot_genSpir;
+	float _va1ue_genSpir = 1.0 - sin(length(_uv_genSpir) * _size_genSpir +
+					floor(_lineAmnt_genSpir) * atan(_uv_genSpir.x, _uv_genSpir.y) +
+					_t1me_genSpir * _spd_genSpir ) / _soft_genSpir;
+	return vec4(_col_genSpir.rgb, _col_genSpir.a * _va1ue_genSpir);
 }
-
 
 void vertex() {
 // Output:0
@@ -3469,7 +3465,7 @@ void fragment() {
 	vec3 n_out40p0;
 	float n_out40p1;
 	{
-		vec4 n_out40p0n_out40p1 = generateSp1ralFunc(n_out4p0.xy, n_out38p0.xy, n_out41p0, n_out42p0, n_out44p0, n_out43p0, n_out45p0, vec4(n_out37p0, n_out37p1));
+		vec4 n_out40p0n_out40p1 = _generateSpiralFunc(n_out4p0.xy, n_out38p0.xy, n_out41p0, n_out42p0, n_out44p0, n_out43p0, n_out45p0, vec4(n_out37p0, n_out37p1));
 		n_out40p0 = n_out40p0n_out40p1.rgb;
 		n_out40p1 = n_out40p0n_out40p1.a;
 	}
@@ -3485,7 +3481,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -105.592, 119 )
+graph_offset = Vector2( -252.371, 84.3126 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 580, 200 )
@@ -3496,7 +3492,7 @@ nodes/fragment/37/position = Vector2( 0, 540 )
 nodes/fragment/38/node = SubResource( 235 )
 nodes/fragment/38/position = Vector2( -140, 40 )
 nodes/fragment/40/node = SubResource( 236 )
-nodes/fragment/40/position = Vector2( 320, 200 )
+nodes/fragment/40/position = Vector2( 340, 200 )
 nodes/fragment/41/node = SubResource( 237 )
 nodes/fragment/41/position = Vector2( 0, 140 )
 nodes/fragment/42/node = SubResource( 238 )
@@ -3507,13 +3503,14 @@ nodes/fragment/44/node = SubResource( 240 )
 nodes/fragment/44/position = Vector2( 0, 380 )
 nodes/fragment/45/node = SubResource( 241 )
 nodes/fragment/45/position = Vector2( 0, 460 )
-nodes/fragment/connections = PoolIntArray( 40, 0, 0, 0, 40, 1, 0, 1, 4, 0, 40, 0, 38, 0, 40, 1, 41, 0, 40, 2, 42, 0, 40, 3, 43, 0, 40, 4, 44, 0, 40, 5, 45, 0, 40, 6, 37, 0, 40, 7, 37, 1, 40, 8 )
+nodes/fragment/connections = PoolIntArray( 4, 0, 40, 0, 38, 0, 40, 1, 41, 0, 40, 2, 42, 0, 40, 3, 43, 0, 40, 4, 44, 0, 40, 5, 45, 0, 40, 6, 37, 0, 40, 7, 37, 1, 40, 8, 40, 1, 0, 1, 40, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=243]
 shader = SubResource( 242 )
 
 [sub_resource type="VisualShaderNodeCustom" id=244]
 default_input_values = [ 1, 21, 2, 0.5, 3, 1, 4, 0, 5, Vector3( 1, 1, 1 ), 6, 1 ]
+initialized = true
 script = ExtResource( 41 )
 
 [sub_resource type="VisualShaderNodeInput" id=245]
@@ -3539,11 +3536,9 @@ code = "shader_type canvas_item;
 
 
 // ScanLinesSharpShape
-
-float scanL1nesSharpFunc(vec2 _uv_scL1Shrp, float _am0nt_scL1Shrp, float _f1ll_scL1Shrp, float _spd_scL1Shrp, float _t1me_scL1Shrp) {
-	return step(fract(_uv_scL1Shrp.y * _am0nt_scL1Shrp + _t1me_scL1Shrp * _spd_scL1Shrp), _f1ll_scL1Shrp);
+float _scanLinesSharpFunc(vec2 _uv_scLiShrp, float _amount_scLiShrp, float _fill_scLiShrp, float _spd_scLiShrp, float _time_scLiShrp) {
+	return step(fract(_uv_scLiShrp.y * _amount_scLiShrp + _time_scLiShrp * _spd_scLiShrp), _fill_scLiShrp);
 }
-
 
 void vertex() {
 // Output:0
@@ -3575,7 +3570,7 @@ void fragment() {
 	float n_out46p1;
 	{
 		n_out46p0 = n_out52p0;
-		n_out46p1 = scanL1nesSharpFunc(n_out47p0.xy, n_out48p0, n_out49p0, n_out50p0, n_out51p0) * n_out52p1;
+		n_out46p1 = _scanLinesSharpFunc(n_out47p0.xy, n_out48p0, n_out49p0, n_out50p0, n_out51p0) * n_out52p1;
 	}
 
 // Output:0
@@ -3589,7 +3584,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -394.592, -6.98999 )
+graph_offset = Vector2( -273.371, 155.313 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 660, 220 )
@@ -3607,7 +3602,7 @@ nodes/fragment/51/node = SubResource( 249 )
 nodes/fragment/51/position = Vector2( 100, 320 )
 nodes/fragment/52/node = SubResource( 250 )
 nodes/fragment/52/position = Vector2( 140, 420 )
-nodes/fragment/connections = PoolIntArray( 46, 0, 0, 0, 46, 1, 0, 1, 47, 0, 46, 0, 48, 0, 46, 1, 52, 0, 46, 5, 52, 1, 46, 6, 51, 0, 46, 4, 50, 0, 46, 3, 49, 0, 46, 2 )
+nodes/fragment/connections = PoolIntArray( 46, 1, 0, 1, 47, 0, 46, 0, 48, 0, 46, 1, 52, 0, 46, 5, 52, 1, 46, 6, 51, 0, 46, 4, 50, 0, 46, 3, 49, 0, 46, 2, 46, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=252]
 shader = SubResource( 251 )
@@ -3617,6 +3612,7 @@ constant = Color( 0.623529, 0.439216, 1, 1 )
 
 [sub_resource type="VisualShaderNodeCustom" id=254]
 default_input_values = [ 1, 0.5, 2, 20.0, 3, Vector3( 1, 1, 1 ), 4, 1 ]
+initialized = true
 script = ExtResource( 42 )
 
 [sub_resource type="VisualShaderNodeScalarConstant" id=255]
@@ -3630,12 +3626,10 @@ code = "shader_type canvas_item;
 
 
 // RandomStripesShape
-
-float generateRand0mStripesFunc(vec2 _uv_stripes, float _fill_stripes, float _amount_stripes){
+float _generateRandomStripesFunc(vec2 _uv_stripes, float _fill_stripes, float _amount_stripes){
 	_fill_stripes = min(max(_fill_stripes, 0.0), 1.0);
 	return 1.0 - step(_fill_stripes, fract(sin(dot(floor(vec2(_uv_stripes.y) * _amount_stripes), vec2(12.9898, 78.233))) * 43758.5453123));
 }
-
 
 void vertex() {
 // Output:0
@@ -3661,7 +3655,7 @@ void fragment() {
 	float n_out54p1;
 	{
 		n_out54p0 = n_out53p0;
-		n_out54p1 = generateRand0mStripesFunc(n_out47p0.xy, n_out55p0, n_out56p0) * n_out53p1;
+		n_out54p1 = _generateRandomStripesFunc(n_out47p0.xy, n_out55p0, n_out56p0) * n_out53p1;
 	}
 
 // Output:0
@@ -3675,7 +3669,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -389.592, 56.01 )
+graph_offset = Vector2( -273.371, 155.313 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 660, 220 )
@@ -3689,7 +3683,7 @@ nodes/fragment/55/node = SubResource( 255 )
 nodes/fragment/55/position = Vector2( 140, 220 )
 nodes/fragment/56/node = SubResource( 256 )
 nodes/fragment/56/position = Vector2( 140, 300 )
-nodes/fragment/connections = PoolIntArray( 54, 0, 0, 0, 54, 1, 0, 1, 47, 0, 54, 0, 53, 0, 54, 3, 53, 1, 54, 4, 55, 0, 54, 1, 56, 0, 54, 2 )
+nodes/fragment/connections = PoolIntArray( 54, 1, 0, 1, 47, 0, 54, 0, 53, 0, 54, 3, 53, 1, 54, 4, 55, 0, 54, 1, 56, 0, 54, 2, 54, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=258]
 shader = SubResource( 257 )
@@ -9395,6 +9389,7 @@ shader = SubResource( 589 )
 
 [sub_resource type="VisualShaderNodeCustom" id=591]
 default_input_values = [ 1, Vector3( 8, 8, 0 ), 2, Vector3( 0.2, 0.2, 0 ), 3, Vector3( 0.01, 0.01, 0 ), 4, Vector3( 1, 1, 1 ), 5, 1.0, 6, Vector3( 0, 0, 0 ), 7, 0.0 ]
+initialized = true
 script = ExtResource( 93 )
 
 [sub_resource type="VisualShaderNodeColorConstant" id=592]
@@ -9420,14 +9415,12 @@ code = "shader_type canvas_item;
 
 
 // GridShape
-
-vec4 gridFunc(vec2 _grid_uv, vec2 _gridline_thickness, vec2 _gridline_smooth, vec2 _gridcell_count, vec4 _grid_col, vec4 _grid_bg_col){
+vec4 _gridFunc(vec2 _grid_uv, vec2 _gridline_thickness, vec2 _gridline_smooth, vec2 _gridcell_count, vec4 _grid_col, vec4 _grid_bg_col){
 	vec2 _grid_vec = fract(_grid_uv * _gridcell_count);
 	_grid_vec = min(_grid_vec, vec2(1.0) - _grid_vec);
 	_grid_vec = smoothstep(_grid_vec - _gridline_smooth, _grid_vec + _gridline_smooth, _gridline_thickness / vec2(2.0));
 	return mix(_grid_bg_col, _grid_col, clamp(_grid_vec.x + _grid_vec.y, 0.0, 1.0));
 }
-
 
 void vertex() {
 // Output:0
@@ -9459,7 +9452,7 @@ void fragment() {
 	vec3 n_out2p0;
 	float n_out2p1;
 	{
-		vec4 n_out2p0n_out2p1 = gridFunc(n_out6p0.xy, n_out7p0.xy, n_out5p0.xy, n_out8p0.xy, vec4(n_out3p0, n_out3p1), vec4(n_out4p0, n_out4p1));
+		vec4 n_out2p0n_out2p1 = _gridFunc(n_out6p0.xy, n_out7p0.xy, n_out5p0.xy, n_out8p0.xy, vec4(n_out3p0, n_out3p1), vec4(n_out4p0, n_out4p1));
 		n_out2p0 = n_out2p0n_out2p1.rgb;
 		n_out2p1 = n_out2p0n_out2p1.a;
 	}
@@ -9475,7 +9468,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -440, 64.5 )
+graph_offset = Vector2( -273.371, 155.313 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 400, 200 )
@@ -9493,7 +9486,7 @@ nodes/fragment/7/node = SubResource( 596 )
 nodes/fragment/7/position = Vector2( -320, 220 )
 nodes/fragment/8/node = SubResource( 597 )
 nodes/fragment/8/position = Vector2( -320, 140 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 2, 1, 0, 1, 3, 0, 2, 4, 3, 1, 2, 5, 4, 0, 2, 6, 4, 1, 2, 7, 5, 0, 2, 3, 6, 0, 2, 0, 7, 0, 2, 2, 8, 0, 2, 1 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 2, 4, 3, 1, 2, 5, 4, 0, 2, 6, 4, 1, 2, 7, 5, 0, 2, 3, 6, 0, 2, 0, 7, 0, 2, 2, 8, 0, 2, 1, 2, 0, 0, 0, 2, 1, 0, 1 )
 
 [sub_resource type="ShaderMaterial" id=599]
 shader = SubResource( 598 )
@@ -10841,7 +10834,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="item33" type="VBoxContainer" parent="container"]
+[node name="outerGlowEmpty" type="VBoxContainer" parent="container"]
 margin_left = 1008.0
 margin_top = 194.0
 margin_right = 1128.0
@@ -10854,7 +10847,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="title" type="Label" parent="container/item33"]
+[node name="title" type="Label" parent="container/outerGlowEmpty"]
 margin_top = 3.0
 margin_right = 120.0
 margin_bottom = 34.0
@@ -10866,7 +10859,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="preview" type="TextureRect" parent="container/item33"]
+[node name="preview" type="TextureRect" parent="container/outerGlowEmpty"]
 material = SubResource( 195 )
 margin_top = 32.0
 margin_right = 120.0
@@ -10881,7 +10874,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="item34" type="VBoxContainer" parent="container"]
+[node name="checkerboardPattern" type="VBoxContainer" parent="container"]
 margin_left = 1117.0
 margin_top = 194.0
 margin_right = 1237.0
@@ -10894,7 +10887,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="title" type="Label" parent="container/item34"]
+[node name="title" type="Label" parent="container/checkerboardPattern"]
 margin_top = 3.0
 margin_right = 120.0
 margin_bottom = 34.0
@@ -10906,7 +10899,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="preview" type="TextureRect" parent="container/item34"]
+[node name="preview" type="TextureRect" parent="container/checkerboardPattern"]
 material = SubResource( 200 )
 margin_top = 32.0
 margin_right = 120.0
@@ -10921,7 +10914,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="item35" type="VBoxContainer" parent="container"]
+[node name="generateCircle" type="VBoxContainer" parent="container"]
 margin_top = 291.0
 margin_right = 120.0
 margin_bottom = 386.0
@@ -10933,7 +10926,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="title" type="Label" parent="container/item35"]
+[node name="title" type="Label" parent="container/generateCircle"]
 margin_top = 11.0
 margin_right = 120.0
 margin_bottom = 25.0
@@ -10944,7 +10937,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="preview" type="TextureRect" parent="container/item35"]
+[node name="preview" type="TextureRect" parent="container/generateCircle"]
 material = SubResource( 209 )
 margin_top = 23.0
 margin_right = 120.0
@@ -10959,7 +10952,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="item36" type="VBoxContainer" parent="container"]
+[node name="generateCircle2" type="VBoxContainer" parent="container"]
 margin_left = 109.0
 margin_top = 291.0
 margin_right = 229.0
@@ -10972,7 +10965,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="title" type="Label" parent="container/item36"]
+[node name="title" type="Label" parent="container/generateCircle2"]
 margin_top = 11.0
 margin_right = 120.0
 margin_bottom = 25.0
@@ -10983,7 +10976,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="preview" type="TextureRect" parent="container/item36"]
+[node name="preview" type="TextureRect" parent="container/generateCircle2"]
 material = SubResource( 218 )
 margin_top = 23.0
 margin_right = 120.0
@@ -10998,7 +10991,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="item38" type="VBoxContainer" parent="container"]
+[node name="regulatNgon" type="VBoxContainer" parent="container"]
 margin_left = 218.0
 margin_top = 291.0
 margin_right = 338.0
@@ -11011,7 +11004,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="title" type="Label" parent="container/item38"]
+[node name="title" type="Label" parent="container/regulatNgon"]
 margin_top = 3.0
 margin_right = 120.0
 margin_bottom = 34.0
@@ -11023,7 +11016,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="preview" type="TextureRect" parent="container/item38"]
+[node name="preview" type="TextureRect" parent="container/regulatNgon"]
 material = SubResource( 233 )
 margin_top = 32.0
 margin_right = 120.0
@@ -11038,7 +11031,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="item39" type="VBoxContainer" parent="container"]
+[node name="generateSpiral" type="VBoxContainer" parent="container"]
 margin_left = 327.0
 margin_top = 291.0
 margin_right = 447.0
@@ -11051,7 +11044,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="title" type="Label" parent="container/item39"]
+[node name="title" type="Label" parent="container/generateSpiral"]
 margin_top = 11.0
 margin_right = 120.0
 margin_bottom = 25.0
@@ -11062,7 +11055,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="preview" type="TextureRect" parent="container/item39"]
+[node name="preview" type="TextureRect" parent="container/generateSpiral"]
 material = SubResource( 243 )
 margin_top = 23.0
 margin_right = 120.0
@@ -12937,7 +12930,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="item87" type="VBoxContainer" parent="container"]
+[node name="gridShape" type="VBoxContainer" parent="container"]
 margin_left = 790.0
 margin_top = 679.0
 margin_right = 910.0
@@ -12950,7 +12943,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="title" type="Label" parent="container/item87"]
+[node name="title" type="Label" parent="container/gridShape"]
 margin_top = 17.0
 margin_right = 120.0
 margin_bottom = 31.0
@@ -12961,7 +12954,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="preview" type="TextureRect" parent="container/item87"]
+[node name="preview" type="TextureRect" parent="container/gridShape"]
 material = SubResource( 599 )
 margin_top = 29.0
 margin_right = 120.0

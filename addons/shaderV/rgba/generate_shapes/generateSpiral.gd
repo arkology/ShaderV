@@ -90,16 +90,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 generateSp1ralFunc(vec2 _uv_genSp1r, vec2 _p1v0t_genSp1r, float _s1ze_genSp1r, float _l1neAmnt_genSp1r,
-						float _spd_genSp1r, float _s0ft_genSp1r, float _t1me_genSp1r, vec4 _c0l_genSp1r){
-	_uv_genSp1r -= _p1v0t_genSp1r;
-	float _va1ue_genSp1r = 1.0 - sin(length(_uv_genSp1r) * _s1ze_genSp1r +
-					floor(_l1neAmnt_genSp1r) * atan(_uv_genSp1r.x, _uv_genSp1r.y) +
-					_t1me_genSp1r * _spd_genSp1r ) / _s0ft_genSp1r;
-	return vec4(_c0l_genSp1r.rgb, _c0l_genSp1r.a * _va1ue_genSp1r);
-}
-"""
+	var code : String = preload("generateSpiral.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -107,7 +100,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return """vec4 %s%s = generateSp1ralFunc(%s.xy, %s.xy, %s, %s, %s, %s, %s, vec4(%s, %s));
+	return """vec4 %s%s = _generateSpiralFunc(%s.xy, %s.xy, %s, %s, %s, %s, %s, vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3], input_vars[5],

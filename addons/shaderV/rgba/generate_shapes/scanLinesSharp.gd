@@ -80,11 +80,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-float scanL1nesSharpFunc(vec2 _uv_scL1Shrp, float _am0nt_scL1Shrp, float _f1ll_scL1Shrp, float _spd_scL1Shrp, float _t1me_scL1Shrp) {
-	return step(fract(_uv_scL1Shrp.y * _am0nt_scL1Shrp + _t1me_scL1Shrp * _spd_scL1Shrp), _f1ll_scL1Shrp);
-}
-"""
+	var code : String = preload("scanLinesSharp.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -93,6 +91,6 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 		uv = input_vars[0]
 	
 	return """%s = %s;
-%s = scanL1nesSharpFunc(%s.xy, %s, %s, %s, %s) * %s;""" % [
+%s = _scanLinesSharpFunc(%s.xy, %s, %s, %s, %s) * %s;""" % [
 output_vars[0], input_vars[5],
 output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[6]]

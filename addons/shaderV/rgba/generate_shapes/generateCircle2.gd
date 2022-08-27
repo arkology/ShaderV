@@ -85,15 +85,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 generateCircle2Func(vec2 _uv_gc2, vec2 _p0s_gc2, vec2 _sca1e_gc2, float _rad_gc2,
-						 float _b0rdIn_gc2, float _b0rdOut_gc2, vec4 _c0l_gc2){
-	float _dst_gc2 = length((_uv_gc2 - _p0s_gc2) * _sca1e_gc2);
-	_c0l_gc2.a *= smoothstep(_rad_gc2 - _b0rdIn_gc2, _rad_gc2, _dst_gc2) 
-				 - smoothstep(_rad_gc2, _rad_gc2 + _b0rdOut_gc2, _dst_gc2);
-	return _c0l_gc2;
-}
-"""
+	var code : String = preload("generateCircle2.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -101,7 +95,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return """vec4 %s%s = generateCircle2Func(%s.xy, %s.xy, %s.xy, %s, %s, %s, vec4(%s, %s));
+	return """vec4 %s%s = _generateCircle2Func(%s.xy, %s.xy, %s.xy, %s, %s, %s, vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3],
