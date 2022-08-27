@@ -52,16 +52,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-highp float randImpr0vedFunc(vec2 _c0_rnd){
-	highp float _tmp_a_rnd = 12.9898;
-	highp float _tmp_b_rnd = 78.233;
-	highp float _tmp_c_rnd = 43758.5453;
-	highp float _tmp_dt_rnd = dot(_c0_rnd, vec2(_tmp_a_rnd, _tmp_b_rnd));
-	highp float _tmp_sn_rnd = mod(_tmp_dt_rnd, 3.14);
-	return fract(sin(_tmp_sn_rnd) * _tmp_c_rnd);
-}
-"""
+	var code : String = preload("randomFloatImproved.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -69,5 +62,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s = randImpr0vedFunc(%s.xy * %s + %s.xy);" % [
+	return "%s = _randImproved(%s.xy * %s + %s.xy);" % [
 output_vars[0], uv, input_vars[1], input_vars[2]]

@@ -40,15 +40,10 @@ func _get_output_port_type(port) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 sphericalToCartesianFunc(vec3 _spherical_vec3){
-//	(r, theta, phi) -> (x, y, z)
-	return vec3(_spherical_vec3.x * sin(_spherical_vec3.z) * cos(_spherical_vec3.y),
-				_spherical_vec3.x * sin(_spherical_vec3.z) * sin(_spherical_vec3.y),
-				_spherical_vec3.x * cos(_spherical_vec3.z));
-}
-"""
+	var code : String = preload("sphericalToCartesian.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = sphericalToCartesianFunc(%s);" % [output_vars[0], input_vars[0]]
+	return "%s = _sphericalToCartesianFunc(%s);" % [output_vars[0], input_vars[0]]
 

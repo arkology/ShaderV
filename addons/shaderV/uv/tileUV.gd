@@ -61,15 +61,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 t1leMapUV(vec2 _uv_t1le_t1mp, float _w1dth_t1mp, float _he1ght_t1mp, float _t1le_nmbr_t1mp){
-	_t1le_nmbr_t1mp = min(max(floor(_t1le_nmbr_t1mp), 0.0), _w1dth_t1mp * _he1ght_t1mp - 1.0);
-	vec2 tcrcp = vec2(1.0) / vec2(_w1dth_t1mp, _he1ght_t1mp);
-	float ty =floor(_t1le_nmbr_t1mp * tcrcp.x);
-	float tx = _t1le_nmbr_t1mp - _w1dth_t1mp * ty;
-	return (_uv_t1le_t1mp + vec2(tx, ty)) * tcrcp;
-}
-"""
+	var code : String = preload("tileUV.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -77,5 +71,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = t1leMapUV(%s.xy, %s, %s, %s);" % [
-output_vars[0], uv, input_vars[1], input_vars[2], input_vars[3]]
+	return "%s.xy = _tileMapUV(%s.xy, %s, %s, %s);" % [
+			output_vars[0], uv, input_vars[1], input_vars[2], input_vars[3]]

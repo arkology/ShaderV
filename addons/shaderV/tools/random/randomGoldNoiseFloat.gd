@@ -53,15 +53,10 @@ func _get_output_port_type(port) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-float randomGoldRatioFunc(vec2 _coord_gn, vec2 _scale_gn, float _seed_gn){
-	float PHI = 1.6180339887; 
-	float PI  = 3.1415926536;
-	float SQ2 = 1.4142135624;
-	return fract(tan(distance((_coord_gn+_scale_gn)*(_seed_gn+PHI), vec2(PHI, PI)))*SQ2);
-}
-"""
+	var code : String = preload("randomGoldNoiseFloat.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars, output_vars, mode, type):
-	return "%s = randomGoldRatioFunc(%s.xy, %s.xy, %s)" % [
-output_vars[0], input_vars[0], input_vars[1], input_vars[2]]
+	return "%s = _randomGoldRatioFunc(%s.xy, %s.xy, %s)" % [
+			output_vars[0], input_vars[0], input_vars[1], input_vars[2]]

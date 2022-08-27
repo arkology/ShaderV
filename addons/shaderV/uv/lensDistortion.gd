@@ -49,17 +49,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 lensD1st0rti0nFunc(vec2 _uv_d1s_1en5, float _fctr_d1s_1en5){
-	vec2 _p0s_d1s_1en5 = _uv_d1s_1en5 - 0.5;
-	float _d1st_d1s_1en5 = length(_p0s_d1s_1en5);
-	if (_fctr_d1s_1en5 > 0.0) // fisheye / barrel
-		_uv_d1s_1en5 = vec2(0.5)+normalize(_p0s_d1s_1en5)*tan(_d1st_d1s_1en5*_fctr_d1s_1en5)*0.70711/tan(0.70711*_fctr_d1s_1en5);
-	else if (_fctr_d1s_1en5 < 0.0) // antifisheye / pincushion
-		_uv_d1s_1en5 = vec2(0.5)+normalize(_p0s_d1s_1en5)*atan(_d1st_d1s_1en5*-_fctr_d1s_1en5*10.0)*0.5/atan(-_fctr_d1s_1en5*0.5*10.0);
-	return _uv_d1s_1en5;
-}
-"""
+	var code : String = preload("lensDistortion.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -67,4 +59,4 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = lensD1st0rti0nFunc(%s.xy, %s);" % [output_vars[0], uv, input_vars[1]]
+	return "%s.xy = _lensDistortionUV(%s.xy, %s);" % [output_vars[0], uv, input_vars[1]]

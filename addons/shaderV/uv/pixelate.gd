@@ -16,7 +16,7 @@ func _get_category() -> String:
 
 func _get_description() -> String:
 	return """Pixelate UV by size factor
-Note: may prodice artifacts if applied to texture with mipmaps enabled"""
+Note: may produce artifacts if applied to texture with mipmaps enabled"""
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -48,11 +48,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 pixelateFunc(vec2 _uv_p1xelate, vec2 _effect_factor_p1xelate){
-	return round(_uv_p1xelate * _effect_factor_p1xelate) / _effect_factor_p1xelate;
-}
-"""
+	var code : String = preload("pixelate.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -60,4 +58,4 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = pixelateFunc(%s.xy, %s.xy);" % [output_vars[0], uv, input_vars[1]]
+	return "%s.xy = _pixelateUV(%s.xy, %s.xy);" % [output_vars[0], uv, input_vars[1]]

@@ -57,16 +57,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 swirlUVFunc(vec2 _uv_sw1rl, float _t1me_sw1rl, vec2 _p1vot_sw1rl, float _amount_sw1rl){
-	float _rotation_index_sw1rl = _amount_sw1rl * length(_uv_sw1rl - _p1vot_sw1rl) * _t1me_sw1rl;
-	_uv_sw1rl -= _p1vot_sw1rl;
-	_uv_sw1rl *= mat2(vec2(cos(_rotation_index_sw1rl), - sin(_rotation_index_sw1rl)),
-										vec2(sin(_rotation_index_sw1rl), cos(_rotation_index_sw1rl)));
-	_uv_sw1rl += _p1vot_sw1rl;
-	return _uv_sw1rl;
-}
-"""
+	var code : String = preload("swirlUV.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -74,5 +67,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = swirlUVFunc(%s.xy, %s, %s.xy, %s);" % [
-	output_vars[0], uv, input_vars[3], input_vars[1], input_vars[2]]
+	return "%s.xy = _swirlUVFunc(%s.xy, %s, %s.xy, %s);" % [
+			output_vars[0], uv, input_vars[3], input_vars[1], input_vars[2]]

@@ -65,34 +65,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 blur9sampleFunc(sampler2D _samp_b1ur, vec2 _uv_b1ur, float _lod_b1ur, float _rad_b1ur){
-	vec4 _c01r_b1ur = vec4(0.0);
-	if (_lod_b1ur < 0.0){
-		_c01r_b1ur = texture(_samp_b1ur, _uv_b1ur);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(0, - _rad_b1ur) * 0.01);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(0, _rad_b1ur) * 0.01);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, 0) * 0.01);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, 0) * 0.01);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, - _rad_b1ur) * 0.01);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, _rad_b1ur) * 0.01);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, _rad_b1ur) * 0.01);
-		_c01r_b1ur += texture(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, -_rad_b1ur) * 0.01);
-	}else{
-		_c01r_b1ur = textureLod(_samp_b1ur, _uv_b1ur, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(0, - _rad_b1ur) * 0.01, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(0, _rad_b1ur) * 0.01, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, 0) * 0.01, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, 0) * 0.01, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, - _rad_b1ur) * 0.01, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(- _rad_b1ur, _rad_b1ur) * 0.01, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, _rad_b1ur) * 0.01, _lod_b1ur);
-		_c01r_b1ur += textureLod(_samp_b1ur, _uv_b1ur + vec2(_rad_b1ur, -_rad_b1ur) * 0.01, _lod_b1ur);
-	}
-	_c01r_b1ur /= 9.0;
-	return _c01r_b1ur;
-}
-"""
+	var code : String = preload("blur9sample.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var texture = "TEXTURE"
@@ -103,7 +78,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[1]:
 		uv = input_vars[1]
 	
-	return """vec4 %s%s = blur9sampleFunc(%s, %s.xy, %s, %s);
+	return """vec4 %s%s = _blur9sampleFunc(%s, %s.xy, %s, %s);
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], texture, uv, input_vars[2], input_vars[3],

@@ -51,11 +51,17 @@ func _get_output_port_name(port: int) -> String:
 func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
+func _get_global_code(mode: int) -> String:
+	var code : String = preload("scaleUV.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
+
+
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
 	
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = (%s.xy - %s.xy) * %s.xy + %s.xy;" % [
-	output_vars[0], uv, input_vars[2], input_vars[1], input_vars[2]]
+	return "%s.xy = _scaleUV(%s.xy, %s.xy, %s.xy);" % [
+			output_vars[0], uv, input_vars[1], input_vars[2]]

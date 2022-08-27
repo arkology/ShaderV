@@ -63,11 +63,9 @@ func _get_output_port_type(port) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 remapFunc(vec3 _inpt_r4p, vec2 _fr0m_r4p, vec2 _t0_r4p){
-	return _t0_r4p.x + ((_inpt_r4p - _fr0m_r4p.x) * (_t0_r4p.y - _t0_r4p.x)) / (_fr0m_r4p.y - _fr0m_r4p.x);
-}
-"""
+	var code : String = preload("remap.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -75,7 +73,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return output_vars[0] + " = remapFunc(%s, vec2(%s, %s), vec2(%s, %s));" % [
+	return output_vars[0] + " = _remapFunc(%s, vec2(%s, %s), vec2(%s, %s));" % [
 	uv, input_vars[1], input_vars[2], input_vars[3], input_vars[4]]
 
 
