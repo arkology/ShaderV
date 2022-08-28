@@ -60,14 +60,12 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 maskAlphaFunc(vec4 _col_to_mask, float _mask_alpha_to_mask){
-	return vec4(_col_to_mask.rgb, _col_to_mask.a * _mask_alpha_to_mask);
-}
-"""
+	var code : String = preload("maskAlpha.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return """%s = maskAlphaFunc(vec4(%s, %s), %s).rgb;
-%s = maskAlphaFunc(vec4(%s, %s), %s).a;""" % [
+	return """%s = _maskAlphaFunc(vec4(%s, %s), %s).rgb;
+%s = _maskAlphaFunc(vec4(%s, %s), %s).a;""" % [
 output_vars[0], input_vars[0], input_vars[1], input_vars[2],
 output_vars[1], input_vars[0], input_vars[1], input_vars[2]]

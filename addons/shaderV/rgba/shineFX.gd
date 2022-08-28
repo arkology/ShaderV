@@ -93,17 +93,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 shineFunc(vec4 _color_sh1ne, vec2 _uv_sh1ne, float _loc_sh1ne, float _rot_sh1ne, float _width_sh1ne, float _soft_sh1ne, float _bright_sh1ne, float _gloss_sh1ne, vec3 _shine_color_sh1ne){
-	vec2 _angle_sh1ne = vec2(cos(_rot_sh1ne), sin(_rot_sh1ne));
-	float _norm_pos_sh1ne = dot(_uv_sh1ne, _angle_sh1ne);
-	float _normal_sh1ne = 1.0 - min(max(abs((_norm_pos_sh1ne - _loc_sh1ne) / _width_sh1ne), 0.0), 1.0);
-	float _shine_power_sh1ne = smoothstep(0.0, _soft_sh1ne * 2.0, _normal_sh1ne);
-	vec3 _reflect_color_sh1ne = mix(vec3(1.0), _color_sh1ne.rgb * 10.0, _gloss_sh1ne);
-	_color_sh1ne.rgb += _color_sh1ne.a * _shine_power_sh1ne * _bright_sh1ne * _reflect_color_sh1ne * _shine_color_sh1ne.rgb;
-	return min(max(_color_sh1ne, vec4(0.0)), vec4(1.0));
-}
-"""
+	var code : String = preload("shineFX.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -112,7 +104,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 		uv = input_vars[0]
 	
 	return """%s = %s;
-%s = shineFunc(vec4(%s, %s), %s.xy, %s, %s, %s, %s, %s, %s, %s).rgb;""" % [
+%s = _shineFunc(vec4(%s, %s), %s.xy, %s, %s, %s, %s, %s, %s, %s).rgb;""" % [
 output_vars[1], input_vars[2],
 output_vars[0], input_vars[1], input_vars[2], uv, input_vars[3], input_vars[4],
 input_vars[5], input_vars[6], input_vars[7], input_vars[8], input_vars[9]]

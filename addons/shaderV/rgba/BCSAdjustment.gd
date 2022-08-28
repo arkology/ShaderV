@@ -62,5 +62,5 @@ func _get_global_code(mode: int) -> String:
 	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = apply_BCS(%s, vec3(%s, %s, %s));" % [
+	return "%s = _applyBCS(%s, vec3(%s, %s, %s));" % [
 output_vars[0], input_vars[0], input_vars[1], input_vars[2], input_vars[3]]

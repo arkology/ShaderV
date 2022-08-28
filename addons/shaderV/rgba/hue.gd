@@ -40,11 +40,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 hueFunc(float _1np_hue){
-	return min(max(3.0 * abs(1.0 - 2.0 * fract(_1np_hue + vec3(0.0, -1.0 / 3.0, 1.0 / 3.0))) - 1.0 , 0.0), 1.0);
-}
-"""
+	var code : String = preload("hue.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = hueFunc(%s);" % [output_vars[0], input_vars[0]]
+	return "%s = _hueFunc(%s);" % [output_vars[0], input_vars[0]]

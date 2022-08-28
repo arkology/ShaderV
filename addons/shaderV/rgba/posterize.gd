@@ -47,11 +47,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 p0ster1zeFunc(vec3 _col_p0sr1ze, float _steps_p0sterize){
-	return floor(_col_p0sr1ze * _steps_p0sterize) / (_steps_p0sterize - 1.0);
-}
-"""
+	var code : String = preload("posterize.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = p0ster1zeFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
+	return "%s = _posterizeFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]

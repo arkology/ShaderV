@@ -47,24 +47,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 cg4Pa1etteFunc(vec3 _c0l_cga, float _g4mm4_cga){
-	_c0l_cga = pow(_c0l_cga, vec3(_g4mm4_cga));
-	float _gr4y_c0l_cga4 = 0.21 * _c0l_cga.r + 0.71 * _c0l_cga.g + 0.07 * _c0l_cga.b;
-	vec3 _re5_c0l_cga4 = vec3(0.0);
-	
-	if      (_gr4y_c0l_cga4 <= 1.0/4.0)
-		_re5_c0l_cga4 = vec3(0.0,  0.0,  0.0);
-	else if (_gr4y_c0l_cga4 <= 2.0/4.0)
-		_re5_c0l_cga4 = vec3(1.0,  0.33, 1.0);
-	else if (_gr4y_c0l_cga4 <= 3.0/4.0)
-		_re5_c0l_cga4 = vec3(0.33, 1.0,  1.0);
-	else if (_gr4y_c0l_cga4 <= 4.0/4.0)
-		_re5_c0l_cga4 = vec3(1.0,  1.0,  1.0);
-	
-	return _re5_c0l_cga4;
-}
-"""
+	var code : String = preload("turnCGA4Palette.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = cg4Pa1etteFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
+	return "%s = _cg4PaletteFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]

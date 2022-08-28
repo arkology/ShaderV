@@ -52,14 +52,10 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 t0nemapFunc(vec3 _c0l0r_t0nemap, float _exposure_t0nemap, float _gamma_t0nemap){
-	_c0l0r_t0nemap.rgb *= pow(2.0, _exposure_t0nemap);
-	_c0l0r_t0nemap.rgb = pow(_c0l0r_t0nemap.rgb, vec3(_gamma_t0nemap));
-	return _c0l0r_t0nemap;
-}
-"""
+	var code : String = preload("tonemap.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = t0nemapFunc(%s, %s, %s);" % [
+	return "%s = _tonemapFunc(%s, %s, %s);" % [
 output_vars[0], input_vars[0], input_vars[1], input_vars[2]]

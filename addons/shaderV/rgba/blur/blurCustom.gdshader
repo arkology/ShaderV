@@ -1,8 +1,7 @@
 shader_type canvas_item;
 vec4 _blurWithAmountFunc(sampler2D _tex_blur_cst, vec2 _uv_blur_cst, float _l0d_blur_cst, int _amnt_blur_cst, float _0ffst_blur_cst) {
 	vec4 _c0l_blur_cst = vec4(0, 0, 0, 0);
-	_amnt_blur_cst = int(max(min(float(_amnt_blur_cst), 20.0), 0.0)); // have to do this int() float() shit because of gles2 
-																	// max _amnt_blur_cst is 20 for not to kill PC
+	
 	for(int x = -_amnt_blur_cst; x <= _amnt_blur_cst; x++) {
 		for(int y = -_amnt_blur_cst; y <= _amnt_blur_cst; y++) {
 			vec2 _c00rd_blur_cst = _uv_blur_cst + vec2(float(x), float(y)) * _0ffst_blur_cst;

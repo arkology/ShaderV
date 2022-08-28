@@ -70,20 +70,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 emb0ssFunc(sampler2D _tex_emb0ss, vec2 _uv_emb0ss, float _lod_emb0ss, vec2 _ofst_emb0ss, float _ctst_emb0ss){
-	vec4 col_emb0ss = vec4(0.5, 0.5, 0.5, 0.5);
-	if (_lod_emb0ss < 0.0){
-		col_emb0ss -= texture(_tex_emb0ss, _uv_emb0ss - _ofst_emb0ss) * _ctst_emb0ss;
-		col_emb0ss += texture(_tex_emb0ss, _uv_emb0ss + _ofst_emb0ss) * _ctst_emb0ss;
-	}else{
-		col_emb0ss -= textureLod(_tex_emb0ss, _uv_emb0ss - _ofst_emb0ss, _lod_emb0ss) * _ctst_emb0ss;
-		col_emb0ss += textureLod(_tex_emb0ss, _uv_emb0ss + _ofst_emb0ss, _lod_emb0ss) * _ctst_emb0ss;
-	}
-	col_emb0ss.rgb = vec3(0.21 * col_emb0ss.r + 0.71 * col_emb0ss.g + 0.07 * col_emb0ss.b);
-	return col_emb0ss;
-}
-"""
+	var code : String = preload("emboss.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var texture = "TEXTURE"
@@ -94,7 +83,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[1]:
 		uv = input_vars[1]
 	
-	return """vec4 %s%s = emb0ssFunc(%s, %s.xy, %s, vec2(%s), %s);
+	return """vec4 %s%s = _embossFunc(%s, %s.xy, %s, vec2(%s), %s);
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], texture, uv, input_vars[2], input_vars[3], input_vars[4],

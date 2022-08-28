@@ -69,14 +69,12 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 blendAwithBFunc(vec4 _c0l0r_blendA_rgba, vec4 _c0l0r_blendB_rgba, float _fade_blend_c0l0r){
-	return mix(_c0l0r_blendA_rgba, _c0l0r_blendB_rgba, _c0l0r_blendB_rgba.a * _fade_blend_c0l0r);
-}
-"""
+	var code : String = preload("blendAwithB.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return """vec4 %s%s = blendAwithBFunc(vec4(%s, %s), vec4(%s, %s), %s);
+	return """vec4 %s%s = _blendAwithBFunc(vec4(%s, %s), vec4(%s, %s), %s);
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2], input_vars[3], input_vars[4],

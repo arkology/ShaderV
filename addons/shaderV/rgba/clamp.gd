@@ -44,15 +44,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-float clampAlphaBorderFunc(float _color_alpha_clamp, vec2 _uv_clamp){
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(_uv_clamp.x), 0.0));
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(1.0 - _uv_clamp.x), 0.0));
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(_uv_clamp.y), 0.0));
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(1.0 - _uv_clamp.y), 0.0));
-	return _color_alpha_clamp;
-}
-"""
+	var code : String = preload("clamp.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var texture = "TEXTURE"
@@ -61,4 +55,4 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[1]:
 		uv = input_vars[1]
 	
-	return output_vars[0] + " = clampAlphaBorderFunc(%s, (%s).xy);" % [input_vars[0], uv]
+	return output_vars[0] + " = _clampAlphaBorderFunc(%s, (%s).xy);" % [input_vars[0], uv]

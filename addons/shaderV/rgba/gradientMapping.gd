@@ -70,19 +70,12 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 gradientMappingFunc(vec3 _c0l_base_gm, float _grad_offset, sampler2D _palette_gm, bool _use_c0l_cycle){
-	float avg_c0l = 0.2126 * _c0l_base_gm.r + 0.7152 * _c0l_base_gm.g + 0.0722 * _c0l_base_gm.b;
-	if (_use_c0l_cycle){
-		return texture(_palette_gm, mod(vec2(avg_c0l + _grad_offset, 0), vec2(1.0)));
-	} else{
-		return texture(_palette_gm, vec2(avg_c0l + _grad_offset, 0));
-	}
-}
-"""
+	var code : String = preload("gradientMapping.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return """vec4 %s%s = gradientMappingFunc(%s, %s, %s, %s);
+	return """vec4 %s%s = _gradientMappingFunc(%s, %s, %s, %s);
 %s = %s%s.rgb;
 %s = %s%s.a * %s;""" % [
 output_vars[0], output_vars[1], input_vars[0], input_vars[2], input_vars[4], input_vars[3],

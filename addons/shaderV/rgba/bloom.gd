@@ -59,16 +59,12 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 bl00mFunc(vec4 _c0l_bl00m, float _strength_bl00m){
-	float _gamma_bl00m = 1.0 - pow(_c0l_bl00m.r, _strength_bl00m);
-	_c0l_bl00m.rgb += (_c0l_bl00m.rgb * _c0l_bl00m.a) * min(max(_strength_bl00m, 0.0), 1.0);
-	return _c0l_bl00m;
-}
-"""
+	var code : String = preload("bloom.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return """vec4 %s%s = bl00mFunc(vec4(%s, %s), %s);
+	return """vec4 %s%s = _bloomFunc(vec4(%s, %s), %s);
 %s = %s%s.rgb;
 %s = %s%s.a""" % [
 output_vars[0], output_vars[1], input_vars[0], input_vars[1], input_vars[2],
