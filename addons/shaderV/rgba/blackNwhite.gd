@@ -47,11 +47,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 blackNwh1teFunc(vec3 _c0l_bNw, float _thresh0ld_bNw){
-	return vec3( ( (0.21 * _c0l_bNw.r + 0.71 * _c0l_bNw.g + 0.07 * _c0l_bNw.b) < _thresh0ld_bNw) ? 0.0 : 1.0);
-}
-"""
+	var code : String = preload("blackNwhite.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = blackNwh1teFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
+	return "%s = blackNwhite(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]

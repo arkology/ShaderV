@@ -75,28 +75,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 zoomBlurFunc(sampler2D _tex_z00m_blur, vec2 _uv_z00m_blur, int _amount_z00m_blur, vec2 _center_zoom, float _lgt_z00m_blur, float _lod_z00m_blur){
-	vec4 _col_z00m_blur;
-	if (_lod_z00m_blur < 0.0){
-		_col_z00m_blur = texture(_tex_z00m_blur, _uv_z00m_blur);
-		for (int i = 1; i <= _amount_z00m_blur; i++){
-			float _temp_d_z00m_blur = _lgt_z00m_blur * float(i);
-			vec2 px = _uv_z00m_blur * (1.0 - _temp_d_z00m_blur) + _center_zoom * _temp_d_z00m_blur;
-			_col_z00m_blur += texture(_tex_z00m_blur, px);
-		}
-	}else{
-		_col_z00m_blur = textureLod(_tex_z00m_blur, _uv_z00m_blur, _lod_z00m_blur);
-		for (int i = 1; i <= _amount_z00m_blur; i++){
-			float _temp_d_z00m_blur = _lgt_z00m_blur * float(i);
-			vec2 px = _uv_z00m_blur * (1.0 - _temp_d_z00m_blur) + _center_zoom * _temp_d_z00m_blur;
-			_col_z00m_blur += textureLod(_tex_z00m_blur, px, _lod_z00m_blur);
-		}
-	}
-	_col_z00m_blur = _col_z00m_blur / float(_amount_z00m_blur + 1);
-	return _col_z00m_blur;
-}
-"""
+	var code : String = preload("zoomBlur.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var texture = "TEXTURE"
@@ -107,9 +88,9 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[1]:
 		uv = input_vars[1]
 	
-	return """vec4 %s%s = zoomBlurFunc(%s, %s.xy, int(%s), %s.xy, %s, %s);
+	return """vec4 %s%s = _zoomBlurFunc(%s, %s.xy, int(%s), %s.xy, %s, %s);
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
-output_vars[0], output_vars[1], texture, uv, input_vars[4], input_vars[3], input_vars[5], input_vars[2],
-output_vars[0], output_vars[0], output_vars[1],
-output_vars[1], output_vars[0], output_vars[1]]
+			output_vars[0], output_vars[1], texture, uv, input_vars[4], input_vars[3], input_vars[5], input_vars[2],
+			output_vars[0], output_vars[0], output_vars[1],
+			output_vars[1], output_vars[0], output_vars[1]]

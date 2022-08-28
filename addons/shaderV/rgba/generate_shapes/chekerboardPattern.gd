@@ -65,12 +65,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-float checkerb0ardPatternFunc(vec2 uv, vec2 _checker_size){
-	float fmodRes = mod(floor(_checker_size.x * uv.x) + floor(_checker_size.y * uv.y), 2.0);
-	return max(sign(fmodRes), 0.0);
-}
-"""
+	var code : String = preload("chekerboardPattern.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -79,6 +76,6 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 		uv = input_vars[0]
 	
 	return """%s = %s;
-%s = checkerb0ardPatternFunc(%s.xy, %s.xy) * %s;""" % [
+%s = _checkerboardPatternFunc(%s.xy, %s.xy) * %s;""" % [
 output_vars[0], input_vars[2],
 output_vars[1], uv, input_vars[1], input_vars[3]]

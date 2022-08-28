@@ -57,27 +57,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-float cellular2x2NoiseFunc(vec2 P, float _jitter_w2x2) {
-	float K = 0.142857142857; // 1/7
-	float K2 = 0.0714285714285; // K/2
-	
-	vec2 Pi = floor(P) - floor(floor(P) * (1.0 / 289.0)) * 289.0;
-	vec2 Pf = fract(P);
-	vec4 Pfx = Pf.x + vec4(-0.5, -1.5, -0.5, -1.5);
-	vec4 Pfy = Pf.y + vec4(-0.5, -0.5, -1.5, -1.5);
-	vec4 p = ((34.0*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0))+1.0)*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0)))-floor(((34.0*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0))+1.0)*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0)))*(1.0/289.0))*289.0;
-	p = ((34.0*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0))+1.0)*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0)))-floor(((34.0*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0))+1.0)*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0)))*(1.0/289.0))*289.0;
-	vec4 ox = (p - floor(p * (1.0 / 7.0)) * 7.0)*K+K2;
-	vec4 oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0)*K+K2;
-	vec4 dx = Pfx + _jitter_w2x2*ox;
-	vec4 dy = Pfy + _jitter_w2x2*oy;
-	vec4 d = dx * dx + dy * dy;
-	d.xy = min(d.xy, d.zw);
-	d.x = min(d.x, d.y);
-	return sqrt(d.x);
-}
-"""
+	var code : String = preload("worley2x2.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -85,5 +67,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s = cellular2x2NoiseFunc((%s.xy+%s.xy)*%s, min(max(%s, 0.0), 1.0));" % [
+	return "%s = _cellular2x2NoiseFunc((%s.xy+%s.xy)*%s, min(max(%s, 0.0), 1.0));" % [
 output_vars[0], uv, input_vars[1], input_vars[2], input_vars[3]]

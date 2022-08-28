@@ -52,11 +52,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 tilingNoffsetAnimatedFunc(vec2 _uv_tN0A, float _t1me_tN0A, vec2 _offset_tN0A){
-	return vec2(mod((_uv_tN0A.x + _offset_tN0A.x * _t1me_tN0A), 1.0), mod((_uv_tN0A.y + _offset_tN0A.y * _t1me_tN0A), 1.0));
-}
-"""
+	var code : String = preload("tilingNoffsetAnimated.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -64,5 +62,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = %s.xy + tilingNoffsetAnimatedFunc(%s.xy, %s, %s.xy);" % [
-output_vars[0], output_vars[0], uv, input_vars[2], input_vars[1]]
+	return "%s.xy += _tilingNoffsetAnimatedFunc(%s.xy, %s, %s.xy);" % [
+			output_vars[0], uv, input_vars[2], input_vars[1]]

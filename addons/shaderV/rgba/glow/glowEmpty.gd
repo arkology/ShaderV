@@ -84,46 +84,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 inoutGl0wEmptyFunc(sampler2D _samp_1ngl0wEmpt, vec2 _uv_1ngl0wEmpt, float _l0d_gl0wEmpt,
-float _rad_in0ut_Empty, float _intens_inner_gl0wEmpt, float _intens_outer_gl0wEmpt, vec4 _c0l_1ngl0wEmpt){
-	_rad_in0ut_Empty = abs(_rad_in0ut_Empty);
-	
-	vec4 _c01r_orig_gl0w = vec4(0.0);
-	float _a1pha_gl0w_1nv = 0.0;
-	float _a1pha_gl0w_blured = 0.0;
-	int gl0w_amount = 3;
-	
-	if (_l0d_gl0wEmpt < 0.0)
-		_c01r_orig_gl0w = texture(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt);
-	else
-		_c01r_orig_gl0w = textureLod(_samp_1ngl0wEmpt, _uv_1ngl0wEmpt, _l0d_gl0wEmpt);
-	
-	gl0w_amount = int(min(_rad_in0ut_Empty + 7.0, 14.0));
-	for(int x = - gl0w_amount; x <= gl0w_amount; x++) {
-		for(int y = - gl0w_amount; y <= gl0w_amount; y++) {
-			vec2 _c00rd_b1r_cst = _uv_1ngl0wEmpt + vec2(float(x), float(y)) * _rad_in0ut_Empty * 0.01;
-			_a1pha_gl0w_blured += textureLod(_samp_1ngl0wEmpt, _c00rd_b1r_cst, 0.0).a;
-		}
-	}
-	int _nmb_ne1ghb0urs_b1r_cst = (gl0w_amount * 2 + 1) * (gl0w_amount * 2 + 1);
-	_a1pha_gl0w_blured /= float(_nmb_ne1ghb0urs_b1r_cst);
-	
-	_a1pha_gl0w_1nv = _a1pha_gl0w_blured;
-	_a1pha_gl0w_1nv *= (1.0 - _c01r_orig_gl0w.a);
-	
-	float in_a1pha_gl0w_1nv = 1.0 - _a1pha_gl0w_blured;
-	in_a1pha_gl0w_1nv *= _c01r_orig_gl0w.a;
-	
-	if (_a1pha_gl0w_1nv > 0.0)
-		_a1pha_gl0w_1nv *= (_intens_outer_gl0wEmpt + 1.0);
-	
-	if (in_a1pha_gl0w_1nv > 0.0)
-		in_a1pha_gl0w_1nv *= (_intens_inner_gl0wEmpt + 1.0);
-	
-	return vec4(_c0l_1ngl0wEmpt.rgb, (_a1pha_gl0w_1nv + in_a1pha_gl0w_1nv) * _c0l_1ngl0wEmpt.a);
-}
-"""
+	var code : String = preload("glowEmpty.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var texture = "TEXTURE"
@@ -134,7 +97,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[1]:
 		uv = input_vars[1]
 	
-	return """vec4 %s%s = inoutGl0wEmptyFunc(%s, %s.xy, %s, %s, %s, %s, vec4(%s, %s));
+	return """vec4 %s%s = _inoutGlowEmptyFunc(%s, %s.xy, %s, %s, %s, %s, vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], texture, uv, input_vars[2], input_vars[3],

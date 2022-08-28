@@ -67,16 +67,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 transformUVFunc(vec2 _uv_transform, vec2 _scale_uv_, vec2 _pivot_scale_uv_, vec2 _offset_uv_, float _rotate_uv, vec2 _pivot_rotate_uv_){
-	_uv_transform -= _offset_uv_; // offset
-	_uv_transform = (_uv_transform - _pivot_scale_uv_) * _scale_uv_ + _pivot_scale_uv_; // zoom
-	vec2 _rot_uv_angl = vec2(cos(_rotate_uv), sin(_rotate_uv));
-	mat2 _rot_matrix = mat2(vec2(_rot_uv_angl.x, - _rot_uv_angl.y), vec2(_rot_uv_angl.y, _rot_uv_angl.x));
-	_uv_transform = (_uv_transform - _pivot_rotate_uv_) * _rot_matrix + _pivot_rotate_uv_; // rotate
-	return _uv_transform;
-}
-"""
+	var code : String = preload("transformUV.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -84,5 +77,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = transformUVFunc(%s.xy, %s.xy, %s.xy, %s.xy, %s, %s.xy);" % [
-output_vars[0], uv, input_vars[2], input_vars[3], input_vars[1], input_vars[4], input_vars[5]]
+	return "%s.xy = _transformUV(%s.xy, %s.xy, %s.xy, %s.xy, %s, %s.xy);" % [
+			output_vars[0], uv, input_vars[2], input_vars[3], input_vars[1], input_vars[4], input_vars[5]]

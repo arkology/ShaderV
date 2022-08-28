@@ -85,20 +85,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 generateCirc1eFunc(vec2 _uv_circ1e, vec2 _center_circ1e, vec2 _scale_factor_circ1e, float _innerRad_circ1e, float _outRad_circ1e, float _hard_circ1e) {
-	float _innerRadiusCheck0 = min(_innerRad_circ1e, _outRad_circ1e);
-	float _outerRadiusCheck0 = max(_innerRad_circ1e, _outRad_circ1e);
-	
-	float currentP0sitionC1rcle = length((_uv_circ1e - _center_circ1e) * _scale_factor_circ1e);
-	float maxIntencityCenterC1rcle = (_outerRadiusCheck0 + _innerRadiusCheck0) * 0.5;
-	float rd0 = _outerRadiusCheck0 - maxIntencityCenterC1rcle;
-	float circ1eDistributi0n = min(max(abs(currentP0sitionC1rcle - maxIntencityCenterC1rcle) / rd0, 0.0), 1.0);
-	vec4 _outputColor0 = vec4(1.0);
-	_outputColor0.a = 1.0 - pow(circ1eDistributi0n, _hard_circ1e);
-	return _outputColor0;
-}
-"""
+	var code : String = preload("generateCircle.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -107,5 +96,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 		uv = input_vars[0]
 	
 	return """%s = %s;
-%s = generateCirc1eFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s).a * %s;""" % [output_vars[0],
+%s = _generateCircleFunc(%s.xy, %s.xy, %s.xy, %s, %s, %s).a * %s;""" % [output_vars[0],
 input_vars[6], output_vars[1], uv, input_vars[1], input_vars[2], input_vars[3], input_vars[4], input_vars[5], input_vars[7]]

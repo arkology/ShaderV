@@ -40,14 +40,10 @@ func _get_output_port_type(port) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 polarToCartesianFunc(vec2 _polar_vec2){
-//	(r, theta) -> (x, y)
-	return vec2(_polar_vec2.x * cos(_polar_vec2.y),
-				_polar_vec2.x * sin(_polar_vec2.y));
-}
-"""
+	var code : String = preload("polarToCartesian.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = polarToCartesianFunc(%s.xy);" % [output_vars[0], input_vars[0]]
+	return "%s.xy = _polarToCartesianFunc(%s.xy);" % [output_vars[0], input_vars[0]]
 

@@ -62,13 +62,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 d1stort1onUVFunc(vec2 _uv_d1st, float _d1stX_d1st, float _d1stY_d1st, float _waveX_d1st, float _waveY_d1st){
-	_uv_d1st.x += sin(_uv_d1st.y * _waveX_d1st) * _d1stX_d1st;
-	_uv_d1st.y += sin(_uv_d1st.x * _waveY_d1st) * _d1stY_d1st;
-	return _uv_d1st;
-}
-"""
+	var code : String = preload("distortionUV.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -76,5 +72,5 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = d1stort1onUVFunc(%s.xy, %s, %s, %s, %s);" % [
-	output_vars[0], uv, input_vars[3], input_vars[4], input_vars[1], input_vars[2]]
+	return "%s.xy = _distortionUV(%s.xy, vec2(%s, %s), vec2(%s, %s));" % [
+			output_vars[0], uv, input_vars[3], input_vars[4], input_vars[1], input_vars[2]]

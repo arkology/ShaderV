@@ -36,16 +36,9 @@ func _get_output_port_type(port) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 hash2v(vec2 co) {
-	float _tmp_h = dot(co, vec2(12.9898, 78.233));
-	return fract(vec2(sin(_tmp_h), cos(_tmp_h)) * 43758.5453) * 2.0 - 1.0;
-}
-"""
+	var code : String = preload("hash2dvector.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = hash2v(%s.xy);" % [output_vars[0], input_vars[0]]
-
-
-
-
+	return "%s.xy = _hash2v(%s.xy);" % [output_vars[0], input_vars[0]]

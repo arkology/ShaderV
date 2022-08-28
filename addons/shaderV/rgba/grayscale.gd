@@ -47,12 +47,9 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 grayscaleFunc(vec3 _c0l0r_grayscale, float _gray_fact0r){
-	_gray_fact0r = min(max(_gray_fact0r, 0.0), 1.0);
-	return _c0l0r_grayscale * (1.0 - _gray_fact0r) + (0.21 * _c0l0r_grayscale.r + 0.71 * _c0l0r_grayscale.g + 0.07 * _c0l0r_grayscale.b) * _gray_fact0r;
-}
-"""
+	var code : String = preload("grayscale.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = grayscaleFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
+	return "%s = _grayscaleFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]

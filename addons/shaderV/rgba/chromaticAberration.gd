@@ -70,25 +70,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 chr0maticAberrati0nFunc(sampler2D _texture_chr_aberrat1on, vec2 _uv_chr_aberrat1on, vec3 _values_chr_aberrat1on){
-	vec4 _c0l_chr_aberrat1on = vec4(0.0);
-	if (_values_chr_aberrat1on.z < 0.0){
-		_c0l_chr_aberrat1on.r = texture(_texture_chr_aberrat1on, _uv_chr_aberrat1on + _values_chr_aberrat1on.xy).r;
-		_c0l_chr_aberrat1on.g = texture(_texture_chr_aberrat1on, _uv_chr_aberrat1on).g;
-		_c0l_chr_aberrat1on.b = texture(_texture_chr_aberrat1on, _uv_chr_aberrat1on - _values_chr_aberrat1on.xy).b;
-		_c0l_chr_aberrat1on.a = texture(_texture_chr_aberrat1on, _uv_chr_aberrat1on).a;
-	}else{
-		_c0l_chr_aberrat1on.r = textureLod(_texture_chr_aberrat1on, _uv_chr_aberrat1on +
-											_values_chr_aberrat1on.xy, _values_chr_aberrat1on.z).r;
-		_c0l_chr_aberrat1on.g = textureLod(_texture_chr_aberrat1on, _uv_chr_aberrat1on, _values_chr_aberrat1on.z).g;
-		_c0l_chr_aberrat1on.b = textureLod(_texture_chr_aberrat1on, _uv_chr_aberrat1on -
-											_values_chr_aberrat1on.xy, _values_chr_aberrat1on.z).b;
-		_c0l_chr_aberrat1on.a = textureLod(_texture_chr_aberrat1on, _uv_chr_aberrat1on, _values_chr_aberrat1on.z).a;
-	}
-	return _c0l_chr_aberrat1on;
-}
-"""
+	var code : String = preload("chromaticAberration.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var texture = "TEXTURE"
@@ -99,7 +83,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[1]:
 		uv = input_vars[1]
 	
-	return """vec4 %s%s = chr0maticAberrati0nFunc(%s, %s.xy, vec3(%s, %s, %s));
+	return """vec4 %s%s = _chromaticAberrationFunc(%s, %s.xy, vec3(%s, %s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], texture, uv, input_vars[3], input_vars[4], input_vars[2],

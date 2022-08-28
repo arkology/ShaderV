@@ -85,14 +85,9 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec4 gridFunc(vec2 _grid_uv, vec2 _gridline_thickness, vec2 _gridline_smooth, vec2 _gridcell_count, vec4 _grid_col, vec4 _grid_bg_col){
-	vec2 _grid_vec = fract(_grid_uv * _gridcell_count);
-	_grid_vec = min(_grid_vec, vec2(1.0) - _grid_vec);
-	_grid_vec = smoothstep(_grid_vec - _gridline_smooth, _grid_vec + _gridline_smooth, _gridline_thickness / vec2(2.0));
-	return mix(_grid_bg_col, _grid_col, clamp(_grid_vec.x + _grid_vec.y, 0.0, 1.0));
-}
-"""
+	var code : String = preload("gridShape.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
 	var uv = "UV"
@@ -100,7 +95,7 @@ func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> S
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return """vec4 %s%s = gridFunc(%s.xy, %s.xy, %s.xy, %s.xy, vec4(%s, %s), vec4(%s, %s));
+	return """vec4 %s%s = _gridFunc(%s.xy, %s.xy, %s.xy, %s.xy, vec4(%s, %s), vec4(%s, %s));
 %s = %s%s.rgb;
 %s = %s%s.a;""" % [
 output_vars[0], output_vars[1], uv, input_vars[2], input_vars[3], input_vars[1],

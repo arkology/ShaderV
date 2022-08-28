@@ -44,15 +44,10 @@ func _get_output_port_type(port: int) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec3 applyC0l0rC0rrecti0nFunc(vec3 _c0l_c0rr, sampler2D _tex_c0rr) {
-	_c0l_c0rr.r = texture(_tex_c0rr, vec2(_c0l_c0rr.r, 0.0)).r;
-	_c0l_c0rr.g = texture(_tex_c0rr, vec2(_c0l_c0rr.g, 0.0)).g;
-	_c0l_c0rr.b = texture(_tex_c0rr, vec2(_c0l_c0rr.b, 0.0)).b;
-	return _c0l_c0rr;
-}
-"""
+	var code : String = preload("colorCorrectionAdjustment.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s = applyC0l0rC0rrecti0nFunc(%s, %s);" % [
-output_vars[0], input_vars[0], input_vars[1]]
+	return "%s = _applyColorCorrectionFunc(%s, %s);" % [
+			output_vars[0], input_vars[0], input_vars[1]]

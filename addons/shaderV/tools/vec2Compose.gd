@@ -49,14 +49,12 @@ func _get_output_port_type(port) -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
 
 func _get_global_code(mode: int) -> String:
-	return """
-vec2 vec2ComposeFunc(float _vec2_length, float _vec2_angl_rad){
-	return vec2(cos(_vec2_angl_rad), sin(_vec2_angl_rad)) * _vec2_length;
-}
-"""
+	var code : String = preload("vec2Compose.gdshader").code
+	code = code.replace("shader_type canvas_item;\n", "")
+	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = vec2ComposeFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
+	return "%s.xy = _vec2ComposeFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
 
 
 
