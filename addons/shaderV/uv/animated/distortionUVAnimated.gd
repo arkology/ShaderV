@@ -1,8 +1,8 @@
-tool
+@tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVdistortionAnimated
 
-func _init() -> void:
+func _init():
 	set_input_port_default_value(1, 0)
 	set_input_port_default_value(2, 0)
 	set_input_port_default_value(3, 0)
@@ -22,8 +22,8 @@ func _get_subcategory() -> String:
 func _get_description() -> String:
 	return "Animated wave-like UV distortion"
 
-func _get_return_icon_type() -> int:
-	return VisualShaderNode.PORT_TYPE_VECTOR
+func _get_return_icon_type():
+	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_input_port_count() -> int:
 	return 7
@@ -48,7 +48,7 @@ func _get_input_port_name(port: int):
 func _get_input_port_type(port: int):
 	match port:
 		0:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		2:
@@ -68,15 +68,15 @@ func _get_output_port_count() -> int:
 func _get_output_port_name(port: int) -> String:
 	return "uv"
 
-func _get_output_port_type(port: int) -> int:
-	return VisualShaderNode.PORT_TYPE_VECTOR
+func _get_output_port_type(port):
+	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
-func _get_global_code(mode: int) -> String:
+func _get_global_code(mode):
 	var code : String = preload("distortionUVAnimated.gdshader").code
 	code = code.replace("shader_type canvas_item;\n", "")
 	return code
 
-func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+func _get_code(input_vars, output_vars, mode, type):
 	var uv = "UV"
 	
 	if input_vars[0]:

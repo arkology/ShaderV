@@ -1,8 +1,8 @@
-tool
+@tool
 extends VisualShaderNodeCustom
 class_name VisualShaderToolsSinTIME
 
-func _init() -> void:
+func _init():
 	set_input_port_default_value(0, 1.0)
 	set_input_port_default_value(1, 1.0)
 
@@ -18,7 +18,7 @@ func _get_category() -> String:
 func _get_description() -> String:
 	return "Returns [amplitude] * sin([speed] * TIME)"
 
-func _get_return_icon_type() -> int:
+func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_input_port_count() -> int:
@@ -44,8 +44,8 @@ func _get_output_port_count() -> int:
 func _get_output_port_name(port: int) -> String:
 	return "out"
 
-func _get_output_port_type(port: int) -> int:
+func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+func _get_code(input_vars, output_vars, mode, type):
 	return output_vars[0] + " = %s * sin(%s * TIME);" % [input_vars[1], input_vars[0]]

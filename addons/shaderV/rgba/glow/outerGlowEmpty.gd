@@ -1,8 +1,8 @@
-tool
+@tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAouterGlowEmpty
 
-func _init() -> void:
+func _init():
 	set_input_port_default_value(2, -1.0)
 	set_input_port_default_value(3, 1.0)
 	set_input_port_default_value(4, 1.0)
@@ -21,8 +21,8 @@ func _get_subcategory():
 func _get_description() -> String:
 	return "Same as OuterGlow but without original texture (only contours)"
 
-func _get_return_icon_type() -> int:
-	return VisualShaderNode.PORT_TYPE_VECTOR
+func _get_return_icon_type():
+	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_input_port_count() -> int:
 	return 7
@@ -49,7 +49,7 @@ func _get_input_port_type(port: int):
 		0:
 			return VisualShaderNode.PORT_TYPE_SAMPLER
 		1:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		2:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		3:
@@ -57,7 +57,7 @@ func _get_input_port_type(port: int):
 		4:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		5:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		6:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
@@ -74,16 +74,16 @@ func _get_output_port_name(port: int):
 func _get_output_port_type(port: int):
 	match port:
 		0:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode: int) -> String:
+func _get_global_code(mode):
 	var code : String = preload("outerGlowEmpty.gdshader").code
 	code = code.replace("shader_type canvas_item;\n", "")
 	return code
 
-func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+func _get_code(input_vars, output_vars, mode, type):
 	var texture = "TEXTURE"
 	var uv = "UV"
 	

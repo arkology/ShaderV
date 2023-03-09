@@ -1,12 +1,12 @@
-tool
+@tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAcreateStripesRandom
 
-func _init() -> void:
+func _init():
 	set_input_port_default_value(1, 0.5)
 	set_input_port_default_value(2, 20.0)
 	set_input_port_default_value(3, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(4, 1)
+	set_input_port_default_value(4, 1.0)
 
 func _get_name() -> String:
 	return "RandomStripesShape"
@@ -20,8 +20,8 @@ func _get_subcategory():
 func _get_description() -> String:
 	return "Random horizontal lines creation"
 
-func _get_return_icon_type() -> int:
-	return VisualShaderNode.PORT_TYPE_VECTOR
+func _get_return_icon_type():
+	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_input_port_count() -> int:
 	return 5
@@ -42,13 +42,13 @@ func _get_input_port_name(port: int):
 func _get_input_port_type(port: int):
 	match port:
 		0:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		2:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		3:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		4:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
@@ -65,21 +65,21 @@ func _get_output_port_name(port: int):
 func _get_output_port_type(port: int):
 	match port:
 		0:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode: int) -> String:
+func _get_global_code(mode):
 	var code : String = preload("stripesRandom.gdshader").code
 	code = code.replace("shader_type canvas_item;\n", "")
 	return code
 
-func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+func _get_code(input_vars, output_vars, mode, type):
 	var uv = "UV"
 	
 	if input_vars[0]:
 		uv = input_vars[0]
 	
 	return """%s = %s;
-%s = _generateRandomStripesFunc(%s.xy, %s, %s) * %s;""" % [output_vars[0], input_vars[3],
+%s = _generateRandomStripesFunc(%s.xy, %s, %s) * float(%s);""" % [output_vars[0], input_vars[3],
 output_vars[1], uv, input_vars[1], input_vars[2], input_vars[4]]
