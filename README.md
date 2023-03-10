@@ -6,7 +6,7 @@ Fully compatible with GLES2 and canvas (2D) fragment shaders.</p>
 
 
 <p align="center">
-  <img src="https://github.com/arkology/ShaderV/blob/master/preview.gif?raw=true">
+  <img src="https://github.com/arkology/ShaderV/blob/godot-3.x/preview.gif?raw=true">
 </p>
 
 ## List of provided nodes:
