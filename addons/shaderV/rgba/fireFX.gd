@@ -11,7 +11,7 @@ func _init():
 	set_input_port_default_value(6, 1.0)
 	set_input_port_default_value(7, Vector3(1, 0, 0))
 	set_input_port_default_value(8, 1.0)
-	set_input_port_default_value(9, 0)
+	set_input_port_default_value(9, 0.0)
 	set_input_port_default_value(10, 0.4)
 	set_input_port_default_value(11, 0.2)
 	set_input_port_default_value(12, 0.0)
@@ -110,8 +110,7 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("fireFX.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("fireFX.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

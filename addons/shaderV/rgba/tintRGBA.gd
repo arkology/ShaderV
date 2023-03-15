@@ -5,7 +5,7 @@ class_name VisualShaderNodeRGBAtintRGBA
 func _init():
 	set_input_port_default_value(1, 1.0)
 	set_input_port_default_value(2, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(3, 1)
+	set_input_port_default_value(3, 1.0)
 
 func _get_name() -> String:
 	return "TintRGBA"

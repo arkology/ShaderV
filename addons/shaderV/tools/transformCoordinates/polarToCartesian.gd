@@ -40,8 +40,7 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("polarToCartesian.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("polarToCartesian.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

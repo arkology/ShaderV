@@ -4,9 +4,9 @@ class_name VisualShaderNodeNoisePerlinPeriodic3d
 
 func _init():
 	set_input_port_default_value(1, Vector3(0, 0, 0))
-	set_input_port_default_value(2, 5)
+	set_input_port_default_value(2, 5.0)
 	set_input_port_default_value(3, Vector3(0.0, 0.0, 0.0))
-	set_input_port_default_value(4, 0)
+	set_input_port_default_value(4, 0.0)
 
 func _get_name() -> String:
 	return "PerlinPeriodicNoise3D"
@@ -66,8 +66,7 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("perlinPeriodic3d.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("perlinPeriodic3d.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

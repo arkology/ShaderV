@@ -4,7 +4,7 @@ class_name VisualShaderNodeRGBAnormalFromHeightmap
 
 func _init():
 	set_input_port_default_value(2, Vector3(64, 64, 0))
-	set_input_port_default_value(3, 10)
+	set_input_port_default_value(3, 10.0)
 	set_input_port_default_value(4, false)
 	set_input_port_default_value(5, false)
 	set_input_port_default_value(6, false)
@@ -74,8 +74,7 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("normalFromHeightmap.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("normalFromHeightmap.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

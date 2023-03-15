@@ -4,10 +4,10 @@ class_name VisualShaderNodeUVdoodle
 
 func _init():
 	set_input_port_default_value(1, 0.5)
-	set_input_port_default_value(2, 4.0)
+	set_input_port_default_value(2, 4)
 	set_input_port_default_value(3, 0.7)
 	set_input_port_default_value(4, 0.065)
-	set_input_port_default_value(5, 0)
+	set_input_port_default_value(5, 0.0)
 
 func _get_name() -> String:
 	return "DoodleUV"
@@ -67,8 +67,7 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("doodleUV.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("doodleUV.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

@@ -3,12 +3,12 @@ extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAscanLinesSharp
 
 func _init():
-	set_input_port_default_value(1, 21)
+	set_input_port_default_value(1, 21.0)
 	set_input_port_default_value(2, 0.5)
-	set_input_port_default_value(3, 1)
-	set_input_port_default_value(4, 0)
+	set_input_port_default_value(3, 1.0)
+	set_input_port_default_value(4, 0.0)
 	set_input_port_default_value(5, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(6, 1)
+	set_input_port_default_value(6, 1.0)
 
 func _get_name() -> String:
 	return "ScanLinesSharpShape"
@@ -80,8 +80,7 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("scanLinesSharp.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("scanLinesSharp.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

@@ -6,7 +6,7 @@ func _init():
 	set_input_port_default_value(1, Vector3(0, 0, 0))
 	set_input_port_default_value(2, Vector3(1, 1, 0))
 	set_input_port_default_value(3, Vector3(0.5, 0.5, 0))
-	set_input_port_default_value(4, 0)
+	set_input_port_default_value(4, 0.0)
 	set_input_port_default_value(5, Vector3(0.5, 0.5, 0))
 
 func _get_name() -> String:
@@ -67,8 +67,7 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("transformUV.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("transformUV.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

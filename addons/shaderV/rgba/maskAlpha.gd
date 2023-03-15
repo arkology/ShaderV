@@ -3,8 +3,8 @@ extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAmaskAlpha
 
 func _init():
-	set_input_port_default_value(1, 1)
-	set_input_port_default_value(2, 1)
+	set_input_port_default_value(1, 1.0)
+	set_input_port_default_value(2, 1.0)
 
 func _get_name() -> String:
 	return "MaskAlpha"
@@ -60,8 +60,7 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("maskAlpha.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("maskAlpha.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

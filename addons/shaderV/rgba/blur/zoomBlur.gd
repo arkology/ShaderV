@@ -5,7 +5,7 @@ class_name VisualShaderNodeRGBAzoomBlur
 func _init():
 	set_input_port_default_value(2, -1.0)
 	set_input_port_default_value(3, Vector3(0.5, 0.5, 0.0))
-	set_input_port_default_value(4, 20.0)
+	set_input_port_default_value(4, 20)
 	set_input_port_default_value(5, 0.005)
 
 func _get_name() -> String:
@@ -75,8 +75,7 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("zoomBlur.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("zoomBlur.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

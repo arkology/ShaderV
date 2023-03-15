@@ -5,7 +5,7 @@ class_name VisualShaderNodeRGBAcreateCheckerboard
 func _init():
 	set_input_port_default_value(1, Vector3(8.0, 8.0, 0.0))
 	set_input_port_default_value(2, Vector3(1.0, 1.0, 1.0))
-	set_input_port_default_value(3, 1)
+	set_input_port_default_value(3, 1.0)
 
 func _get_name() -> String:
 	return "CheckerboardShape"
@@ -65,8 +65,7 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("chekerboardPattern.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("chekerboardPattern.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

@@ -3,12 +3,12 @@ extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVdistortionAnimated
 
 func _init():
-	set_input_port_default_value(1, 0)
-	set_input_port_default_value(2, 0)
-	set_input_port_default_value(3, 0)
-	set_input_port_default_value(4, 0)
-	set_input_port_default_value(5, 1)
-	set_input_port_default_value(6, 0)
+	set_input_port_default_value(1, 0.0)
+	set_input_port_default_value(2, 0.0)
+	set_input_port_default_value(3, 0.0)
+	set_input_port_default_value(4, 0.0)
+	set_input_port_default_value(5, 1.0)
+	set_input_port_default_value(6, 0.0)
 
 func _get_name() -> String:
 	return "DistortionUVAnimated"
@@ -72,8 +72,7 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("distortionUVAnimated.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("distortionUVAnimated.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

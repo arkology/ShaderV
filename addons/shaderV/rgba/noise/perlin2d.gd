@@ -4,7 +4,7 @@ class_name VisualShaderNodeNoisePerlin2d
 
 func _init():
 	set_input_port_default_value(1, Vector3(0, 0, 0))
-	set_input_port_default_value(2, 5)
+	set_input_port_default_value(2, 5.0)
 	set_input_port_default_value(3, Vector3(0.0, 0.0, 0.0))
 
 func _get_name() -> String:
@@ -62,8 +62,7 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("perlin2d.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	var code : String = preload("perlin2d.gdshaderinc").code
 	return code
 
 func _get_code(input_vars, output_vars, mode, type):

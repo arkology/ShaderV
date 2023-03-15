@@ -1435,7 +1435,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-29, -68)
+graph_offset = Vector2(-172.177, -134.054)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(620, 60)
@@ -3429,7 +3429,7 @@ input_name = "time"
 constant = Color(0, 1, 0.557237, 1)
 
 [sub_resource type="VisualShaderNodeCustom" id="611"]
-default_input_values = [1, 21, 2, 0.5, 3, 1, 4, 0, 5, Vector3(1, 1, 1), 6, 1]
+default_input_values = [1, 21, 2, 0.5, 3, 1, 4, 0, 5, Vector3(1, 1, 1), 6, 1.0]
 initialized = true
 script = ExtResource("41")
 
@@ -3470,10 +3470,10 @@ void fragment() {
 	vec3 n_out53p0;
 	float n_out53p1;
 // ScanLinesSharpShape:53
-	int n_in53p6 = 1;
+	float n_in53p6 = 1.00000;
 	{
 		n_out53p0 = vec3(n_out52p0.xyz);
-		n_out53p1 = _scanLinesSharpFunc(vec3(n_out47p0, 0.0).xy, n_out48p0, n_out49p0, n_out50p0, n_out51p0) * float(n_in53p6);
+		n_out53p1 = _scanLinesSharpFunc(vec3(n_out47p0, 0.0).xy, n_out48p0, n_out49p0, n_out50p0, n_out51p0) * n_in53p6;
 	}
 
 
@@ -3484,7 +3484,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-32, 198)
+graph_offset = Vector2(36, 196)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(660, 220)
@@ -3511,7 +3511,7 @@ shader = SubResource("251")
 constant = Color(0.623529, 0.439216, 1, 1)
 
 [sub_resource type="VisualShaderNodeCustom" id="254"]
-default_input_values = [1, 0.5, 2, 20.0, 3, Vector3(1, 1, 1), 4, 1]
+default_input_values = [1, 0.5, 2, 20.0, 3, Vector3(1, 1, 1), 4, 1.0]
 initialized = true
 script = ExtResource("42")
 
@@ -3550,10 +3550,10 @@ void fragment() {
 	vec3 n_out54p0;
 	float n_out54p1;
 // RandomStripesShape:54
-	int n_in54p4 = 1;
+	float n_in54p4 = 1.00000;
 	{
 		n_out54p0 = vec3(n_out53p0.xyz);
-		n_out54p1 = _generateRandomStripesFunc(vec3(n_out47p0, 0.0).xy, n_out55p0, n_out56p0) * float(n_in54p4);
+		n_out54p1 = _generateRandomStripesFunc(vec3(n_out47p0, 0.0).xy, n_out55p0, n_out56p0) * n_in54p4;
 	}
 
 
@@ -3564,7 +3564,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(62, 281)
+graph_offset = Vector2(237.627, 299.737)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(660, 220)
@@ -3578,7 +3578,7 @@ nodes/fragment/55/node = SubResource("255")
 nodes/fragment/55/position = Vector2(140, 220)
 nodes/fragment/56/node = SubResource("256")
 nodes/fragment/56/position = Vector2(140, 300)
-nodes/fragment/connections = PackedInt32Array(54, 1, 0, 1, 47, 0, 54, 0, 53, 0, 54, 3, 55, 0, 54, 1, 56, 0, 54, 2, 54, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(47, 0, 54, 0, 53, 0, 54, 3, 55, 0, 54, 1, 56, 0, 54, 2, 54, 0, 0, 0, 54, 1, 0, 1)
 
 [sub_resource type="ShaderMaterial" id="258"]
 shader = SubResource("257")
