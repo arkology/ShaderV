@@ -1,8 +1,8 @@
-tool
+@tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAsobelEdge
 
-func _init() -> void:
+func _init():
 	set_input_port_default_value(2, -1.0)
 	set_input_port_default_value(3, 0.001)
 	set_input_port_default_value(4, false)
@@ -22,7 +22,7 @@ func _get_description() -> String:
 'scharr' controls if Scharr or Sobel operator is used.
 Note: negative lod => detect lod automatically"""
 
-func _get_return_icon_type() -> int:
+func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_input_port_count() -> int:
@@ -48,7 +48,7 @@ func _get_input_port_type(port: int):
 		0:
 			return VisualShaderNode.PORT_TYPE_SAMPLER
 		1:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		2:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		3:
@@ -64,15 +64,14 @@ func _get_output_port_count() -> int:
 func _get_output_port_name(port: int) -> String:
 	return "edges"
 
-func _get_output_port_type(port: int) -> int:
+func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode: int) -> String:
-	var code : String = preload("sobelEdge.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+func _get_global_code(mode):
+	var code : String = preload("sobelEdge.gdshaderinc").code
 	return code
 
-func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+func _get_code(input_vars, output_vars, mode, type):
 	var texture = "TEXTURE"
 	var uv = "UV"
 	

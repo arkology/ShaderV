@@ -1,4 +1,4 @@
-tool
+@tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeUVclampAlpha
 
@@ -14,7 +14,7 @@ func _get_category() -> String:
 func _get_description() -> String:
 	return "Clamp alpha to border vec4(0, 0, 1, 1)"
 
-func _get_return_icon_type() -> int:
+func _get_return_icon_type():
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_input_port_count() -> int:
@@ -32,7 +32,7 @@ func _get_input_port_type(port: int):
 		0:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		1:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_output_port_count() -> int:
 	return 1
@@ -40,15 +40,14 @@ func _get_output_port_count() -> int:
 func _get_output_port_name(port: int) -> String:
 	return "alpha"
 
-func _get_output_port_type(port: int) -> int:
+func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode: int) -> String:
-	var code : String = preload("clamp.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+func _get_global_code(mode):
+	var code : String = preload("clamp.gdshaderinc").code
 	return code
 
-func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+func _get_code(input_vars, output_vars, mode, type):
 	var texture = "TEXTURE"
 	var uv = "UV"
 	

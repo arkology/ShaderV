@@ -1,8 +1,8 @@
-tool
+@tool
 extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAgradientMapping
 
-func _init() -> void:
+func _init():
 	set_input_port_default_value(1, 1.0)
 	set_input_port_default_value(2, 0.0)
 	set_input_port_default_value(3, false)
@@ -20,8 +20,8 @@ func _get_description() -> String:
 	return """Remaps colors based on average color value using [gradient].
 [gradientOffset] allows to do color cycling if set TIME to [gradientOffset] and 'true' to [cycleColor]"""
 
-func _get_return_icon_type() -> int:
-	return VisualShaderNode.PORT_TYPE_VECTOR
+func _get_return_icon_type():
+	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_input_port_count() -> int:
 	return 5
@@ -42,7 +42,7 @@ func _get_input_port_name(port: int):
 func _get_input_port_type(port: int):
 	match port:
 		0:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		2:
@@ -65,16 +65,15 @@ func _get_output_port_name(port: int):
 func _get_output_port_type(port: int):
 	match port:
 		0:
-			return VisualShaderNode.PORT_TYPE_VECTOR
+			return VisualShaderNode.PORT_TYPE_VECTOR_3D
 		1:
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
-func _get_global_code(mode: int) -> String:
-	var code : String = preload("gradientMapping.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+func _get_global_code(mode):
+	var code : String = preload("gradientMapping.gdshaderinc").code
 	return code
 
-func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
+func _get_code(input_vars, output_vars, mode, type):
 	return """vec4 %s%s = _gradientMappingFunc(%s, %s, %s, %s);
 %s = %s%s.rgb;
 %s = %s%s.a * %s;""" % [
