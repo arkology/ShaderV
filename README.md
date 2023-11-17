@@ -1,3 +1,7 @@
+<p align="center"><img src="addons/shaderV/shaderV_icon.png" width="80px"/></p>
+
+👉 [4.x](https://github.com/arkology/ShaderV/tree/master)
+
 # ShaderV - VisualShader plugin for Godot Engine 3.x
 <p>Adds many premade effects (such as noises, blur, emboss, zoom, custom shapes, etc.) to build-in VisualShader editor.
 Fully compatible with GLES2 and canvas (2D) fragment shaders.</p>

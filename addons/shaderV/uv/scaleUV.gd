@@ -53,7 +53,7 @@ func _get_output_port_type(port: int) -> int:
 
 func _get_global_code(mode: int) -> String:
 	var code : String = preload("scaleUV.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	code = code.replace("shader_type canvas_item;\n", "").replace("shader_type canvas_item;\r\n", "")
 	return code
 
 

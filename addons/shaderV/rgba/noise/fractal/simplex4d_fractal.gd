@@ -88,7 +88,7 @@ func _get_output_port_type(port: int) -> int:
 
 func _get_global_code(mode: int) -> String:
 	var code : String = preload("simplex4d_fractal.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	code = code.replace("shader_type canvas_item;\n", "").replace("shader_type canvas_item;\r\n", "")
 	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
