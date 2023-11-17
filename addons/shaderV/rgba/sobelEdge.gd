@@ -68,8 +68,8 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("sobelEdge.gdshaderinc").code
-	return code
+	var path = self.get_script().get_path().get_base_dir()
+	return '#include "' + path + '/sobelEdge.gdshaderinc"'
 
 func _get_code(input_vars, output_vars, mode, type):
 	var texture = "TEXTURE"

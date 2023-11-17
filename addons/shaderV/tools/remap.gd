@@ -63,8 +63,8 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("remap.gdshaderinc").code
-	return code
+	var path = self.get_script().get_path().get_base_dir()
+	return '#include "' + path + '/remap.gdshaderinc"'
 
 func _get_code(input_vars, output_vars, mode, type):
 	var uv = "UV"

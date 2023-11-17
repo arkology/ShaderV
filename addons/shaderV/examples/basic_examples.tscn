@@ -116,14 +116,12 @@ constant = 5.0
 
 [sub_resource type="VisualShader" id="7"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // DistortionUV
-vec2 _distortionUV(vec2 _distortion_uv, vec2 _distortion_vect, vec2 _distortion_wave_vect) {
-	_distortion_uv.x += sin(_distortion_uv.y * _distortion_wave_vect.x) * _distortion_vect.x;
-	_distortion_uv.y += sin(_distortion_uv.x * _distortion_wave_vect.y) * _distortion_vect.y;
-	return _distortion_uv;
-}
+#include \"res://addons/shaderV/uv/distortionUV.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -162,7 +160,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-27.0226, 88.4635)
+graph_offset = Vector2(-236, -103)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(500, 80)
@@ -178,7 +176,7 @@ nodes/fragment/6/node = SubResource("5")
 nodes/fragment/6/position = Vector2(-180, 280)
 nodes/fragment/7/node = SubResource("6")
 nodes/fragment/7/position = Vector2(-180, 220)
-nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 4, 0, 0, 0, 5, 0, 2, 1, 6, 0, 2, 3, 7, 0, 2, 2, 6, 0, 2, 4, 2, 0, 4, 0, 4, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(3, 0, 2, 0, 5, 0, 2, 1, 6, 0, 2, 3, 7, 0, 2, 2, 6, 0, 2, 4, 2, 0, 4, 0, 4, 4, 0, 1, 4, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="8"]
 shader = SubResource("7")
@@ -203,15 +201,13 @@ constant = true
 
 [sub_resource type="VisualShader" id="14"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // FlipUV
-vec2 _flipUV(vec2 _flip_uv, vec2 _flip_vect) {
-	_flip_uv.x = mix(_flip_uv.x, 1.0 - _flip_uv.x, _flip_vect.x);
-	_flip_uv.y = mix(_flip_uv.y, 1.0 - _flip_uv.y, _flip_vect.y);
-	return _flip_uv;
-}
+#include \"res://addons/shaderV/uv/flipUV.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -245,7 +241,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-46.685, -122.596)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(500, -20)
@@ -274,19 +269,13 @@ constant = 1.3
 
 [sub_resource type="VisualShader" id="18"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // LensDistortionUV
-vec2 _lensDistortionUV(vec2 _lens_uv, float _lens_factor){
-	vec2 _pos_dist_lens = _lens_uv - 0.5;
-	float _d1st_d1s_1en5 = length(_pos_dist_lens);
-	if (_lens_factor > 0.0) // fisheye / barrel
-		_lens_uv = vec2(0.5)+normalize(_pos_dist_lens)*tan(_d1st_d1s_1en5*_lens_factor)*0.70711/tan(0.70711*_lens_factor);
-	else if (_lens_factor < 0.0) // antifisheye / pincushion
-		_lens_uv = vec2(0.5)+normalize(_pos_dist_lens)*atan(_d1st_d1s_1en5*-_lens_factor*10.0)*0.5/atan(-_lens_factor*0.5*10.0);
-	return _lens_uv;
-}
+#include \"res://addons/shaderV/uv/lensDistortion.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -345,13 +334,13 @@ constant = Vector3(16, 16, 0)
 
 [sub_resource type="VisualShader" id="23"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // PixelateUV
-vec2 _pixelateUV(vec2 _pixelate_uv, vec2 _effect_factor_pixelate) {
-	return round(_pixelate_uv * _effect_factor_pixelate) / (_effect_factor_pixelate - 1.0);
-}
+#include \"res://addons/shaderV/uv/pixelate.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -417,19 +406,13 @@ constant = Vector3(0.5, 0.5, 0)
 
 [sub_resource type="VisualShader" id="28"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // RotateUV
-vec3 _rotateUV(vec3 _rotate_uv, vec2 _rotate_pivot_vect, float _rotate_radians){
-	//_r0tation_r0tate = radians(_r0tationDeg_r0tate);
-	vec2 _rotation_angle = vec2(cos(_rotate_radians), sin(_rotate_radians));
-	_rotate_uv.xy -= _rotate_pivot_vect;
-	_rotate_uv.xy = vec2((_rotate_uv.x*_rotation_angle.x-_rotate_uv.y*_rotation_angle.y), 
-						 (_rotate_uv.x*_rotation_angle.y+_rotate_uv.y*_rotation_angle.x));
-	_rotate_uv.xy += _rotate_pivot_vect;
-	return _rotate_uv;
-}
+#include \"res://addons/shaderV/uv/rotate.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -495,13 +478,13 @@ script = ExtResource("7")
 
 [sub_resource type="VisualShader" id="33"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // ScaleUV
-vec2 _scaleUV(vec2 _scale_uv, vec2 _scale_vect, vec2 _pivot_vect) {
-	return (_scale_uv - _pivot_vect) * _scale_vect + _pivot_vect;
-}
+#include \"res://addons/shaderV/uv/scaleUV.gdshaderinc\"
 
 void fragment() {
 // Vector3Constant:10
@@ -565,17 +548,13 @@ constant = Vector3(0.5, 0.5, 0)
 
 [sub_resource type="VisualShader" id="40"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // SphericalUV
-vec2 _sphericalUV(vec2 _spherical_uv, vec2 _spherical_position_vect, vec2 _spherical_radius_vect, vec2 _spherical_spin_vect, vec2 _spherical_local_position_vect){
-	vec2 _temp_p = (_spherical_uv - _spherical_position_vect) * 2.0;
-	float _temp_rad = length((_temp_p - _spherical_local_position_vect) * _spherical_radius_vect) + 0.0001;
-	float _temp_f = (1.0 - sqrt(1.0 - _temp_rad)) / _temp_rad;
-	return mod(vec2((_temp_p.x * 0.5 * _temp_f + _spherical_spin_vect.x) + 0.5,
-					(_temp_p.y * 0.5 * _temp_f + _spherical_spin_vect.y) + 0.5), vec2(1.0));
-}
+#include \"res://addons/shaderV/uv/sphericalUV.gdshaderinc\"
 
 void fragment() {
 // Vector3Constant:13
@@ -649,17 +628,13 @@ constant = 2.0
 
 [sub_resource type="VisualShader" id="46"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // TileUV
-vec2 _tileMapUV(vec2 _tile_uv, float _tile_width, float _tile_height, float _tile_number){
-	_tile_number = min(max(floor(_tile_number), 0.0), _tile_width * _tile_height - 1.0);
-	vec2 tcrcp = vec2(1.0) / vec2(_tile_width, _tile_height);
-	float ty =floor(_tile_number * tcrcp.x);
-	float tx = _tile_number - _tile_width * ty;
-	return (_tile_uv + vec2(tx, ty)) * tcrcp;
-}
+#include \"res://addons/shaderV/uv/tileUV.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -728,14 +703,13 @@ constant = 0.2
 
 [sub_resource type="VisualShader" id="50"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // TilingAndOffsetUV
-vec2 _tiling_and_offset(vec2 _tiling_and_offset_uv, vec2 _tiling_and_offset_offset_vect){
-	return vec2(mod(_tiling_and_offset_uv.x + _tiling_and_offset_offset_vect.x, 1.0),
-				mod(_tiling_and_offset_uv.y + _tiling_and_offset_offset_vect.y, 1.0));
-}
+#include \"res://addons/shaderV/uv/tilingNoffset.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -804,18 +778,13 @@ constant = Vector3(0.5, 0.5, 0)
 
 [sub_resource type="VisualShader" id="58"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // TransformUV
-vec2 _transformUV(vec2 _uv_transform, vec2 _scale_uv_, vec2 _pivot_scale_uv_, vec2 _offset_uv_, float _rotate_uv, vec2 _pivot_rotate_uv_){
-	_uv_transform -= _offset_uv_; // offset
-	_uv_transform = (_uv_transform - _pivot_scale_uv_) * _scale_uv_ + _pivot_scale_uv_; // zoom
-	vec2 _rot_uv_angl = vec2(cos(_rotate_uv), sin(_rotate_uv));
-	mat2 _rot_matrix = mat2(vec2(_rot_uv_angl.x, - _rot_uv_angl.y), vec2(_rot_uv_angl.y, _rot_uv_angl.x));
-	_uv_transform = (_uv_transform - _pivot_rotate_uv_) * _rot_matrix + _pivot_rotate_uv_; // rotate
-	return _uv_transform;
-}
+#include \"res://addons/shaderV/uv/transformUV.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -899,17 +868,13 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="63"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // TwirlUV
-vec3 _twirlUVFunc(vec2 _uv_twirlUVFunc, vec2 _pivot_twirlUVFunc, float _amount_twirlUVFunc){
-	_uv_twirlUVFunc -= _pivot_twirlUVFunc;
-	float _angle_twirlUVFunc = atan(_uv_twirlUVFunc.y, _uv_twirlUVFunc.x);
-	float _radiusTemp_twirlUVFunc = length(_uv_twirlUVFunc);
-	_angle_twirlUVFunc += _radiusTemp_twirlUVFunc * _amount_twirlUVFunc;
-	return vec3(_radiusTemp_twirlUVFunc * vec2(cos(_angle_twirlUVFunc), sin(_angle_twirlUVFunc)) + 0.5, 0.0);
-}
+#include \"res://addons/shaderV/uv/twirl.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -987,15 +952,13 @@ constant = 5.0
 
 [sub_resource type="VisualShader" id="72"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // DistortionUVAnimated
-vec2 _distortionUVAnimatedFunc(vec2 _uv_dist, float _distX_dist, float _distY_dist, float _waveX_dist, float _waveY_dist, float _spd_dist, float _time_dist){
-	_uv_dist.x += sin(_uv_dist.y * _waveX_dist + _time_dist * _spd_dist) * _distX_dist;
-	_uv_dist.y += sin(_uv_dist.x * _waveY_dist + _time_dist * _spd_dist) * _distY_dist;
-	return _uv_dist;
-}
+#include \"res://addons/shaderV/uv/animated/distortionUVAnimated.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -1094,29 +1057,13 @@ constant = 4.0
 
 [sub_resource type="VisualShader" id="80"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // DoodleUV
-float _hash2Doodle(vec2 _p_hash_doodle) {
-	return fract(1e4 * sin(17.0 * _p_hash_doodle.x + _p_hash_doodle.y * 0.1) * (0.1 + abs(sin(_p_hash_doodle.y * 13.0 + _p_hash_doodle.x))));
-}
-
-float _noiseDoodle(vec2 _seed_noise_doodle){
-	vec2 i = floor(_seed_noise_doodle);
-	vec2 f = fract(_seed_noise_doodle);
-	float _a = _hash2Doodle(i);
-	float _b = _hash2Doodle(i + vec2(1.0, 0.0));
-	float _c = _hash2Doodle(i + vec2(0.0, 1.0));
-	float _d = _hash2Doodle(i + vec2(1.0, 1.0));
-	vec2 u = f * f * (3.0 - 2.0 * f);
-	return mix(_a, _b, u.x) + (_c - _a) * u.y * (1.0 - u.x) + (_d - _b) * u.x * u.y;
-}
-
-vec2 _doodleUVFunc(vec2 _doodle_uv, float _doodle_max_offset, float _doodle_time, float _doodle_frame_time, int _doodle_frame_count, float _doodle_scale){
-	float _timeValueDoodle = mod(floor(_doodle_time / _doodle_frame_time), float(_doodle_frame_count)) + 1.0;
-	return _doodle_uv + vec2(_noiseDoodle((_doodle_uv + _timeValueDoodle) * _doodle_scale) * 2.0 - 1.0) * _doodle_max_offset;
-}
+#include \"res://addons/shaderV/uv/animated/doodleUV.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -1200,19 +1147,13 @@ constant = 0.5
 
 [sub_resource type="VisualShader" id="85"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // RotateUVAnimated
-vec2 _rotateUVAnimatedFunc(vec2 _uv_rotate, vec2 _pivot_rotate, float _rotation_rotate, float _rotSpeed_rotate, float _time_rotate){
-	_rotation_rotate += _time_rotate * _rotSpeed_rotate;
-	//_rotation_rotate = radians(_rotationDeg_rotate);
-	vec2 _rotAngle = vec2(cos(_rotation_rotate), sin(_rotation_rotate));
-	_uv_rotate -= _pivot_rotate;
-	_uv_rotate = vec2((_uv_rotate.x*_rotAngle.x-_uv_rotate.y*_rotAngle.y),(_uv_rotate.x*_rotAngle.y+_uv_rotate.y*_rotAngle.x));
-	_uv_rotate += _pivot_rotate;
-	return _uv_rotate;
-}
+#include \"res://addons/shaderV/uv/animated/rotateAnimated.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -1292,18 +1233,13 @@ script = ExtResource("19")
 
 [sub_resource type="VisualShader" id="92"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_5;
 
 
 // SwirlUV
-vec2 _swirlUVFunc(vec2 _swirl_uv, float _swirl_time, vec2 _swirl_pivot, float _swirl_amount){
-	float _swirl_rotation_index = _swirl_amount * length(_swirl_uv - _swirl_pivot) * _swirl_time;
-	_swirl_uv -= _swirl_pivot;
-	_swirl_uv *= mat2(vec2(cos(_swirl_rotation_index), - sin(_swirl_rotation_index)),
-										vec2(sin(_swirl_rotation_index), cos(_swirl_rotation_index)));
-	_swirl_uv += _swirl_pivot;
-	return _swirl_uv;
-}
+#include \"res://addons/shaderV/uv/animated/swirlUV.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -1394,13 +1330,12 @@ input_name = "texture"
 
 [sub_resource type="VisualShader" id="97"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // TilingAndOffsetUVAnimated
-vec2 _tilingNoffsetAnimatedFunc(vec2 _tilingNoffset_uv, float _tilingNoffset_time, vec2 _tilingNoffset_offset_vect){
-	return vec2(mod((_tilingNoffset_uv.x + _tilingNoffset_offset_vect.x * _tilingNoffset_time), 1.0),
-				mod((_tilingNoffset_uv.y + _tilingNoffset_offset_vect.y * _tilingNoffset_time), 1.0));
-}
+#include \"res://addons/shaderV/uv/animated/tilingNoffsetAnimated.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -1462,6 +1397,8 @@ script = ExtResource("18")
 
 [sub_resource type="VisualShader" id="100"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 
@@ -1504,6 +1441,8 @@ default_input_values = [0, 0.0, 1, 0.0, 2, 1.0]
 
 [sub_resource type="VisualShader" id="103"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 
@@ -1557,13 +1496,12 @@ default_input_values = [0, 0.0, 1, 0.0, 2, 1.0]
 
 [sub_resource type="VisualShader" id="106"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // HashRandom2dVec
-vec2 _hash2v(vec2 co) {
-	float _tmp_h = dot(co, vec2(12.9898, 78.233));
-	return fract(vec2(sin(_tmp_h), cos(_tmp_h)) * 43758.5453) * 2.0 - 1.0;
-}
+#include \"res://addons/shaderV/tools/random/hash2dvector.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -1573,7 +1511,7 @@ void fragment() {
 	vec3 n_out19p0;
 // HashRandom2dVec:19
 	{
-		n_out19p0.xy = _hash2v(vec3(n_out3p0, 0.0).xy);
+		n_out19p0 = vec3(_hash2v(vec3(n_out3p0, 0.0).xy), 0.0);
 	}
 
 
@@ -1616,6 +1554,8 @@ script = ExtResource("22")
 
 [sub_resource type="VisualShader" id="109"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 
@@ -1659,14 +1599,12 @@ script = ExtResource("24")
 
 [sub_resource type="VisualShader" id="118"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // RandomGoldRatio
-float _randomGoldRatioFunc(vec2 _coord_gn, vec2 _scale_gn, float _seed_gn){
-	float PHI = 1.6180339887; 
-	float SQ2 = 1.4142135624;
-	return fract(tan(distance((_coord_gn + _scale_gn) * (_seed_gn + PHI), vec2(PHI, PI))) * SQ2);
-}
+#include \"res://addons/shaderV/tools/random/randomGoldNoiseFloat.gdshaderinc\"
 
 void fragment() {
 // Input:21
@@ -1733,12 +1671,12 @@ constant = -1.0
 
 [sub_resource type="VisualShader" id="126"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // Remap
-vec3 _remapFunc(vec3 _remap_input, vec2 _remap_from, vec2 _remap_to){
-	return _remap_to.x + ((_remap_input - _remap_from.x) * (_remap_to.y - _remap_to.x)) / (_remap_from.y - _remap_from.x);
-}
+#include \"res://addons/shaderV/tools/remap.gdshaderinc\"
 
 void fragment() {
 // Input:21
@@ -1815,6 +1753,8 @@ script = ExtResource("16")
 
 [sub_resource type="VisualShader" id="VisualShader_gq6wd"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 
@@ -1868,6 +1808,8 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="131"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 
@@ -1928,12 +1870,12 @@ default_input_values = [0, 0.0, 1, 0.0, 2, 1.0]
 
 [sub_resource type="VisualShader" id="136"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // vec2Compose
-vec2 _vec2ComposeFunc(float _vec2_length, float _vec2_angl_rad){
-	return vec2(cos(_vec2_angl_rad), sin(_vec2_angl_rad)) * _vec2_length;
-}
+#include \"res://addons/shaderV/tools/vec2Compose.gdshaderinc\"
 
 void fragment() {
 // FloatConstant:3
@@ -2006,35 +1948,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="143"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // BlurBasic
-vec4 _blur9sampleFunc(sampler2D _blur9sample_sample, vec2 _blur9sample_uv, float _blur9sample_lod, float _blur9sample_radius){
-	vec4 _c01r_b1ur = vec4(0.0);
-	if (_blur9sample_lod < 0.0){
-		_c01r_b1ur = texture(_blur9sample_sample, _blur9sample_uv);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(0, - _blur9sample_radius) * 0.01);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(0, _blur9sample_radius) * 0.01);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(- _blur9sample_radius, 0) * 0.01);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(_blur9sample_radius, 0) * 0.01);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(- _blur9sample_radius, - _blur9sample_radius) * 0.01);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(- _blur9sample_radius, _blur9sample_radius) * 0.01);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(_blur9sample_radius, _blur9sample_radius) * 0.01);
-		_c01r_b1ur += texture(_blur9sample_sample, _blur9sample_uv + vec2(_blur9sample_radius, -_blur9sample_radius) * 0.01);
-	}else{
-		_c01r_b1ur = textureLod(_blur9sample_sample, _blur9sample_uv, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(0, - _blur9sample_radius) * 0.01, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(0, _blur9sample_radius) * 0.01, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(- _blur9sample_radius, 0) * 0.01, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(_blur9sample_radius, 0) * 0.01, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(- _blur9sample_radius, - _blur9sample_radius) * 0.01, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(- _blur9sample_radius, _blur9sample_radius) * 0.01, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(_blur9sample_radius, _blur9sample_radius) * 0.01, _blur9sample_lod);
-		_c01r_b1ur += textureLod(_blur9sample_sample, _blur9sample_uv + vec2(_blur9sample_radius, -_blur9sample_radius) * 0.01, _blur9sample_lod);
-	}
-	_c01r_b1ur /= 9.0;
-	return _c01r_b1ur;
-}
+#include \"res://addons/shaderV/rgba/blur/blur9sample.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -2101,26 +2020,12 @@ script = ExtResource("28")
 
 [sub_resource type="VisualShader" id="149"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // BlurCustom
-vec4 _blurWithAmountFunc(sampler2D _tex_blur_cst, vec2 _uv_blur_cst, float _l0d_blur_cst, int _amnt_blur_cst, float _0ffst_blur_cst) {
-	vec4 _c0l_blur_cst = vec4(0, 0, 0, 0);
-	
-	for(int x = -_amnt_blur_cst; x <= _amnt_blur_cst; x++) {
-		for(int y = -_amnt_blur_cst; y <= _amnt_blur_cst; y++) {
-			vec2 _c00rd_blur_cst = _uv_blur_cst + vec2(float(x), float(y)) * _0ffst_blur_cst;
-			if (_l0d_blur_cst < 0.0){
-				_c0l_blur_cst += texture(_tex_blur_cst, _c00rd_blur_cst);
-			}else{
-				_c0l_blur_cst += textureLod(_tex_blur_cst, _c00rd_blur_cst, _l0d_blur_cst);
-			}
-		}
-	}
-	int _nmb_ne1ghb0urs_blur_cst = (_amnt_blur_cst * 2 + 1) * (_amnt_blur_cst * 2 + 1);
-	_c0l_blur_cst /= float(_nmb_ne1ghb0urs_blur_cst);
-	return _c0l_blur_cst;
-}
+#include \"res://addons/shaderV/rgba/blur/blurCustom.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -2201,29 +2106,12 @@ script = ExtResource("16")
 
 [sub_resource type="VisualShader" id="157"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // ZoomBlur
-vec4 _zoomBlurFunc(sampler2D _tex_zoom_blur, vec2 _uv_zoom_blur, int _amount_zoom_blur, vec2 _center_zoom, float _lgt_zoom_blur, float _lod_zoom_blur){
-	vec4 _col_zoom_blur;
-	if (_lod_zoom_blur < 0.0){
-		_col_zoom_blur = texture(_tex_zoom_blur, _uv_zoom_blur);
-		for (int i = 1; i <= _amount_zoom_blur; i++){
-			float _temp_d_zoom_blur = _lgt_zoom_blur * float(i);
-			vec2 px = _uv_zoom_blur * (1.0 - _temp_d_zoom_blur) + _center_zoom * _temp_d_zoom_blur;
-			_col_zoom_blur += texture(_tex_zoom_blur, px);
-		}
-	}else{
-		_col_zoom_blur = textureLod(_tex_zoom_blur, _uv_zoom_blur, _lod_zoom_blur);
-		for (int i = 1; i <= _amount_zoom_blur; i++){
-			float _temp_d_zoom_blur = _lgt_zoom_blur * float(i);
-			vec2 px = _uv_zoom_blur * (1.0 - _temp_d_zoom_blur) + _center_zoom * _temp_d_zoom_blur;
-			_col_zoom_blur += textureLod(_tex_zoom_blur, px, _lod_zoom_blur);
-		}
-	}
-	_col_zoom_blur = _col_zoom_blur / float(_amount_zoom_blur + 1);
-	return _col_zoom_blur;
-}
+#include \"res://addons/shaderV/rgba/blur/zoomBlur.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -2317,47 +2205,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="165"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // GlowEmpty
-vec4 _inoutGlowEmptyFunc(sampler2D _samp_inglowEmpt, vec2 _uv_inglowEmpt, float _lod_glowEmpt, float _rad_inout_Empty,
-						float _intens_inner_glowEmpt, float _intens_outer_glowEmpt, vec4 _col_inglowEmpt){
-	_rad_inout_Empty = abs(_rad_inout_Empty);
-	
-	vec4 _color_orig_glow = vec4(0.0);
-	float _alpha_glow_inv = 0.0;
-	float _alpha_glow_blured = 0.0;
-	int glow_amount = 3;
-	
-	if (_lod_glowEmpt < 0.0)
-		_color_orig_glow = texture(_samp_inglowEmpt, _uv_inglowEmpt);
-	else
-		_color_orig_glow = textureLod(_samp_inglowEmpt, _uv_inglowEmpt, _lod_glowEmpt);
-	
-	glow_amount = int(min(_rad_inout_Empty + 7.0, 14.0));
-	for(int x = - glow_amount; x <= glow_amount; x++) {
-		for(int y = - glow_amount; y <= glow_amount; y++) {
-			vec2 _coord_blur_cst = _uv_inglowEmpt + vec2(float(x), float(y)) * _rad_inout_Empty * 0.01;
-			_alpha_glow_blured += textureLod(_samp_inglowEmpt, _coord_blur_cst, 0.0).a;
-		}
-	}
-	int _nmb_neighbours_blur_cst = (glow_amount * 2 + 1) * (glow_amount * 2 + 1);
-	_alpha_glow_blured /= float(_nmb_neighbours_blur_cst);
-	
-	_alpha_glow_inv = _alpha_glow_blured;
-	_alpha_glow_inv *= (1.0 - _color_orig_glow.a);
-	
-	float in_alpha_glow_inv = 1.0 - _alpha_glow_blured;
-	in_alpha_glow_inv *= _color_orig_glow.a;
-	
-	if (_alpha_glow_inv > 0.0)
-		_alpha_glow_inv *= (_intens_outer_glowEmpt + 1.0);
-	
-	if (in_alpha_glow_inv > 0.0)
-		in_alpha_glow_inv *= (_intens_inner_glowEmpt + 1.0);
-	
-	return vec4(_col_inglowEmpt.rgb, (_alpha_glow_inv + in_alpha_glow_inv) * _col_inglowEmpt.a);
-}
+#include \"res://addons/shaderV/rgba/glow/glowEmpty.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -2402,7 +2255,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-575.563, -162.379)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(200, 0)
@@ -2443,40 +2295,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="171"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // InnerGlow
-vec4 _innerGlowFunc(sampler2D _samp_inglow, vec2 _uv_inglow, float _l0d_inglow, float _rad_inglow, float _intns_inglow, vec4 _col_inglow){
-	_rad_inglow = abs(_rad_inglow);
-	
-	vec4 _color_inglow = vec4(0.0);
-	float _alpha_inv = 0.0;
-	float _alpha_inglow_b1 = 0.0;
-	int _amount_inglow = 3;
-	
-	if (_l0d_inglow < 0.0)
-		_color_inglow = texture(_samp_inglow, _uv_inglow);
-	else
-		_color_inglow = textureLod(_samp_inglow, _uv_inglow, _l0d_inglow);
-	
-	_amount_inglow = int(min(_rad_inglow + 7.0, 14.0));
-	for(int x = - _amount_inglow; x <= _amount_inglow; x++) {
-		for(int y = - _amount_inglow; y <= _amount_inglow; y++) {
-			vec2 _coord_blur_cst = _uv_inglow + vec2(float(x), float(y)) * _rad_inglow * 0.01;
-			_alpha_inglow_b1 += textureLod(_samp_inglow, _coord_blur_cst, 0.0).a;
-		}
-	}
-	int _nmb_neighbours_blur_cst = (_amount_inglow * 2 + 1) * (_amount_inglow * 2 + 1);
-	_alpha_inglow_b1 /= float(_nmb_neighbours_blur_cst);
-	
-	_alpha_inv = 1.0 - _alpha_inglow_b1; // inversion
-	_alpha_inv *= _color_inglow.a; // masking
-	
-	if (_alpha_inv > 0.0)
-		_alpha_inv *= (_intns_inglow + 1.0);
-	
-	return mix(_color_inglow, _col_inglow, _alpha_inv * _col_inglow.a);
-}
+#include \"res://addons/shaderV/rgba/glow/innerGlow.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -2565,40 +2389,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="180"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // InnerGlowEmpty
-vec4 _innerGlowEmptyFunc(sampler2D _samp_inglowEmpt, vec2 _uv_inglowEmpt, float _lod_inglowEmpt, float _rad_inglowEmpt, float _intns_inglowEmpt, vec4 _col_inglowEmpt){
-	_rad_inglowEmpt = abs(_rad_inglowEmpt);
-	
-	vec4 _color_inglow = vec4(0.0);
-	float _alpha_inglow_inv = 0.0;
-	float _alpha_inglow_b1 = 0.0;
-	int _amount_inglow = 3;
-	
-	if (_lod_inglowEmpt < 0.0)
-		_color_inglow = texture(_samp_inglowEmpt, _uv_inglowEmpt);
-	else
-		_color_inglow = textureLod(_samp_inglowEmpt, _uv_inglowEmpt, _lod_inglowEmpt);
-	
-	_amount_inglow = int(min(_rad_inglowEmpt + 7.0, 14.0));
-	for(int x = - _amount_inglow; x <= _amount_inglow; x++) {
-		for(int y = - _amount_inglow; y <= _amount_inglow; y++) {
-			vec2 _coord_blur_cst = _uv_inglowEmpt + vec2(float(x), float(y)) * _rad_inglowEmpt * 0.01;
-			_alpha_inglow_b1 += textureLod(_samp_inglowEmpt, _coord_blur_cst, 0.0).a;
-		}
-	}
-	int _nmb_neighbours_blur_cst = (_amount_inglow * 2 + 1) * (_amount_inglow * 2 + 1);
-	_alpha_inglow_b1 /= float(_nmb_neighbours_blur_cst);
-	
-	_alpha_inglow_inv = 1.0 - _alpha_inglow_b1; // inversion
-	_alpha_inglow_inv *= _color_inglow.a; // masking
-	
-	if (_alpha_inglow_inv > 0.0)
-		_alpha_inglow_inv *= (_intns_inglowEmpt + 1.0);
-	
-	return vec4(_col_inglowEmpt.rgb, _alpha_inglow_inv * _col_inglowEmpt.a);
-}
+#include \"res://addons/shaderV/rgba/glow/innerGlowEmpty.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -2681,41 +2477,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="187"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // OuterGlow
-vec4 _outerGlowFunc(sampler2D _samp_inglow, vec2 _uv_inglow, float _lod_inglow, float _rad_inglow, float _intns_inglow, vec4 _col_inglow){
-	_rad_inglow = abs(_rad_inglow);
-	
-	vec4 _color_inglow = vec4(0.0);
-	float _alpha_inv = 0.0;
-	float _alpha_inglow_b1 = 0.0;
-	int _amount_inglow = 3;
-	
-	if (_lod_inglow < 0.0)
-		_color_inglow = texture(_samp_inglow, _uv_inglow);
-	else
-		_color_inglow = textureLod(_samp_inglow, _uv_inglow, _lod_inglow);
-	
-	_amount_inglow = int(min(_rad_inglow + 7.0, 14.0));
-	for(int x = - _amount_inglow; x <= _amount_inglow; x++) {
-		for(int y = - _amount_inglow; y <= _amount_inglow; y++) {
-			vec2 _coord_blur_cst = _uv_inglow + vec2(float(x), float(y)) * _rad_inglow * 0.01;
-			_alpha_inglow_b1 += textureLod(_samp_inglow, _coord_blur_cst, 0.0).a;
-		}
-	}
-	int _nmb_neighbours_blur_cst = (_amount_inglow * 2 + 1) * (_amount_inglow * 2 + 1);
-	_alpha_inglow_b1 /= float(_nmb_neighbours_blur_cst);
-	
-	_alpha_inv = _alpha_inglow_b1; // inversion
-	_alpha_inv *= (1.0 - _color_inglow.a); // masking
-	
-	if (_alpha_inv > 0.0)
-		_alpha_inv *= (_intns_inglow + 1.0);
-	
-	vec4 _glow_col_result = vec4(_col_inglow.rgb, _alpha_inv * _col_inglow.a);
-	return mix(_glow_col_result, _color_inglow, _color_inglow.a);
-}
+#include \"res://addons/shaderV/rgba/glow/outerGlow.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -2798,40 +2565,12 @@ constant = Color(1, 0, 0, 1)
 
 [sub_resource type="VisualShader" id="194"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // OuterGlowEmpty
-vec4 _outerGlowEmptyFunc(sampler2D _samp_inglowEmpt, vec2 _uv_inglowEmpt, float _lod_inglowEmpt, float _rad_inglowEmpt, float _intns_inglowEmpt, vec4 _col_inglowEmpt){
-	_rad_inglowEmpt = abs(_rad_inglowEmpt);
-	
-	vec4 _color_inglow = vec4(0.0);
-	float _alpha_inglow_inv = 0.0;
-	float _alpha_inglow_b1 = 0.0;
-	int _amount_inglow = 3;
-	
-	if (_lod_inglowEmpt < 0.0)
-		_color_inglow = texture(_samp_inglowEmpt, _uv_inglowEmpt);
-	else
-		_color_inglow = textureLod(_samp_inglowEmpt, _uv_inglowEmpt, _lod_inglowEmpt);
-	
-	_amount_inglow = int(min(_rad_inglowEmpt + 7.0, 14.0));
-	for(int x = - _amount_inglow; x <= _amount_inglow; x++) {
-		for(int y = - _amount_inglow; y <= _amount_inglow; y++) {
-			vec2 _coord_blur_cst = _uv_inglowEmpt + vec2(float(x), float(y)) * _rad_inglowEmpt * 0.01;
-			_alpha_inglow_b1 += textureLod(_samp_inglowEmpt, _coord_blur_cst, 0.0).a;
-		}
-	}
-	int _nmb_neighbours_blur_cst = (_amount_inglow * 2 + 1) * (_amount_inglow * 2 + 1);
-	_alpha_inglow_b1 /= float(_nmb_neighbours_blur_cst);
-	
-	_alpha_inglow_inv = _alpha_inglow_b1; // inversion
-	_alpha_inglow_inv *= (1.0 - _color_inglow.a); // masking
-	
-	if (_alpha_inglow_inv > 0.0)
-		_alpha_inglow_inv *= (_intns_inglowEmpt + 1.0);
-	
-	return vec4(_col_inglowEmpt.rgb, _alpha_inglow_inv * _col_inglowEmpt.a);
-}
+#include \"res://addons/shaderV/rgba/glow/outerGlowEmpty.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -2909,13 +2648,12 @@ script = ExtResource("35")
 
 [sub_resource type="VisualShader" id="199"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // CheckerboardShape
-float _checkerboardPatternFunc(vec2 uv, vec2 _checker_size){
-	float fmodRes = mod(floor(_checker_size.x * uv.x) + floor(_checker_size.y * uv.y), 2.0);
-	return max(sign(fmodRes), 0.0);
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/chekerboardPattern.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -2989,21 +2727,12 @@ constant = Vector3(1, 1, 0)
 
 [sub_resource type="VisualShader" id="217"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // CircleShape
-vec4 _generateCircleFunc(vec2 _uv_circle, vec2 _center_circle, vec2 _scale_factor_circle, float _innerRad_circle, float _outRad_circle, float _hard_circle) {
-	float _innerRadiusCheck0 = min(_innerRad_circle, _outRad_circle);
-	float _outerRadiusCheck0 = max(_innerRad_circle, _outRad_circle);
-	
-	float currentPositionCircle = length((_uv_circle - _center_circle) * _scale_factor_circle);
-	float maxIntencityCenterCircle = (_outerRadiusCheck0 + _innerRadiusCheck0) * 0.5;
-	float rd0 = _outerRadiusCheck0 - maxIntencityCenterCircle;
-	float circleDistribution = min(max(abs(currentPositionCircle - maxIntencityCenterCircle) / rd0, 0.0), 1.0);
-	vec4 _outputColor0 = vec4(1.0);
-	_outputColor0.a = 1.0 - pow(circleDistribution, _hard_circle);
-	return _outputColor0;
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/generateCircle.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -3100,16 +2829,12 @@ constant = Vector3(0.5, 0.5, 0)
 
 [sub_resource type="VisualShader" id="208"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // CircleShape2
-vec4 _generateCircle2Func(vec2 _uv_gc2, vec2 _pos_gc2, vec2 _scale_gc2, float _rad_gc2,
-						 float _bordIn_gc2, float _bordOut_gc2, vec4 _col_gc2){
-	float _dst_gc2 = length((_uv_gc2 - _pos_gc2) * _scale_gc2);
-	_col_gc2.a *= smoothstep(_rad_gc2 - _bordIn_gc2, _rad_gc2, _dst_gc2) 
-				 - smoothstep(_rad_gc2, _rad_gc2 + _bordOut_gc2, _dst_gc2);
-	return _col_gc2;
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/generateCircle2.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -3208,18 +2933,12 @@ constant = 0.05
 
 [sub_resource type="VisualShader" id="232"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // RegularPolygonShape
-float _polygonFunc(vec2 _uv_polygon, vec2 _pos_polygon, vec2 _size_polygon, float _sides_polygon, float _angle_polygon, float _smooth_polygon){
-	_uv_polygon = (_uv_polygon - _pos_polygon) / (_size_polygon * 2.0);
-	float a_polygon = atan(_uv_polygon.x, _uv_polygon.y) + _angle_polygon;
-	float r_polygon = 6.28318530718 / float(int(max(_sides_polygon, 3.0)));
-	float d_polygon = cos(floor(0.5 + a_polygon / r_polygon) * r_polygon - a_polygon) * length(_uv_polygon);
-	return (max(sign(_smooth_polygon - 0.0), 0.0) * ( 1.0 - smoothstep(0.1 - 0.0001, 0.1 + _smooth_polygon, d_polygon) ) +
-			(max(sign(-_smooth_polygon + 0.0), 0.0)) * ( 1.0 - smoothstep(0.1 + _smooth_polygon - 0.0001, 0.1, d_polygon) ) +
-			(1.0 - abs(sign(_smooth_polygon - 0.0))) * ( 1.0 - step(0.1, d_polygon)) );
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/generateRegularNgon.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -3320,17 +3039,12 @@ input_name = "time"
 
 [sub_resource type="VisualShader" id="242"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // SpiralShape
-vec4 _generateSpiralFunc(vec2 _uv_genSpir, vec2 _pivot_genSpir, float _size_genSpir, float _lineAmnt_genSpir,
-						float _spd_genSpir, float _soft_genSpir, float _t1me_genSpir, vec4 _col_genSpir){
-	_uv_genSpir -= _pivot_genSpir;
-	float _va1ue_genSpir = 1.0 - sin(length(_uv_genSpir) * _size_genSpir +
-					floor(_lineAmnt_genSpir) * atan(_uv_genSpir.x, _uv_genSpir.y) +
-					_t1me_genSpir * _spd_genSpir ) / _soft_genSpir;
-	return vec4(_col_genSpir.rgb, _col_genSpir.a * _va1ue_genSpir);
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/generateSpiral.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -3435,12 +3149,12 @@ script = ExtResource("41")
 
 [sub_resource type="VisualShader" id="251"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // ScanLinesSharpShape
-float _scanLinesSharpFunc(vec2 _uv_scLiShrp, float _amount_scLiShrp, float _fill_scLiShrp, float _spd_scLiShrp, float _time_scLiShrp) {
-	return step(fract(_uv_scLiShrp.y * _amount_scLiShrp + _time_scLiShrp * _spd_scLiShrp), _fill_scLiShrp);
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/scanLinesSharp.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -3473,7 +3187,7 @@ void fragment() {
 	float n_in53p6 = 1.00000;
 	{
 		n_out53p0 = vec3(n_out52p0.xyz);
-		n_out53p1 = _scanLinesSharpFunc(vec3(n_out47p0, 0.0).xy, n_out48p0, n_out49p0, n_out50p0, n_out51p0) * n_in53p6;
+		n_out53p1 = _scanLinesSharpFunc(vec3(n_out47p0, 0.0).xy, n_out48p0, n_out49p0, n_out50p0, n_out51p0) * float(n_in53p6);
 	}
 
 
@@ -3523,12 +3237,12 @@ constant = 15.0
 
 [sub_resource type="VisualShader" id="257"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // RandomStripesShape
-float _generateRandomStripesFunc(vec2 _uv_stripes, float _fill_stripes, float _amount_stripes){
-	return 1.0 - step(_fill_stripes, fract(sin(dot(floor(vec2(_uv_stripes.y) * _amount_stripes), vec2(12.9898, 78.233))) * 43758.5453123));
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/stripesRandom.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -3553,7 +3267,7 @@ void fragment() {
 	float n_in54p4 = 1.00000;
 	{
 		n_out54p0 = vec3(n_out53p0.xyz);
-		n_out54p1 = _generateRandomStripesFunc(vec3(n_out47p0, 0.0).xy, n_out55p0, n_out56p0) * n_in54p4;
+		n_out54p1 = _generateRandomStripesFunc(vec3(n_out47p0, 0.0).xy, n_out55p0, n_out56p0) * float(n_in54p4);
 	}
 
 
@@ -3596,27 +3310,12 @@ constant = 10.0
 
 [sub_resource type="VisualShader" id="262"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // GenericNoise2D
-float _hash2_generic2D(vec2 _p_hash2_generic) {
-	return (fract(1e4 * sin(17.0 * _p_hash2_generic.x + _p_hash2_generic.y * 0.1) *
-					(0.1 + abs(sin(_p_hash2_generic.y * 13.0 + _p_hash2_generic.x)))));
-}
-
-float _genericNoise2D(vec2 _x_generic2D) {
-	vec2 _temp_i_generic2D = floor(_x_generic2D);
-	vec2 _temp_f_generic2D = fract(_x_generic2D);
-
-	float _a_g1n2 = _hash2_generic2D(_temp_i_generic2D);
-	float _b_g1n2 = _hash2_generic2D(_temp_i_generic2D + vec2(1.0, 0.0));
-	float _c_g1n2 = _hash2_generic2D(_temp_i_generic2D + vec2(0.0, 1.0));
-	float _d_g1n2 = _hash2_generic2D(_temp_i_generic2D + vec2(1.0, 1.0));
-	
-	vec2 _u_g1n2 = _temp_f_generic2D * _temp_f_generic2D * (3.0 - 2.0 * _temp_f_generic2D);
-	return (mix(_a_g1n2, _b_g1n2, _u_g1n2.x) + (_c_g1n2 - _a_g1n2) *
-				_u_g1n2.y * (1.0 - _u_g1n2.x) + (_d_g1n2 - _b_g1n2) * _u_g1n2.x * _u_g1n2.y);
-}
+#include \"res://addons/shaderV/rgba/noise/generic2d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -3675,53 +3374,12 @@ constant = 10.0
 
 [sub_resource type="VisualShader" id="268"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // PerlinNoise2D
-float _perlin2dNoiseFunc(vec2 P, vec2 _period_perl2) {
-	vec4 Pi = floor(vec4(P, P)) + vec4(0.0, 0.0, 1.0, 1.0);
-	vec4 Pf = fract(vec4(P, P)) - vec4(0.0, 0.0, 1.0, 1.0);
-	
-	if (_period_perl2.x != 0.0 && _period_perl2.y != 0.0)
-		Pi = mod(Pi, vec4(_period_perl2, _period_perl2));
-	
-	Pi = Pi - floor(Pi * (1.0 / 289.0)) * 289.0;
-	vec4 ix = Pi.xzxz;
-	vec4 iy = Pi.yyww;
-	vec4 fx = Pf.xzxz;
-	vec4 fy = Pf.yyww;
-	
-	vec4 i = (((((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy))-
-		floor((((((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy))*(1.0/289.0))*289.0;
-	
-	vec4 gx = fract(i * (1.0 / 41.0)) * 2.0 - 1.0 ;
-	vec4 gy = abs(gx) - 0.5 ;
-	vec4 tx = floor(gx + 0.5);
-	gx = gx - tx;
-	
-	vec2 g00 = vec2(gx.x,gy.x);
-	vec2 g10 = vec2(gx.y,gy.y);
-	vec2 g01 = vec2(gx.z,gy.z);
-	vec2 g11 = vec2(gx.w,gy.w);
-	
-	vec4 norm = 1.79284291400159 - 0.85373472095314 * vec4(dot(g00, g00), dot(g01, g01), dot(g10, g10), dot(g11, g11));
-	g00 *= norm.x;
-	g01 *= norm.y;
-	g10 *= norm.z;
-	g11 *= norm.w;
-	
-	float n00 = dot(g00, vec2(fx.x, fy.x));
-	float n10 = dot(g10, vec2(fx.y, fy.y));
-	float n01 = dot(g01, vec2(fx.z, fy.z));
-	float n11 = dot(g11, vec2(fx.w, fy.w));
-	
-	vec2 fade_xy = Pf.xy * Pf.xy * Pf.xy * (Pf.xy * (Pf.xy * 6.0 - 15.0) + 10.0);
-	vec2 n_x = mix(vec2(n00, n01), vec2(n10, n11), fade_xy.x);
-	float n_xy = mix(n_x.x, n_x.y, fade_xy.y);
-	return 2.3 * n_xy;
-}
+#include \"res://addons/shaderV/rgba/noise/perlin2d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -3787,79 +3445,12 @@ input_name = "time"
 
 [sub_resource type="VisualShader" id="274"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // PerlinNoise3D
-float _perlin3dNoiseFunc(vec3 P) {
-	vec3 Pi0 = floor(P);
-	vec3 Pi1 = Pi0 + vec3(1.0);
-	Pi0 = Pi0 - floor(Pi0 * (1.0 / 289.0)) * 289.0;
-	Pi1 = Pi1 - floor(Pi1 * (1.0 / 289.0)) * 289.0;
-	vec3 Pf0 = fract(P);
-	vec3 Pf1 = Pf0 - vec3(1.0);
-	vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-	vec4 iy = vec4(Pi0.yy, Pi1.yy);
-	vec4 iz0 = vec4(Pi0.z);
-	vec4 iz1 = vec4(Pi1.z);
-	
-	vec4 ixy = (((((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy))-
-		floor(((((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*(1.0/289.0))*289.0;
-	vec4 ixy0 = ((((ixy + iz0)*34.0)+1.0)*(ixy + iz0))-floor((((ixy + iz0)*34.0)+1.0)*(ixy + iz0)*(1.0/289.0))*289.0;
-	vec4 ixy1 = ((((ixy + iz1)*34.0)+1.0)*(ixy + iz1))-floor((((ixy + iz1)*34.0)+1.0)*(ixy + iz1)*(1.0/289.0))*289.0;
-	
-	vec4 gx0 = ixy0 * (1.0 / 7.0);
-	vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
-	gx0 = fract(gx0);
-	vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
-	vec4 sz0 = step(gz0, vec4(0.0));
-	gx0 -= sz0 * (step(0.0, gx0) - 0.5);
-	gy0 -= sz0 * (step(0.0, gy0) - 0.5);
-	
-	vec4 gx1 = ixy1 * (1.0 / 7.0);
-	vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
-	gx1 = fract(gx1);
-	vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
-	vec4 sz1 = step(gz1, vec4(0.0));
-	gx1 -= sz1 * (step(0.0, gx1) - 0.5);
-	gy1 -= sz1 * (step(0.0, gy1) - 0.5);
-	
-	vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
-	vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
-	vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
-	vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
-	vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
-	vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
-	vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
-	vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
-	
-	vec4 norm0 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110));
-	g000 *= norm0.x;
-	g010 *= norm0.y;
-	g100 *= norm0.z;
-	g110 *= norm0.w;
-	vec4 norm1 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111));
-	g001 *= norm1.x;
-	g011 *= norm1.y;
-	g101 *= norm1.z;
-	g111 *= norm1.w;
-	
-	float n000 = dot(g000, Pf0);
-	float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
-	float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
-	float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
-	float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
-	float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-	float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
-	float n111 = dot(g111, Pf1);
-	
-	vec3 fade_xyz = Pf0 * Pf0 * Pf0 * (Pf0 * (Pf0 * 6.0 - 15.0) + 10.0);
-	vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-	vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-	float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
-	return 2.2 * n_xyz;
-}
+#include \"res://addons/shaderV/rgba/noise/perlin3d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -3891,7 +3482,7 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-674.783, -300)
+graph_offset = Vector2(59.0211, 97.2226)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(680, 280)
@@ -3925,79 +3516,12 @@ constant = Vector3(1, 10, 0)
 
 [sub_resource type="VisualShader" id="280"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // PerlinPeriodicNoise3D
-float _perlin3dPeriodicNoiseFunc(vec3 P, vec3 rep) {
-	vec3 Pi0 = mod(floor(P), rep);
-	vec3 Pi1 = mod(Pi0 + vec3(1.0), rep);
-	Pi0 = Pi0 - floor(Pi0 * (1.0 / 289.0)) * 289.0;
-	Pi1 = Pi1 - floor(Pi1 * (1.0 / 289.0)) * 289.0;
-	vec3 Pf0 = fract(P);
-	vec3 Pf1 = Pf0 - vec3(1.0);
-	vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-	vec4 iy = vec4(Pi0.yy, Pi1.yy);
-	vec4 iz0 = vec4(Pi0.z);
-	vec4 iz1 = vec4(Pi1.z);
-	
-	vec4 ixy = (((((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy))-
-		floor(((((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*(1.0/289.0))*289.0;
-	vec4 ixy0 = ((((ixy + iz0)*34.0)+1.0)*(ixy + iz0))-floor((((ixy + iz0)*34.0)+1.0)*(ixy + iz0)*(1.0/289.0))*289.0;
-	vec4 ixy1 = ((((ixy + iz1)*34.0)+1.0)*(ixy + iz1))-floor((((ixy + iz1)*34.0)+1.0)*(ixy + iz1)*(1.0/289.0))*289.0;
-	
-	vec4 gx0 = ixy0 * (1.0 / 7.0);
-	vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
-	gx0 = fract(gx0);
-	vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
-	vec4 sz0 = step(gz0, vec4(0.0));
-	gx0 -= sz0 * (step(0.0, gx0) - 0.5);
-	gy0 -= sz0 * (step(0.0, gy0) - 0.5);
-	
-	vec4 gx1 = ixy1 * (1.0 / 7.0);
-	vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
-	gx1 = fract(gx1);
-	vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
-	vec4 sz1 = step(gz1, vec4(0.0));
-	gx1 -= sz1 * (step(0.0, gx1) - 0.5);
-	gy1 -= sz1 * (step(0.0, gy1) - 0.5);
-	
-	vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
-	vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
-	vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
-	vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
-	vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
-	vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
-	vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
-	vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
-	
-	vec4 norm0 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110));
-	g000 *= norm0.x;
-	g010 *= norm0.y;
-	g100 *= norm0.z;
-	g110 *= norm0.w;
-	vec4 norm1 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111));
-	g001 *= norm1.x;
-	g011 *= norm1.y;
-	g101 *= norm1.z;
-	g111 *= norm1.w;
-	
-	float n000 = dot(g000, Pf0);
-	float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
-	float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
-	float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
-	float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
-	float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-	float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
-	float n111 = dot(g111, Pf1);
-	
-	vec3 fade_xyz = Pf0 * Pf0 * Pf0 * (Pf0 * (Pf0 * 6.0 - 15.0) + 10.0);
-	vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-	vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-	float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
-	return 2.2 * n_xyz;
-}
+#include \"res://addons/shaderV/rgba/noise/perlinPeriodic3d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4069,144 +3593,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="286"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // PerlinNoise4D
-vec4 _permute_perlin4d_noise_func(vec4 x) {
-	return ((x*34.0)+1.0)*x - floor(((x*34.0)+1.0)*x * (1.0 / 289.0)) * 289.0;
-}
-float _perlin4dNoiseFunc(vec4 P) {
-	vec4 Pi0 = floor(P);
-	vec4 Pi1 = Pi0 + 1.0;
-	Pi0 = Pi0 - floor(Pi0 * (1.0 / 289.0)) * 289.0;
-	Pi1 = Pi1 - floor(Pi1 * (1.0 / 289.0)) * 289.0;
-	vec4 Pf0 = fract(P);
-	vec4 Pf1 = Pf0 - 1.0;
-	vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-	vec4 iy = vec4(Pi0.yy, Pi1.yy);
-	vec4 iz0 = vec4(Pi0.zzzz);
-	vec4 iz1 = vec4(Pi1.zzzz);
-	vec4 iw0 = vec4(Pi0.wwww);
-	vec4 iw1 = vec4(Pi1.wwww);
-	
-	vec4 ixy = _permute_perlin4d_noise_func(_permute_perlin4d_noise_func(ix) + iy);
-	vec4 ixy0 = _permute_perlin4d_noise_func(ixy + iz0);
-	vec4 ixy1 = _permute_perlin4d_noise_func(ixy + iz1);
-	vec4 ixy00 = _permute_perlin4d_noise_func(ixy0 + iw0);
-	vec4 ixy01 = _permute_perlin4d_noise_func(ixy0 + iw1);
-	vec4 ixy10 = _permute_perlin4d_noise_func(ixy1 + iw0);
-	vec4 ixy11 = _permute_perlin4d_noise_func(ixy1 + iw1);
-	
-	vec4 gx00 = ixy00 * (1.0 / 7.0);
-	vec4 gy00 = floor(gx00) * (1.0 / 7.0);
-	vec4 gz00 = floor(gy00) * (1.0 / 6.0);
-	gx00 = fract(gx00) - 0.5;
-	gy00 = fract(gy00) - 0.5;
-	gz00 = fract(gz00) - 0.5;
-	vec4 gw00 = vec4(0.75) - abs(gx00) - abs(gy00) - abs(gz00);
-	vec4 sw00 = step(gw00, vec4(0.0));
-	gx00 -= sw00 * (step(0.0, gx00) - 0.5);
-	gy00 -= sw00 * (step(0.0, gy00) - 0.5);
-	
-	vec4 gx01 = ixy01 * (1.0 / 7.0);
-	vec4 gy01 = floor(gx01) * (1.0 / 7.0);
-	vec4 gz01 = floor(gy01) * (1.0 / 6.0);
-	gx01 = fract(gx01) - 0.5;
-	gy01 = fract(gy01) - 0.5;
-	gz01 = fract(gz01) - 0.5;
-	vec4 gw01 = vec4(0.75) - abs(gx01) - abs(gy01) - abs(gz01);
-	vec4 sw01 = step(gw01, vec4(0.0));
-	gx01 -= sw01 * (step(0.0, gx01) - 0.5);
-	gy01 -= sw01 * (step(0.0, gy01) - 0.5);
-	
-	vec4 gx10 = ixy10 * (1.0 / 7.0);
-	vec4 gy10 = floor(gx10) * (1.0 / 7.0);
-	vec4 gz10 = floor(gy10) * (1.0 / 6.0);
-	gx10 = fract(gx10) - 0.5;
-	gy10 = fract(gy10) - 0.5;
-	gz10 = fract(gz10) - 0.5;
-	vec4 gw10 = vec4(0.75) - abs(gx10) - abs(gy10) - abs(gz10);
-	vec4 sw10 = step(gw10, vec4(0.0));
-	gx10 -= sw10 * (step(0.0, gx10) - 0.5);
-	gy10 -= sw10 * (step(0.0, gy10) - 0.5);
-	
-	vec4 gx11 = ixy11 * (1.0 / 7.0);
-	vec4 gy11 = floor(gx11) * (1.0 / 7.0);
-	vec4 gz11 = floor(gy11) * (1.0 / 6.0);
-	gx11 = fract(gx11) - 0.5;
-	gy11 = fract(gy11) - 0.5;
-	gz11 = fract(gz11) - 0.5;
-	vec4 gw11 = vec4(0.75) - abs(gx11) - abs(gy11) - abs(gz11);
-	vec4 sw11 = step(gw11, vec4(0.0));
-	gx11 -= sw11 * (step(0.0, gx11) - 0.5);
-	gy11 -= sw11 * (step(0.0, gy11) - 0.5);
-	
-	vec4 g0000 = vec4(gx00.x,gy00.x,gz00.x,gw00.x);
-	vec4 g1000 = vec4(gx00.y,gy00.y,gz00.y,gw00.y);
-	vec4 g0100 = vec4(gx00.z,gy00.z,gz00.z,gw00.z);
-	vec4 g1100 = vec4(gx00.w,gy00.w,gz00.w,gw00.w);
-	vec4 g0010 = vec4(gx10.x,gy10.x,gz10.x,gw10.x);
-	vec4 g1010 = vec4(gx10.y,gy10.y,gz10.y,gw10.y);
-	vec4 g0110 = vec4(gx10.z,gy10.z,gz10.z,gw10.z);
-	vec4 g1110 = vec4(gx10.w,gy10.w,gz10.w,gw10.w);
-	vec4 g0001 = vec4(gx01.x,gy01.x,gz01.x,gw01.x);
-	vec4 g1001 = vec4(gx01.y,gy01.y,gz01.y,gw01.y);
-	vec4 g0101 = vec4(gx01.z,gy01.z,gz01.z,gw01.z);
-	vec4 g1101 = vec4(gx01.w,gy01.w,gz01.w,gw01.w);
-	vec4 g0011 = vec4(gx11.x,gy11.x,gz11.x,gw11.x);
-	vec4 g1011 = vec4(gx11.y,gy11.y,gz11.y,gw11.y);
-	vec4 g0111 = vec4(gx11.z,gy11.z,gz11.z,gw11.z);
-	vec4 g1111 = vec4(gx11.w,gy11.w,gz11.w,gw11.w);
-	
-	vec4 norm00 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100));
-	g0000 *= norm00.x;
-	g0100 *= norm00.y;
-	g1000 *= norm00.z;
-	g1100 *= norm00.w;
-	
-	vec4 norm01 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101));
-	g0001 *= norm01.x;
-	g0101 *= norm01.y;
-	g1001 *= norm01.z;
-	g1101 *= norm01.w;
-	
-	vec4 norm10 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110));
-	g0010 *= norm10.x;
-	g0110 *= norm10.y;
-	g1010 *= norm10.z;
-	g1110 *= norm10.w;
-	
-	vec4 norm11 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111));
-	g0011 *= norm11.x;
-	g0111 *= norm11.y;
-	g1011 *= norm11.z;
-	g1111 *= norm11.w;
-	
-	float n0000 = dot(g0000, Pf0);
-	float n1000 = dot(g1000, vec4(Pf1.x, Pf0.yzw));
-	float n0100 = dot(g0100, vec4(Pf0.x, Pf1.y, Pf0.zw));
-	float n1100 = dot(g1100, vec4(Pf1.xy, Pf0.zw));
-	float n0010 = dot(g0010, vec4(Pf0.xy, Pf1.z, Pf0.w));
-	float n1010 = dot(g1010, vec4(Pf1.x, Pf0.y, Pf1.z, Pf0.w));
-	float n0110 = dot(g0110, vec4(Pf0.x, Pf1.yz, Pf0.w));
-	float n1110 = dot(g1110, vec4(Pf1.xyz, Pf0.w));
-	float n0001 = dot(g0001, vec4(Pf0.xyz, Pf1.w));
-	float n1001 = dot(g1001, vec4(Pf1.x, Pf0.yz, Pf1.w));
-	float n0101 = dot(g0101, vec4(Pf0.x, Pf1.y, Pf0.z, Pf1.w));
-	float n1101 = dot(g1101, vec4(Pf1.xy, Pf0.z, Pf1.w));
-	float n0011 = dot(g0011, vec4(Pf0.xy, Pf1.zw));
-	float n1011 = dot(g1011, vec4(Pf1.x, Pf0.y, Pf1.zw));
-	float n0111 = dot(g0111, vec4(Pf0.x, Pf1.yzw));
-	float n1111 = dot(g1111, Pf1);
-	
-	vec4 fade_xyzw = Pf0 * Pf0 * Pf0 * (Pf0 * (Pf0 * 6.0 - 15.0) + 10.0);
-	vec4 n_0w = mix(vec4(n0000, n1000, n0100, n1100), vec4(n0001, n1001, n0101, n1101), fade_xyzw.w);
-	vec4 n_1w = mix(vec4(n0010, n1010, n0110, n1110), vec4(n0011, n1011, n0111, n1111), fade_xyzw.w);
-	vec4 n_zw = mix(n_0w, n_1w, fade_xyzw.z);
-	vec2 n_yzw = mix(n_zw.xy, n_zw.zw, fade_xyzw.y);
-	float n_xyzw = mix(n_yzw.x, n_yzw.y, fade_xyzw.x);
-	return 2.2 * n_xyzw;
-}
+#include \"res://addons/shaderV/rgba/noise/perlin4d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4278,46 +3670,12 @@ script = ExtResource("48")
 
 [sub_resource type="VisualShader" id="292"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // SimplexNoise2D
-vec3 _permute_simplex2_noise(vec3 x) {
-	return ((x*34.0)+1.0)*x-floor(((x*34.0)+1.0)*x*(1.0/289.0))*289.0;
-}
-
-float _simplex2dNoiseFunc(vec2 v) {
-	vec4 C = vec4(0.211324865405187,
-				0.366025403784439,
-				-0.577350269189626,
-				0.024390243902439);
-	
-	vec2 i  = floor(v + dot(v, C.yy) );
-	vec2 x0 = v -   i + dot(i, C.xx);
-	
-	vec2 i1;
-	i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-	vec4 x12 = vec4(x0.xy, x0.xy) + C.xxzz;
-	x12.xy -= i1;
-	
-	i = i - floor(i * (1.0 / 289.0)) * 289.0;
-	vec3 p = _permute_simplex2_noise(_permute_simplex2_noise(i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0));
-	
-	vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), vec3(0.0));
-	m = m * m;
-	m = m * m;
-	
-	vec3 x = 2.0 * fract(p * C.www) - 1.0;
-	vec3 h = abs(x) - 0.5;
-	vec3 ox = floor(x + 0.5);
-	vec3 a0 = x - ox;
-	
-	m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
-	
-	vec3 g;
-	g.x  = a0.x  * x0.x  + h.x  * x0.y;
-	g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-	return 130.0 * dot(m, g);
-}
+#include \"res://addons/shaderV/rgba/noise/simplex2d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4377,71 +3735,12 @@ input_name = "time"
 
 [sub_resource type="VisualShader" id="298"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // SimplexNoise3D
-vec4 _permute_simplex3_noise(vec4 x) {
-	return ((x * 34.0) + 1.0) * x - floor(((x * 34.0) + 1.0) * x * (1.0 / 289.0)) * 289.0;
-}
-float _simplex3dNoiseFunc(vec3 v) { 
-	vec2 C = vec2(1.0/6.0, 1.0/3.0) ;
-	vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-	
-	vec3 i  = floor(v + dot(v, vec3(C.y)));
-	vec3 x0 = v - i + dot(i, vec3(C.x)) ;
-	
-	vec3 g = step(x0.yzx, x0.xyz);
-	vec3 l = 1.0 - g;
-	vec3 i1 = min( g.xyz, l.zxy );
-	vec3 i2 = max( g.xyz, l.zxy );
-	
-	vec3 x1 = x0 - i1 + vec3(C.x);
-	vec3 x2 = x0 - i2 + vec3(C.y);
-	vec3 x3 = x0 - D.yyy;
-	
-	i = i - floor(i * (1.0 / 289.0)) * 289.0;
-	vec4 p = _permute_simplex3_noise(_permute_simplex3_noise(_permute_simplex3_noise(
-	 		i.z + vec4(0.0, i1.z, i2.z, 1.0))
-		+   i.y + vec4(0.0, i1.y, i2.y, 1.0))
-		+   i.x + vec4(0.0, i1.x, i2.x, 1.0));
-	
-	float n_ = 0.142857142857;
-	vec3  ns = n_ * D.wyz - D.xzx;
-	
-	vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-	
-	vec4 x_ = floor(j * ns.z);
-	vec4 y_ = floor(j - 7.0 * x_ );
-	
-	vec4 x = x_ *ns.x + vec4(ns.y);
-	vec4 y = y_ *ns.x + vec4(ns.y);
-	vec4 h = 1.0 - abs(x) - abs(y);
-	
-	vec4 b0 = vec4( x.xy, y.xy );
-	vec4 b1 = vec4( x.zw, y.zw );
-	
-	vec4 s0 = floor(b0)*2.0 + 1.0;
-	vec4 s1 = floor(b1)*2.0 + 1.0;
-	vec4 sh = -step(h, vec4(0.0));
-	
-	vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
-	vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
-	
-	vec3 p0 = vec3(a0.xy,h.x);
-	vec3 p1 = vec3(a0.zw,h.y);
-	vec3 p2 = vec3(a1.xy,h.z);
-	vec3 p3 = vec3(a1.zw,h.w);
-	
-	vec4 norm = 2.79284291400159 - 0.85373472095314 * vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3));
-	p0 *= norm.x;
-	p1 *= norm.y;
-	p2 *= norm.z;
-	p3 *= norm.w;
-	
-	vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), vec4(0.0));
-	m = m * m;
-	return 22.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
-}
+#include \"res://addons/shaderV/rgba/noise/simplex3d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4507,82 +3806,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="304"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // SimplexNoise4D
-vec4 _permute_4_s4_noise(vec4 x) {
-	return ((x * 34.0) + 1.0) * x - floor(((x * 34.0) + 1.0) * x * (1.0 / 289.0)) * 289.0;
-}
-float _permute_s4_noise(float x) {
-	return ((x * 34.0) + 1.0) * x - floor(((x * 34.0) + 1.0) * x * (1.0 / 289.0)) * 289.0;
-}
-vec4 _grad4_s4_noise(float j, vec4 ip) {
-	vec4 ones = vec4(1.0, 1.0, 1.0, -1.0);
-	vec4 p, s;
-	p.xyz = floor( fract (vec3(j) * ip.xyz) * 7.0) * ip.z - 1.0;
-	p.w = 1.5 - dot(abs(p.xyz), ones.xyz);
-	s = vec4(lessThan(p, vec4(0.0)));
-	p.xyz = p.xyz + (s.xyz*2.0 - 1.0) * s.www; 
-	return p;
-}
-float _simplex4dNoiseFunc(vec4 v) {
-	vec4 C = vec4( 0.138196601125011,
-				0.276393202250021,
-				0.414589803375032,
-				-0.447213595499958);
-	
-	vec4 i  = floor(v + dot(v, vec4(0.309016994374947451)) );
-	vec4 x0 = v -   i + dot(i, C.xxxx);
-	
-	vec4 i0;
-	vec3 isX = step( x0.yzw, x0.xxx );
-	vec3 isYZ = step( x0.zww, x0.yyz );
-	i0.x = isX.x + isX.y + isX.z;
-	i0.yzw = 1.0 - isX;
-	i0.y += isYZ.x + isYZ.y;
-	i0.zw += 1.0 - isYZ.xy;
-	i0.z += isYZ.z;
-	i0.w += 1.0 - isYZ.z;
-	
-	vec4 i3 = clamp( i0, 0.0, 1.0 );
-	vec4 i2 = clamp( i0-1.0, 0.0, 1.0 );
-	vec4 i1 = clamp( i0-2.0, 0.0, 1.0 );
-	
-	vec4 x1 = x0 - i1 + C.xxxx;
-	vec4 x2 = x0 - i2 + C.yyyy;
-	vec4 x3 = x0 - i3 + C.zzzz;
-	vec4 x4 = x0 + C.wwww;
-	
-	i = i - floor(i * (1.0 / 289.0)) * 289.0;
-	float j0 = _permute_s4_noise( _permute_s4_noise( _permute_s4_noise( _permute_s4_noise(i.w) + i.z) + i.y) + i.x);
-	vec4 j1 = _permute_4_s4_noise( _permute_4_s4_noise( _permute_4_s4_noise( _permute_4_s4_noise (
-				i.w + vec4(i1.w, i2.w, i3.w, 1.0 ))
-				+ i.z + vec4(i1.z, i2.z, i3.z, 1.0 ))
-				+ i.y + vec4(i1.y, i2.y, i3.y, 1.0 ))
-				+ i.x + vec4(i1.x, i2.x, i3.x, 1.0 ));
-	
-	vec4 ip = vec4(1.0/294.0, 1.0/49.0, 1.0/7.0, 0.0) ;
-	
-	vec4 p0 = _grad4_s4_noise(j0,   ip);
-	vec4 p1 = _grad4_s4_noise(j1.x, ip);
-	vec4 p2 = _grad4_s4_noise(j1.y, ip);
-	vec4 p3 = _grad4_s4_noise(j1.z, ip);
-	vec4 p4 = _grad4_s4_noise(j1.w, ip);
-	
-	vec4 norm = 2.79284291400159 - 1.85373472095314 * vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3));
-	p0 *= norm.x;
-	p1 *= norm.y;
-	p2 *= norm.z;
-	p3 *= norm.w;
-	p4 *= 2.79284291400159 - 1.85373472095314 * dot(p4,p4);
-	
-	vec3 m0 = max(0.6 - vec3(dot(x0,x0), dot(x1,x1), dot(x2,x2)), vec3(0.0));
-	vec2 m1 = max(0.6 - vec2(dot(x3,x3), dot(x4,x4)), vec2(0.0));
-	m0 = m0 * m0;
-	m1 = m1 * m1;
-	return 33.0 *(dot(m0*m0, vec3(dot(p0, x0), dot(p1, x1), dot(p2, x2)))
-				+ dot(m1*m1, vec2(dot(p3, x3), dot(p4, x4))));
-}
+#include \"res://addons/shaderV/rgba/noise/simplex4d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4654,48 +3883,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="310"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // WorleyNoise2D
-vec2 _cellular2dNoiseFunc(vec2 P, float _jitter_w2d) {
-	float K = 0.142857142857; // 1/7
-	float Ko = 0.428571428571; // 3/7
-	
-	vec2 Pi = floor(P) - floor(floor(P) * (1.0 / 289.0)) * 289.0;
-	vec2 Pf = fract(P);
-	vec3 oi = vec3(-1.0, 0.0, 1.0);
-	vec3 of = vec3(-0.5, 0.5, 1.5);
-	vec3 px = (34.0*(Pi.x+oi)+1.0)*(Pi.x+oi)-floor((34.0*(Pi.x+oi)+1.0)*(Pi.x+oi)*(1.0/289.0))* 289.0;
-	vec3 p = (34.0*(px.x+Pi.y+ oi)+1.0)*(px.x+Pi.y+ oi)-floor((34.0*(px.x+Pi.y+oi)+1.0)*(px.x+Pi.y+ oi)*(1.0/289.0))*289.0;
-	vec3 ox = fract(p*K) - Ko;
-	vec3 oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0) * K - Ko;
-	vec3 dx = Pf.x + 0.5 + _jitter_w2d*ox;
-	vec3 dy = Pf.y - of + _jitter_w2d*oy;
-	vec3 d1 = dx * dx + dy * dy;
-	p = (34.0*(px.y+Pi.y+oi)+1.0)*(px.y+Pi.y+oi)-floor((34.0*(px.y+Pi.y+oi)+1.0)*(px.y+Pi.y+oi)*(1.0/289.0))*289.0;
-	ox = fract(p*K) - Ko;
-	oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0) * K - Ko;
-	dx = Pf.x - 0.5 + _jitter_w2d*ox;
-	dy = Pf.y - of + _jitter_w2d*oy;
-	vec3 d2 = dx * dx + dy * dy;
-	p = (34.0*(px.z+Pi.y+oi)+1.0)*(px.z+Pi.y+oi)-floor((34.0*(px.z+Pi.y+oi)+1.0)*(px.z+Pi.y+oi)*(1.0/289.0))*289.0;
-	ox = fract(p*K) - Ko;
-	oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0) * K - Ko;
-	dx = Pf.x - 1.5 + _jitter_w2d*ox;
-	dy = Pf.y - of + _jitter_w2d*oy;
-	vec3 d3 = dx * dx + dy * dy;
-	vec3 d1a = min(d1, d2);
-	d2 = max(d1, d2);
-	d2 = min(d2, d3);
-	d1 = min(d1a, d2);
-	d2 = max(d1a, d2);
-	d1.xy = (d1.x < d1.y) ? d1.xy : d1.yx;
-	d1.xz = (d1.x < d1.z) ? d1.xz : d1.zx;
-	d1.yz = min(d1.yz, d2.yz);
-	d1.y = min(d1.y, d1.z);
-	d1.y = min(d1.y, d2.x);
-	return sqrt(d1.xy);
-}
+#include \"res://addons/shaderV/rgba/noise/worley2d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4764,28 +3957,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="316"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // WorleyNoise2x2
-float _cellular2x2NoiseFunc(vec2 P, float _jitter_w2x2) {
-	float K = 0.142857142857; // 1/7
-	float K2 = 0.0714285714285; // K/2
-	
-	vec2 Pi = floor(P) - floor(floor(P) * (1.0 / 289.0)) * 289.0;
-	vec2 Pf = fract(P);
-	vec4 Pfx = Pf.x + vec4(-0.5, -1.5, -0.5, -1.5);
-	vec4 Pfy = Pf.y + vec4(-0.5, -0.5, -1.5, -1.5);
-	vec4 p = ((34.0*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0))+1.0)*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0)))-floor(((34.0*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0))+1.0)*(Pi.x + vec4(0.0, 1.0, 0.0, 1.0)))*(1.0/289.0))*289.0;
-	p = ((34.0*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0))+1.0)*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0)))-floor(((34.0*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0))+1.0)*(p + Pi.y + vec4(0.0, 0.0, 1.0, 1.0)))*(1.0/289.0))*289.0;
-	vec4 ox = (p - floor(p * (1.0 / 7.0)) * 7.0)*K+K2;
-	vec4 oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0)*K+K2;
-	vec4 dx = Pfx + _jitter_w2x2*ox;
-	vec4 dy = Pfy + _jitter_w2x2*oy;
-	vec4 d = dx * dx + dy * dy;
-	d.xy = min(d.xy, d.zw);
-	d.x = min(d.x, d.y);
-	return sqrt(d.x);
-}
+#include \"res://addons/shaderV/rgba/noise/worley2x2.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4854,43 +4031,12 @@ input_name = "time"
 
 [sub_resource type="VisualShader" id="323"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // WorleyNoise2x2x2
-float _cellular2x2x2NoiseFunc(vec3 P, float _jitter_w2x2x2) {
-	float K = 0.142857142857;
-	float Ko = 0.428571428571;
-	float K2 = 0.020408163265306;
-	float Kz = 0.166666666667;
-	float Kzo = 0.416666666667;
-	
-	vec3 Pi = floor(P)- floor(floor(P) * (1.0 / 289.0)) * 289.0;
-	vec3 Pf = fract(P);
-	vec4 Pfx = Pf.x + vec4(0.0, -1.0, 0.0, -1.0);
-	vec4 Pfy = Pf.y + vec4(0.0, 0.0, -1.0, -1.0);
-	vec4 p = (34.0*(Pi.x+vec4(0.0,1.0,0.0,1.0))+1.0)*(Pi.x+vec4(0.0,1.0,0.0,1.0))-floor((34.0*(Pi.x+vec4(0.0,1.0,0.0,1.0))+1.0)*(Pi.x+vec4(0.0,1.0,0.0,1.0))*(1.0/289.0))*289.0;
-	p = (34.0*(p+Pi.y+vec4(0.0,0.0,1.0,1.0))+1.0)*(p+Pi.y+vec4(0.0,0.0,1.0,1.0))-floor((34.0*(p+Pi.y+vec4(0.0,0.0,1.0,1.0))+1.0)*(p+Pi.y+vec4(0.0,0.0,1.0,1.0))*(1.0/289.0))*289.0;
-	vec4 p1 = (34.0*(p+Pi.z)+1.0)*(p+Pi.z)-floor((34.0*(p+Pi.z)+1.0)*(p+Pi.z)*(1.0/289.0))*289.0;
-	vec4 p2 = (34.0*(p+Pi.z+vec4(1.0))+1.0)*(p+Pi.z+vec4(1.0))-floor((34.0*(p+Pi.z+vec4(1.0))+1.0)*(p+Pi.z+vec4(1.0))*(1.0/289.0))*289.0;
-	vec4 ox1 = fract(p1*K) - Ko;
-	vec4 oy1 = (floor(p1*K) - floor(floor(p1*K) * (1.0 / 7.0)) * 7.0)*K - Ko;
-	vec4 oz1 = floor(p1*K2)*Kz - Kzo;
-	vec4 ox2 = fract(p2*K) - Ko;
-	vec4 oy2 = (floor(p2*K) - floor(floor(p2*K) * (1.0 / 7.0)) * 7.0)*K - Ko;
-	vec4 oz2 = floor(p2*K2)*Kz - Kzo;
-	vec4 dx1 = Pfx + _jitter_w2x2x2*ox1;
-	vec4 dy1 = Pfy + _jitter_w2x2x2*oy1;
-	vec4 dz1 = Pf.z + _jitter_w2x2x2*oz1;
-	vec4 dx2 = Pfx + _jitter_w2x2x2*ox2;
-	vec4 dy2 = Pfy + _jitter_w2x2x2*oy2;
-	vec4 dz2 = Pf.z - 1.0 + _jitter_w2x2x2*oz2;
-	vec4 d1 = dx1 * dx1 + dy1 * dy1 + dz1 * dz1;
-	vec4 d2 = dx2 * dx2 + dy2 * dy2 + dz2 * dz2;
-	d1 = min(d1, d2);
-	d1.xy = min(d1.xy, d1.wz);
-	d1.x = min(d1.x, d1.y);
-	return sqrt(d1.x);
-}
+#include \"res://addons/shaderV/rgba/noise/worley2x2x2.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -4962,153 +4108,12 @@ constant = 10.0
 
 [sub_resource type="VisualShader" id="329"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // WorleyNoise3D
-vec2 _cellular3dNoiseFunc(vec3 P, float _jitter_w3d) {
-	float K = 0.142857142857;
-	float Ko = 0.428571428571;
-	float K2 = 0.020408163265306;
-	float Kz = 0.166666666667;
-	float Kzo = 0.416666666667;
-	
-	vec3 Pi = floor(P) - floor(floor(P) * (1.0 / 289.0)) * 289.0;
-	vec3 Pf = fract(P) - 0.5;
-	
-	vec3 Pfx = Pf.x + vec3(1.0, 0.0, -1.0);
-	vec3 Pfy = Pf.y + vec3(1.0, 0.0, -1.0);
-	vec3 Pfz = Pf.z + vec3(1.0, 0.0, -1.0);
-	
-	vec3 p = ((34.0*(Pi.x+vec3(-1.0,0.0,1.0))+1.0)*(Pi.x+vec3(-1.0,0.0,1.0)))-floor(((34.0*(Pi.x+vec3(-1.0,0.0,1.0))+1.0)
-				*(Pi.x+vec3(-1.0,0.0,1.0)))*(1.0/289.0))*289.0;
-	vec3 p1 = ((34.0*(p+Pi.y-1.0)+1.0)*(p+Pi.y-1.0))-floor(((34.0*(p+Pi.y-1.0)+1.0)*(p+Pi.y-1.0))*(1.0/289.0))*289.0;
-	vec3 p2 = ((34.0*(p+Pi.y)+1.0)*(p+Pi.y))-floor(((34.0*(p+Pi.y)+1.0)*(p+Pi.y))*(1.0/289.0))*289.0;
-	vec3 p3 = ((34.0*(p+Pi.y+1.0)+1.0)*(p+Pi.y+1.0))-floor(((34.0*(p+Pi.y+1.0)+1.0)*(p+Pi.y+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 p11 = ((34.0*(p1+Pi.z-1.0)+1.0)*(p1+Pi.z-1.0))-floor(((34.0*(p1+Pi.z-1.0)+1.0)*(p1+Pi.z-1.0))*(1.0/289.0))*289.0;
-	vec3 p12 = ((34.0*(p1+Pi.z)+1.0)*(p1+Pi.z))-floor(((34.0*(p1+Pi.z)+1.0)*(p1+Pi.z))*(1.0/289.0))*289.0;
-	vec3 p13 = ((34.0*(p1+Pi.z+1.0)+1.0)*(p1+Pi.z+1.0))-floor(((34.0*(p1+Pi.z+1.0)+1.0)*(p1+Pi.z+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 p21 = ((34.0*(p2+Pi.z-1.0)+1.0)*(p2+Pi.z-1.0))-floor(((34.0*(p2+Pi.z-1.0)+1.0)*(p2+Pi.z-1.0))*(1.0/289.0))*289.0;
-	vec3 p22 = ((34.0*(p2+Pi.z)+1.0)*(p2+Pi.z))-floor(((34.0*(p2+Pi.z)+1.0)*(p2+Pi.z))*(1.0/289.0))*289.0;
-	vec3 p23 = ((34.0*(p2+Pi.z+1.0)+1.0)*(p2+Pi.z+1.0))-floor(((34.0*(p2+Pi.z+1.0)+1.0)*(p2+Pi.z+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 p31 = ((34.0*(p3+Pi.z-1.0)+1.0)*(p3+Pi.z-1.0))-floor(((34.0*(p3+Pi.z-1.0)+1.0)*(p3+Pi.z-1.0))*(1.0/289.0))*289.0;
-	vec3 p32 = ((34.0*(p3+Pi.z)+1.0)*(p3+Pi.z))-floor(((34.0*(p3+Pi.z)+1.0)*(p3+Pi.z))*(1.0/289.0))*289.0;
-	vec3 p33 = ((34.0*(p3+Pi.z+1.0)+1.0)*(p3+Pi.z+1.0))-floor(((34.0*(p3+Pi.z+1.0)+1.0)*(p3+Pi.z+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 ox11 = fract(p11*K) - Ko;
-	vec3 oy11 = ((floor(p11*K))-floor((floor(p11*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz11 = floor(p11*K2)*Kz - Kzo;
-	
-	vec3 ox12 = fract(p12*K) - Ko;
-	vec3 oy12 = ((floor(p12*K))-floor((floor(p12*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz12 = floor(p12*K2)*Kz - Kzo;
-	
-	vec3 ox13 = fract(p13*K) - Ko;
-	vec3 oy13 = ((floor(p13*K))-floor((floor(p13*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz13 = floor(p13*K2)*Kz - Kzo;
-	
-	vec3 ox21 = fract(p21*K) - Ko;
-	vec3 oy21 = ((floor(p21*K))-floor((floor(p21*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz21 = floor(p21*K2)*Kz - Kzo;
-	
-	vec3 ox22 = fract(p22*K) - Ko;
-	vec3 oy22 = ((floor(p22*K))-floor((floor(p22*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz22 = floor(p22*K2)*Kz - Kzo;
-	
-	vec3 ox23 = fract(p23*K) - Ko;
-	vec3 oy23 = ((floor(p23*K))-floor((floor(p23*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz23 = floor(p23*K2)*Kz - Kzo;
-	
-	vec3 ox31 = fract(p31*K) - Ko;
-	vec3 oy31 = ((floor(p31*K))-floor((floor(p31*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz31 = floor(p31*K2)*Kz - Kzo;
-	
-	vec3 ox32 = fract(p32*K) - Ko;
-	vec3 oy32 = ((floor(p32*K))-floor((floor(p32*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz32 = floor(p32*K2)*Kz - Kzo;
-	
-	vec3 ox33 = fract(p33*K) - Ko;
-	vec3 oy33 = ((floor(p33*K))-floor((floor(p33*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz33 = floor(p33*K2)*Kz - Kzo;
-	
-	vec3 dx11 = Pfx + _jitter_w3d*ox11;
-	vec3 dy11 = Pfy.x + _jitter_w3d*oy11;
-	vec3 dz11 = Pfz.x + _jitter_w3d*oz11;
-	
-	vec3 dx12 = Pfx + _jitter_w3d*ox12;
-	vec3 dy12 = Pfy.x + _jitter_w3d*oy12;
-	vec3 dz12 = Pfz.y + _jitter_w3d*oz12;
-	
-	vec3 dx13 = Pfx + _jitter_w3d*ox13;
-	vec3 dy13 = Pfy.x + _jitter_w3d*oy13;
-	vec3 dz13 = Pfz.z + _jitter_w3d*oz13;
-	
-	vec3 dx21 = Pfx + _jitter_w3d*ox21;
-	vec3 dy21 = Pfy.y + _jitter_w3d*oy21;
-	vec3 dz21 = Pfz.x + _jitter_w3d*oz21;
-	
-	vec3 dx22 = Pfx + _jitter_w3d*ox22;
-	vec3 dy22 = Pfy.y + _jitter_w3d*oy22;
-	vec3 dz22 = Pfz.y + _jitter_w3d*oz22;
-	
-	vec3 dx23 = Pfx + _jitter_w3d*ox23;
-	vec3 dy23 = Pfy.y + _jitter_w3d*oy23;
-	vec3 dz23 = Pfz.z + _jitter_w3d*oz23;
-	
-	vec3 dx31 = Pfx + _jitter_w3d*ox31;
-	vec3 dy31 = Pfy.z + _jitter_w3d*oy31;
-	vec3 dz31 = Pfz.x + _jitter_w3d*oz31;
-	
-	vec3 dx32 = Pfx + _jitter_w3d*ox32;
-	vec3 dy32 = Pfy.z + _jitter_w3d*oy32;
-	vec3 dz32 = Pfz.y + _jitter_w3d*oz32;
-	
-	vec3 dx33 = Pfx + _jitter_w3d*ox33;
-	vec3 dy33 = Pfy.z + _jitter_w3d*oy33;
-	vec3 dz33 = Pfz.z + _jitter_w3d*oz33;
-	
-	vec3 d11 = dx11 * dx11 + dy11 * dy11 + dz11 * dz11;
-	vec3 d12 = dx12 * dx12 + dy12 * dy12 + dz12 * dz12;
-	vec3 d13 = dx13 * dx13 + dy13 * dy13 + dz13 * dz13;
-	vec3 d21 = dx21 * dx21 + dy21 * dy21 + dz21 * dz21;
-	vec3 d22 = dx22 * dx22 + dy22 * dy22 + dz22 * dz22;
-	vec3 d23 = dx23 * dx23 + dy23 * dy23 + dz23 * dz23;
-	vec3 d31 = dx31 * dx31 + dy31 * dy31 + dz31 * dz31;
-	vec3 d32 = dx32 * dx32 + dy32 * dy32 + dz32 * dz32;
-	vec3 d33 = dx33 * dx33 + dy33 * dy33 + dz33 * dz33;
-
-	vec3 d1a = min(d11, d12);
-	d12 = max(d11, d12);
-	d11 = min(d1a, d13);
-	d13 = max(d1a, d13);
-	d12 = min(d12, d13);
-	vec3 d2a = min(d21, d22);
-	d22 = max(d21, d22);
-	d21 = min(d2a, d23);
-	d23 = max(d2a, d23);
-	d22 = min(d22, d23);
-	vec3 d3a = min(d31, d32);
-	d32 = max(d31, d32);
-	d31 = min(d3a, d33);
-	d33 = max(d3a, d33);
-	d32 = min(d32, d33);
-	vec3 da = min(d11, d21);
-	d21 = max(d11, d21);
-	d11 = min(da, d31);
-	d31 = max(da, d31);
-	d11.xy = (d11.x < d11.y) ? d11.xy : d11.yx;
-	d11.xz = (d11.x < d11.z) ? d11.xz : d11.zx;
-	d12 = min(d12, d21);
-	d12 = min(d12, d22);
-	d12 = min(d12, d31);
-	d12 = min(d12, d32);
-	d11.yz = min(d11.yz,d12.xy);
-	d11.y = min(d11.y,d12.z);
-	d11.y = min(d11.y,d11.z);
-	return sqrt(d11.xy);
-}
+#include \"res://addons/shaderV/rgba/noise/worley3d.gdshaderinc\"
 
 void fragment() {
 // Input:47
@@ -5188,15 +4193,12 @@ script = ExtResource("23")
 
 [sub_resource type="VisualShader" id="336"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // BCSAdjustment
-vec3 _applyBCS(vec3 _input_rgb_color, vec3 _brighntess_contrast_saturation_vec) {
-	_input_rgb_color = mix(vec3(0.0), _input_rgb_color, _brighntess_contrast_saturation_vec.x);
-	_input_rgb_color = mix(vec3(0.5), _input_rgb_color, _brighntess_contrast_saturation_vec.y);
-	_input_rgb_color = mix(vec3(dot(vec3(1.0), _input_rgb_color) * 0.33333), _input_rgb_color, _brighntess_contrast_saturation_vec.z);
-	return _input_rgb_color;
-}
+#include \"res://addons/shaderV/rgba/BCSAdjustment.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5260,12 +4262,12 @@ constant = 0.5
 
 [sub_resource type="VisualShader" id="340"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // BlackAndWhite
-vec3 blackNwhite(vec3 _input_rgb_color, float _threshold_color){
-	return vec3( ( (0.21 * _input_rgb_color.r + 0.71 * _input_rgb_color.g + 0.07 * _input_rgb_color.b) < _threshold_color) ? 0.0 : 1.0);
-}
+#include \"res://addons/shaderV/rgba/blackNwhite.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5320,13 +4322,13 @@ script = ExtResource("58")
 
 [sub_resource type="VisualShader" id="345"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_10;
 
 
 // BlendAwithB
-vec4 _blendAwithBFunc(vec4 _color_blendA_rgba, vec4 _color_blendB_rgba, float _fade_blend_color){
-	return mix(_color_blendA_rgba, _color_blendB_rgba, _color_blendB_rgba.a * _fade_blend_color);
-}
+#include \"res://addons/shaderV/rgba/blendAwithB.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5389,14 +4391,12 @@ constant = 0.5
 
 [sub_resource type="VisualShader" id="349"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // Bloom
-vec4 _bloomFunc(vec4 _col_bloom, float _strength_bloom){
-	float _gamma_bloom = 1.0 - pow(_col_bloom.r, _strength_bloom);
-	_col_bloom.rgb += (_col_bloom.rgb * _col_bloom.a) * _strength_bloom;
-	return _col_bloom;
-}
+#include \"res://addons/shaderV/rgba/bloom.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5462,26 +4462,12 @@ constant = -1.0
 
 [sub_resource type="VisualShader" id="357"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // ChromaticAberration
-vec4 _chromaticAberrationFunc(sampler2D _texture_chr_aberration, vec2 _uv_chr_aberration, vec3 _values_chr_aberration){
-	vec4 _col_chr_aberration = vec4(0.0);
-	if (_values_chr_aberration.z < 0.0){
-		_col_chr_aberration.r = texture(_texture_chr_aberration, _uv_chr_aberration + _values_chr_aberration.xy).r;
-		_col_chr_aberration.g = texture(_texture_chr_aberration, _uv_chr_aberration).g;
-		_col_chr_aberration.b = texture(_texture_chr_aberration, _uv_chr_aberration - _values_chr_aberration.xy).b;
-		_col_chr_aberration.a = texture(_texture_chr_aberration, _uv_chr_aberration).a;
-	}else{
-		_col_chr_aberration.r = textureLod(_texture_chr_aberration, _uv_chr_aberration +
-											_values_chr_aberration.xy, _values_chr_aberration.z).r;
-		_col_chr_aberration.g = textureLod(_texture_chr_aberration, _uv_chr_aberration, _values_chr_aberration.z).g;
-		_col_chr_aberration.b = textureLod(_texture_chr_aberration, _uv_chr_aberration -
-											_values_chr_aberration.xy, _values_chr_aberration.z).b;
-		_col_chr_aberration.a = textureLod(_texture_chr_aberration, _uv_chr_aberration, _values_chr_aberration.z).a;
-	}
-	return _col_chr_aberration;
-}
+#include \"res://addons/shaderV/rgba/chromaticAberration.gdshaderinc\"
 
 void fragment() {
 // Input:18
@@ -5570,20 +4556,14 @@ node to see the difference."
 
 [sub_resource type="VisualShader" id="366"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // ScaleUV
-vec2 _scaleUV(vec2 _scale_uv, vec2 _scale_vect, vec2 _pivot_vect) {
-	return (_scale_uv - _pivot_vect) * _scale_vect + _pivot_vect;
-}
+#include \"res://addons/shaderV/uv/scaleUV.gdshaderinc\"
 // ClampAlphaBorder
-float _clampAlphaBorderFunc(float _color_alpha_clamp, vec2 _uv_clamp){
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(_uv_clamp.x), 0.0));
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(1.0 - _uv_clamp.x), 0.0));
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(_uv_clamp.y), 0.0));
-	_color_alpha_clamp = mix(0.0, _color_alpha_clamp, max(sign(1.0 - _uv_clamp.y), 0.0));
-	return _color_alpha_clamp;
-}
+#include \"res://addons/shaderV/rgba/clamp.gdshaderinc\"
 
 void fragment() {
 // Input:25
@@ -5670,16 +4650,13 @@ parameter_name = "Texture2DParameter"
 
 [sub_resource type="VisualShader" id="371"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D Texture2DParameter;
 
 
 // ColorCorrectionAdjustment
-vec3 _applyColorCorrectionFunc(vec3 _col_corr, sampler2D _tex_corr) {
-	_col_corr.r = texture(_tex_corr, vec2(_col_corr.r, 0.0)).r;
-	_col_corr.g = texture(_tex_corr, vec2(_col_corr.g, 0.0)).g;
-	_col_corr.b = texture(_tex_corr, vec2(_col_corr.b, 0.0)).b;
-	return _col_corr;
-}
+#include \"res://addons/shaderV/rgba/colorCorrectionAdjustment.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -5745,21 +4722,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="378"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // Emboss
-vec4 _embossFunc(sampler2D _tex_emboss, vec2 _uv_emboss, float _lod_emboss, vec2 _ofst_emboss, float _ctst_emboss){
-	vec4 col_emboss = vec4(0.5, 0.5, 0.5, 0.5);
-	if (_lod_emboss < 0.0){
-		col_emboss -= texture(_tex_emboss, _uv_emboss - _ofst_emboss) * _ctst_emboss;
-		col_emboss += texture(_tex_emboss, _uv_emboss + _ofst_emboss) * _ctst_emboss;
-	}else{
-		col_emboss -= textureLod(_tex_emboss, _uv_emboss - _ofst_emboss, _lod_emboss) * _ctst_emboss;
-		col_emboss += textureLod(_tex_emboss, _uv_emboss + _ofst_emboss, _lod_emboss) * _ctst_emboss;
-	}
-	col_emboss.rgb = vec3(0.21 * col_emboss.r + 0.71 * col_emboss.g + 0.07 * col_emboss.b);
-	return col_emboss;
-}
+#include \"res://addons/shaderV/rgba/emboss.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -5857,110 +4825,14 @@ constant = 0.2
 
 [sub_resource type="VisualShader" id="392"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // vec2Compose
-vec2 _vec2ComposeFunc(float _vec2_length, float _vec2_angl_rad){
-	return vec2(cos(_vec2_angl_rad), sin(_vec2_angl_rad)) * _vec2_length;
-}
+#include \"res://addons/shaderV/tools/vec2Compose.gdshaderinc\"
 // FireFX
-float _cnoiseFireFXTempFunc(vec3 P) {
-	vec3 Pi0 = floor(P);
-	vec3 Pi1 = Pi0 + vec3(1.0);
-	Pi0 = Pi0 - floor(Pi0 * (1.0 / 289.0)) * 289.0;
-	Pi1 = Pi1 - floor(Pi1 * (1.0 / 289.0)) * 289.0;
-	vec3 Pf0 = fract(P);
-	vec3 Pf1 = Pf0 - vec3(1.0);
-	vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-	vec4 iy = vec4(Pi0.yy, Pi1.yy);
-	vec4 iz0 = vec4(Pi0.z);
-	vec4 iz1 = vec4(Pi1.z);
-	
-	ix = ((ix*34.0)+1.0)*ix - floor(((ix*34.0)+1.0)*ix * (1.0 / 289.0)) * 289.0;
-	vec4 ixy = (((ix + iy)*34.0)+1.0)*(ix + iy) - floor((((ix + iy)*34.0)+1.0)*(ix + iy) * (1.0 / 289.0)) * 289.0;
-	vec4 ixy0 = (((ixy + iz0) * 34.0)+1.0)* (ixy + iz0) - floor((( (ixy + iz0) *34.0)+1.0)* (ixy + iz0) * (1.0 / 289.0)) * 289.0;
-	vec4 ixy1 = (((ixy + iz1)*34.0)+1.0)*(ixy + iz1) - floor((((ixy + iz1)*34.0)+1.0)*(ixy + iz1) * (1.0 / 289.0)) * 289.0;
-	
-	vec4 gx0 = ixy0 * (1.0 / 7.0);
-	vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
-	gx0 = fract(gx0);
-	vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
-	vec4 sz0 = step(gz0, vec4(0.0));
-	gx0 -= sz0 * (step(0.0, gx0) - 0.5);
-	gy0 -= sz0 * (step(0.0, gy0) - 0.5);
-	
-	vec4 gx1 = ixy1 * (1.0 / 7.0);
-	vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
-	gx1 = fract(gx1);
-	vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
-	vec4 sz1 = step(gz1, vec4(0.0));
-	gx1 -= sz1 * (step(0.0, gx1) - 0.5);
-	gy1 -= sz1 * (step(0.0, gy1) - 0.5);
-	
-	vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
-	vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
-	vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
-	vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
-	vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
-	vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
-	vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
-	vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
-	
-	vec4 norm0 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110));
-	g000 *= norm0.x;
-	g010 *= norm0.y;
-	g100 *= norm0.z;
-	g110 *= norm0.w;
-	vec4 norm1 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111));
-	g001 *= norm1.x;
-	g011 *= norm1.y;
-	g101 *= norm1.z;
-	g111 *= norm1.w;
-	
-	float n000 = dot(g000, Pf0);
-	float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
-	float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
-	float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
-	float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
-	float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-	float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
-	float n111 = dot(g111, Pf1);
-	
-	vec3 fade_xyz = Pf0 * Pf0 * Pf0 * (Pf0 * (Pf0 * 6.0 - 15.0) + 10.0);
-	vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-	vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-	float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
-	return 2.2 * n_xyz;
-}
-float _perlingFbmFireFXTempFunc(vec2 _pos, float _octaves, float _intencity, float persistence, float _scale, float _time) {
-	float final = 0.0;
-	float amplitude = _intencity;
-	for(float i = 0.0; i < _octaves; i++){
-		final += _cnoiseFireFXTempFunc(vec3(_pos * _scale, _time)) * amplitude;
-		_scale *= 2.0;
-		amplitude *= persistence;
-	}
-	return (min(final, 1.0) + 1.0) * 0.5;
-}
-vec4 _fireFXFunc(vec2 _uv_fire, vec2 _dir_fire, float _speed_fire, float _time_fire,
-	vec4 _col1_fire, vec4 _col2_fire, vec4 _col3_fire,
-	float _col1_pos, float _col2_pos, float _col3_pos){
-	float _x_pos = mix(0.0, 1.0, _uv_fire.y);
-	_uv_fire.x -= _dir_fire.x * _time_fire * _speed_fire;
-	_uv_fire.y += _dir_fire.y * _time_fire * _speed_fire;
-	float _y_pos = _perlingFbmFireFXTempFunc(_uv_fire, 8.0, 0.4, 1.0, 1.0, 1.0);
-	float _1 = step(_y_pos, _x_pos - _col1_pos);
-	float _3 = step(_y_pos, _x_pos - _col3_pos);
-	float L1 = _1 - _3;
-	vec4 col = vec4(1.0);
-	col = mix(_col1_fire, _col3_fire, L1);
-	
-	float _2 = step(_y_pos, _x_pos - _col2_pos);
-	float L2 = _3 - _2;
-	col.rgb = mix(col.rgb, _col2_fire.rgb, L2);
-	col = mix(vec4(0.0), col, _1);
-	return col;
-}
+#include \"res://addons/shaderV/rgba/fireFX.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -6092,14 +4964,12 @@ constant = Color(0.0990133, 1, 0, 1)
 
 [sub_resource type="VisualShader" id="399"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // Gradient4Corners
-vec4 _gradient4cornersFunc(vec2 _uv_corner, vec4 _top_left_corner, vec4 _top_right_corner, vec4 _bottom_left_corner, vec4 _bottom_right_corner){
-	vec4 _color_top_corner = mix(_top_left_corner, _top_right_corner, _uv_corner.x);
-	vec4 _color_bottom_corner = mix(_bottom_left_corner, _bottom_right_corner, _uv_corner.x);
-	return mix(_color_top_corner, _color_bottom_corner, _uv_corner.y);
-}
+#include \"res://addons/shaderV/rgba/gradient4corners.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -6189,18 +5059,13 @@ constant = 0.3
 
 [sub_resource type="VisualShader" id="407"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D gradient;
 
 
 // GradientMapping
-vec4 _gradientMappingFunc(vec3 _col_base_gm, float _grad_offset, sampler2D _palette_gm, bool _use_col_cycle){
-	float avg_col = 0.2126 * _col_base_gm.r + 0.7152 * _col_base_gm.g + 0.0722 * _col_base_gm.b;
-	if (_use_col_cycle){
-		return texture(_palette_gm, mod(vec2(avg_col + _grad_offset, 0), vec2(1.0)));
-	} else{
-		return texture(_palette_gm, vec2(avg_col + _grad_offset, 0));
-	}
-}
+#include \"res://addons/shaderV/rgba/gradientMapping.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out28p0;
@@ -6276,6 +5141,7 @@ initialized = true
 script = ExtResource("67")
 
 [sub_resource type="VisualShaderNodeTexture" id="412"]
+output_port_for_preview = 0
 expanded_output_ports = [0]
 source = 2
 
@@ -6284,12 +5150,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="414"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // GrayscalePlus
-vec3 _grayscaleFunc(vec3 _color_grayscale, float _gray_factor){
-	return _color_grayscale * (1.0 - _gray_factor) + (0.21 * _color_grayscale.r + 0.71 * _color_grayscale.g + 0.07 * _color_grayscale.b) * _gray_factor;
-}
+#include \"res://addons/shaderV/rgba/grayscale.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6337,12 +5203,12 @@ script = ExtResource("68")
 
 [sub_resource type="VisualShader" id="417"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // Hue
-vec3 _hueFunc(float _inp_hue){
-	return 3.0 * abs(1.0 - 2.0 * fract(_inp_hue + vec3(0.0, -1.0 / 3.0, 1.0 / 3.0))) - 1.0;
-}
+#include \"res://addons/shaderV/rgba/hue.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6388,12 +5254,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="421"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // InverseColor
-vec3 _inverseColorFunc(vec3 _color_to_inverse, float _inverse_color_intensity){
-	return mix(_color_to_inverse.rgb, 1.0 - _color_to_inverse.rgb, _inverse_color_intensity);
-}
+#include \"res://addons/shaderV/rgba/inverseColor.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6448,13 +5314,13 @@ texture = ExtResource("57")
 
 [sub_resource type="VisualShader" id="425"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 uniform sampler2D tex_frg_9;
 
 
 // MaskAlpha
-vec4 _maskAlphaFunc(vec4 _col_to_mask, float _mask_alpha_to_mask){
-	return vec4(_col_to_mask.rgb, _col_to_mask.a * _mask_alpha_to_mask);
-}
+#include \"res://addons/shaderV/rgba/maskAlpha.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6509,12 +5375,12 @@ constant = 3.0
 
 [sub_resource type="VisualShader" id="429"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // Posterize
-vec3 _posterizeFunc(vec3 _col_posterize, float _steps_posterize){
-	return floor(_col_posterize * _steps_posterize) / (_steps_posterize - 1.0);
-}
+#include \"res://addons/shaderV/rgba/posterize.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6557,53 +5423,28 @@ nodes/fragment/connections = PackedInt32Array(11, 0, 10, 1, 3, 0, 10, 0, 10, 0, 
 shader = SubResource("429")
 
 [sub_resource type="VisualShaderNodeCustom" id="431"]
+output_port_for_preview = 0
 default_input_values = [1, 1.0, 2, 1.0, 3, 1.0]
 initialized = true
 script = ExtResource("72")
 
 [sub_resource type="VisualShaderNodeFloatConstant" id="432"]
-constant = 0.2
+constant = 0.891
 
 [sub_resource type="VisualShaderNodeFloatConstant" id="433"]
-constant = 1.5
+constant = 1.005
 
 [sub_resource type="VisualShaderNodeFloatConstant" id="434"]
-constant = 1.2
+constant = 0.869
 
 [sub_resource type="VisualShader" id="435"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // ShiftHSV
-vec3 _hsv2rgbHSVChangeFunc(vec3 _hsv_color_HSVChange){
-	vec4 _K_hsv2rgbHSVChange = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-	vec3 _p_hsv2rgbHSVChange = abs(fract(_hsv_color_HSVChange.xxx + _K_hsv2rgbHSVChange.xyz) * 6.0 - _K_hsv2rgbHSVChange.www);
-	return vec3(_hsv_color_HSVChange.z * mix(_K_hsv2rgbHSVChange.xxx, 
-				clamp(_p_hsv2rgbHSVChange - _K_hsv2rgbHSVChange.xxx, 0.0, 1.0),
-				_hsv_color_HSVChange.y));
-}
-
-vec3 _rgb2hvsHSVChangeFunc(vec3 _rgb_color_HSVChange){
-	vec4 _K_rgb2hvsHSVChange = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-	vec4 _p_rgb2hvsHSVChange = mix( vec4(_rgb_color_HSVChange.bg, _K_rgb2hvsHSVChange.wz),
-									vec4(_rgb_color_HSVChange.gb, _K_rgb2hvsHSVChange.xy),
-									step(_rgb_color_HSVChange.b, _rgb_color_HSVChange.g));
-	vec4 _q_rgb2hvsHSVChange = mix( vec4(_p_rgb2hvsHSVChange.xyw, _rgb_color_HSVChange.r), 
-									vec4(_rgb_color_HSVChange.r, _p_rgb2hvsHSVChange.yzx),
-									step(_p_rgb2hvsHSVChange.x, _rgb_color_HSVChange.r));
-	float _d_rgb2hvsHSVChange = _q_rgb2hvsHSVChange.x - min(_q_rgb2hvsHSVChange.w, _q_rgb2hvsHSVChange.y);
-	return vec3(vec3(abs(_q_rgb2hvsHSVChange.z + (_q_rgb2hvsHSVChange.w - _q_rgb2hvsHSVChange.y) / (6.0 * _d_rgb2hvsHSVChange + 1.0e-10)),
-					_d_rgb2hvsHSVChange / (_q_rgb2hvsHSVChange.x + 1.0e-10),
-					_q_rgb2hvsHSVChange.x));
-}
-
-vec3 _hsvChangeHSVChangeFunc(vec3 _color_HSVChange, float _h_HSVChange, float _s_HSVChange, float _v_HSVChange){
-	_color_HSVChange = _rgb2hvsHSVChangeFunc(_color_HSVChange);
-	_color_HSVChange.r *= _h_HSVChange;
-	_color_HSVChange.g *= _s_HSVChange;
-	_color_HSVChange.b *= _v_HSVChange;
-	return _hsv2rgbHSVChangeFunc(_color_HSVChange);
-}
+#include \"res://addons/shaderV/rgba/shiftHSV.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6613,15 +5454,15 @@ void fragment() {
 
 
 // FloatConstant:13
-	float n_out13p0 = 0.200000;
+	float n_out13p0 = 0.891000;
 
 
 // FloatConstant:14
-	float n_out14p0 = 1.500000;
+	float n_out14p0 = 1.005000;
 
 
 // FloatConstant:15
-	float n_out15p0 = 1.200000;
+	float n_out15p0 = 0.869000;
 
 
 	vec3 n_out12p0;
@@ -6638,21 +5479,21 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-215.199, -205.719)
+graph_offset = Vector2(2.4173, -266.144)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(680, 0)
 nodes/fragment/3/node = SubResource("412")
-nodes/fragment/3/position = Vector2(120, 0)
+nodes/fragment/3/position = Vector2(40, 0)
 nodes/fragment/12/node = SubResource("431")
-nodes/fragment/12/position = Vector2(400, -120)
+nodes/fragment/12/position = Vector2(420, -160)
 nodes/fragment/13/node = SubResource("432")
 nodes/fragment/13/position = Vector2(180, -200)
 nodes/fragment/14/node = SubResource("433")
 nodes/fragment/14/position = Vector2(180, -140)
 nodes/fragment/15/node = SubResource("434")
 nodes/fragment/15/position = Vector2(180, -80)
-nodes/fragment/connections = PackedInt32Array(13, 0, 12, 1, 15, 0, 12, 3, 14, 0, 12, 2, 3, 0, 12, 0, 12, 0, 0, 0, 3, 4, 0, 1)
+nodes/fragment/connections = PackedInt32Array(15, 0, 12, 3, 14, 0, 12, 2, 3, 0, 12, 0, 3, 4, 0, 1, 13, 0, 12, 1, 12, 0, 0, 0)
 
 [sub_resource type="ShaderMaterial" id="436"]
 shader = SubResource("435")
@@ -6688,18 +5529,12 @@ constant = 1.0
 
 [sub_resource type="VisualShader" id="446"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // ShineFX
-vec4 _shineFunc(vec4 _color_shine, vec2 _uv_shine, float _loc_shine, float _rot_shine, float _width_shine, float _soft_shine, float _bright_shine, float _gloss_shine, vec3 _shine_color_shine){
-	vec2 _angle_shine = vec2(cos(_rot_shine), sin(_rot_shine));
-	float _norm_pos_shine = dot(_uv_shine, _angle_shine);
-	float _normal_shine = 1.0 - abs((_norm_pos_shine - _loc_shine) / _width_shine);
-	float _shine_power_shine = smoothstep(0.0, _soft_shine * 2.0, _normal_shine);
-	vec3 _reflect_color_shine = mix(vec3(1.0), _color_shine.rgb * 10.0, _gloss_shine);
-	_color_shine.rgb += _color_shine.a * _shine_power_shine * _bright_shine * _reflect_color_shine * _shine_color_shine.rgb;
-	return _color_shine;
-}
+#include \"res://addons/shaderV/rgba/shineFX.gdshaderinc\"
 
 void fragment() {
 // Input:17
@@ -6796,6 +5631,8 @@ constant = Color(0.46875, 0.0585938, 0.337372, 1)
 
 [sub_resource type="VisualShader" id="450"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 
@@ -6855,14 +5692,12 @@ constant = 2.0
 
 [sub_resource type="VisualShader" id="455"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // Tonemap
-vec3 _tonemapFunc(vec3 _color_tonemap, float _exposure_tonemap, float _gamma_tonemap){
-	_color_tonemap.rgb *= pow(2.0, _exposure_tonemap);
-	_color_tonemap.rgb = pow(_color_tonemap.rgb, vec3(_gamma_tonemap));
-	return _color_tonemap;
-}
+#include \"res://addons/shaderV/rgba/tonemap.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6920,25 +5755,12 @@ constant = 1.5
 
 [sub_resource type="VisualShader" id="459"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // TurnCGA4Palette
-vec3 _cg4PaletteFunc(vec3 _col_cga, float _gamma_cga){
-	_col_cga = pow(_col_cga, vec3(_gamma_cga));
-	float _gray_col_cga4 = 0.21 * _col_cga.r + 0.71 * _col_cga.g + 0.07 * _col_cga.b;
-	vec3 _res_col_cga4 = vec3(0.0);
-	
-	if      (_gray_col_cga4 <= 1.0/4.0)
-		_res_col_cga4 = vec3(0.0,  0.0,  0.0);
-	else if (_gray_col_cga4 <= 2.0/4.0)
-		_res_col_cga4 = vec3(1.0,  0.33, 1.0);
-	else if (_gray_col_cga4 <= 3.0/4.0)
-		_res_col_cga4 = vec3(0.33, 1.0,  1.0);
-	else if (_gray_col_cga4 <= 4.0/4.0)
-		_res_col_cga4 = vec3(1.0,  1.0,  1.0);
-	
-	return _res_col_cga4;
-}
+#include \"res://addons/shaderV/rgba/turnCGA4Palette.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -6990,25 +5812,12 @@ script = ExtResource("77")
 
 [sub_resource type="VisualShader" id="463"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // TurnGameBoyPalette
-vec3 _gameboyPaletteFunc(vec3 _col_gbp0, float _gamma_gbp0){
-	_col_gbp0 = pow(_col_gbp0, vec3(_gamma_gbp0));
-	float _gray_col_gbp0 = 0.21 * _col_gbp0.r + 0.71 * _col_gbp0.g + 0.07 * _col_gbp0.b;
-	vec3 _res_col_gbp0 = vec3(0.0);
-	
-	if      (_gray_col_gbp0 <= 1.0/4.0)
-		_res_col_gbp0 = vec3(0.063, 0.247, 0.063);
-	else if (_gray_col_gbp0 <= 2.0/4.0)
-		_res_col_gbp0 = vec3(0.188, 0.392, 0.188);
-	else if (_gray_col_gbp0 <= 3.0/4.0)
-		_res_col_gbp0 = vec3(0.549, 0.667, 0.078);
-	else if (_gray_col_gbp0 <= 4.0/4.0)
-		_res_col_gbp0 = vec3(0.612, 0.725, 0.086);
-	
-	return _res_col_gbp0;
-}
+#include \"res://addons/shaderV/rgba/turnGBPalette.gdshaderinc\"
 
 void fragment() {
 	vec4 n_out3p0;
@@ -7035,7 +5844,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(170.522, -346.044)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(800, -200)
@@ -7082,38 +5890,12 @@ constant = Vector3(0.5, 0.5, 0)
 [sub_resource type="VisualShader" id="474"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalGenericNoise2D
-float _hash2_gener1c2DFractal(vec2 _p_hash2_gener1c) {
-	return (fract(1e4 * sin(17.0 * _p_hash2_gener1c.x + _p_hash2_gener1c.y * 0.1) *
-					(0.1 + abs(sin(_p_hash2_gener1c.y * 13.0 + _p_hash2_gener1c.x)))));
-}
-float _genericNoise2DFractal(vec2 _x_gener1c2D) {
-	vec2 _temp_i_gener1c2D = floor(_x_gener1c2D);
-	vec2 _temp_f_gener1c2D = fract(_x_gener1c2D);
-
-	float _a_g1n2 = _hash2_gener1c2DFractal(_temp_i_gener1c2D);
-	float _b_g1n2 = _hash2_gener1c2DFractal(_temp_i_gener1c2D + vec2(1.0, 0.0));
-	float _c_g1n2 = _hash2_gener1c2DFractal(_temp_i_gener1c2D + vec2(0.0, 1.0));
-	float _d_g1n2 = _hash2_gener1c2DFractal(_temp_i_gener1c2D + vec2(1.0, 1.0));
-	
-	vec2 _u_g1n2 = _temp_f_gener1c2D * _temp_f_gener1c2D * (3.0 - 2.0 * _temp_f_gener1c2D);
-	return (mix(_a_g1n2, _b_g1n2, _u_g1n2.x) + (_c_g1n2 - _a_g1n2) *
-				_u_g1n2.y * (1.0 - _u_g1n2.x) + (_d_g1n2 - _b_g1n2) * _u_g1n2.x * _u_g1n2.y);
-}
-float _genericNoise2DFBM(vec2 _uv_gnfbm, int _oct_gnfbm, vec2 _per_gnfbm, float _lac_gnfbm,
-						float _persist_gnfbm, float _rot_gnfbm, float _ampl_gnfbm, vec2 _shift_gnfbm) {
-	float _v = 0.0;
-	float _a = _ampl_gnfbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_gnfbm), sin(_rot_gnfbm)), vec2(-sin(_rot_gnfbm), cos(_rot_gnfbm)));
-	for (int i = 0; i < _oct_gnfbm; ++i) {
-		_v += _a * _genericNoise2DFractal(_uv_gnfbm * _per_gnfbm);
-		_uv_gnfbm = _r0t * _uv_gnfbm * _lac_gnfbm + _shift_gnfbm;
-		_a *= _persist_gnfbm;
-	}
-	return _v;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/generic2d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -7217,62 +5999,12 @@ constant = 0.6
 [sub_resource type="VisualShader" id="484"]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalPerlinNoise2D
-float _perlin2dNoiseFuncFractal(vec2 P) {
-	vec4 Pi = floor(vec4(P, P)) + vec4(0.0, 0.0, 1.0, 1.0);
-	vec4 Pf = fract(vec4(P, P)) - vec4(0.0, 0.0, 1.0, 1.0);
-	
-	Pi = Pi - floor(Pi * (1.0 / 289.0)) * 289.0;
-	vec4 ix = Pi.xzxz;
-	vec4 iy = Pi.yyww;
-	vec4 fx = Pf.xzxz;
-	vec4 fy = Pf.yyww;
-	
-	vec4 i = (((((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy))-
-		floor((((((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor((((ix*34.0)+1.0)*ix)*(1.0/289.0))*289.0 + iy))*(1.0/289.0))*289.0;
-	
-	vec4 gx = fract(i * (1.0 / 41.0)) * 2.0 - 1.0 ;
-	vec4 gy = abs(gx) - 0.5 ;
-	vec4 tx = floor(gx + 0.5);
-	gx = gx - tx;
-	
-	vec2 g00 = vec2(gx.x,gy.x);
-	vec2 g10 = vec2(gx.y,gy.y);
-	vec2 g01 = vec2(gx.z,gy.z);
-	vec2 g11 = vec2(gx.w,gy.w);
-	
-	vec4 norm = 1.79284291400159 - 0.85373472095314 * vec4(dot(g00, g00), dot(g01, g01), dot(g10, g10), dot(g11, g11));
-	g00 *= norm.x;
-	g01 *= norm.y;
-	g10 *= norm.z;
-	g11 *= norm.w;
-	
-	float n00 = dot(g00, vec2(fx.x, fy.x));
-	float n10 = dot(g10, vec2(fx.y, fy.y));
-	float n01 = dot(g01, vec2(fx.z, fy.z));
-	float n11 = dot(g11, vec2(fx.w, fy.w));
-	
-	vec2 fade_xy = Pf.xy * Pf.xy * Pf.xy * (Pf.xy * (Pf.xy * 6.0 - 15.0) + 10.0);
-	vec2 n_x = mix(vec2(n00, n01), vec2(n10, n11), fade_xy.x);
-	float n_xy = mix(n_x.x, n_x.y, fade_xy.y);
-	return 2.3 * n_xy;
-}
-float _perlinNoise2DFBM(vec2 _uv_pn2fbm, int _oct_pn2fbm, vec2 _per_pn2fbm, float _lac_pn2fbm,
-						float _persist_pn2fbm, float _rot_pn2fbm, float _ampl_pn2fbm, vec2 _shift_pn2fbm) {
-	float _v = 0.0;
-	float _a = _ampl_pn2fbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_pn2fbm), sin(_rot_pn2fbm)), vec2(-sin(_rot_pn2fbm), cos(_rot_pn2fbm)));
-	for (int i = 0; i < _oct_pn2fbm; ++i) {
-		_v += _a * _perlin2dNoiseFuncFractal(_uv_pn2fbm * _per_pn2fbm);
-		_uv_pn2fbm = _r0t * _uv_pn2fbm * _lac_pn2fbm + _shift_pn2fbm;
-		_a *= _persist_pn2fbm;
-	}
-	return (min(_v, 1.0) + 1.0) * 0.5;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/perlin2d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -7383,65 +6115,12 @@ constant = 0.5
 
 [sub_resource type="VisualShader" id="497"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalWorleyNoise2D
-vec2 _cellular2dNoiseFractalFunc(vec2 P, float _jitter_w2d) {
-	float K = 0.142857142857; // 1/7
-	float Ko = 0.428571428571; // 3/7
-	
-	vec2 Pi = floor(P) - floor(floor(P) * (1.0 / 289.0)) * 289.0;
-	vec2 Pf = fract(P);
-	vec3 oi = vec3(-1.0, 0.0, 1.0);
-	vec3 of = vec3(-0.5, 0.5, 1.5);
-	vec3 px = (34.0*(Pi.x+oi)+1.0)*(Pi.x+oi)-floor((34.0*(Pi.x+oi)+1.0)*(Pi.x+oi)*(1.0/289.0))* 289.0;
-	vec3 p = (34.0*(px.x+Pi.y+ oi)+1.0)*(px.x+Pi.y+ oi)-floor((34.0*(px.x+Pi.y+oi)+1.0)*(px.x+Pi.y+ oi)*(1.0/289.0))*289.0;
-	vec3 ox = fract(p*K) - Ko;
-	vec3 oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0) * K - Ko;
-	vec3 dx = Pf.x + 0.5 + _jitter_w2d*ox;
-	vec3 dy = Pf.y - of + _jitter_w2d*oy;
-	vec3 d1 = dx * dx + dy * dy;
-	p = (34.0*(px.y+Pi.y+oi)+1.0)*(px.y+Pi.y+oi)-floor((34.0*(px.y+Pi.y+oi)+1.0)*(px.y+Pi.y+oi)*(1.0/289.0))*289.0;
-	ox = fract(p*K) - Ko;
-	oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0) * K - Ko;
-	dx = Pf.x - 0.5 + _jitter_w2d*ox;
-	dy = Pf.y - of + _jitter_w2d*oy;
-	vec3 d2 = dx * dx + dy * dy;
-	p = (34.0*(px.z+Pi.y+oi)+1.0)*(px.z+Pi.y+oi)-floor((34.0*(px.z+Pi.y+oi)+1.0)*(px.z+Pi.y+oi)*(1.0/289.0))*289.0;
-	ox = fract(p*K) - Ko;
-	oy = (floor(p*K) - floor(floor(p*K) * (1.0 / 7.0)) * 7.0) * K - Ko;
-	dx = Pf.x - 1.5 + _jitter_w2d*ox;
-	dy = Pf.y - of + _jitter_w2d*oy;
-	vec3 d3 = dx * dx + dy * dy;
-	vec3 d1a = min(d1, d2);
-	d2 = max(d1, d2);
-	d2 = min(d2, d3);
-	d1 = min(d1a, d2);
-	d2 = max(d1a, d2);
-	d1.xy = (d1.x < d1.y) ? d1.xy : d1.yx;
-	d1.xz = (d1.x < d1.z) ? d1.xz : d1.zx;
-	d1.yz = min(d1.yz, d2.yz);
-	d1.y = min(d1.y, d1.z);
-	d1.y = min(d1.y, d2.x);
-	return sqrt(d1.xy);
-}
-float _cellularNoise2DFBM(vec2 _uv_cnfbm, int _oct_cnfbm, vec2 _per_cnfbm, float _lac_cnfbm, float _persist_cnfbm,
-		float _rot_cnfbm, float _ampl_cnfbm, vec2 _shift_cnfbm, float _jitter_cnfbm, bool _use_F2_cnfbm) {
-	float _v = 0.0;
-	float _a = _ampl_cnfbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_cnfbm), sin(_rot_cnfbm)), vec2(-sin(_rot_cnfbm), cos(_rot_cnfbm)));
-	for (int i = 0; i < _oct_cnfbm; ++i) {
-		vec2 _cell_noiseF12 = _cellular2dNoiseFractalFunc(_uv_cnfbm * _per_cnfbm, _jitter_cnfbm);
-		if (_use_F2_cnfbm) {
-			_v += _a * _cell_noiseF12.y;
-		} else {
-			_v += _a * _cell_noiseF12.x;
-		}
-		_uv_cnfbm = _r0t * _uv_cnfbm * _lac_cnfbm + _shift_cnfbm;
-		_a *= _persist_cnfbm;
-	}
-	return _v;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/worley2d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:5
@@ -7559,58 +6238,12 @@ constant = 0.5
 
 [sub_resource type="VisualShader" id="508"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalSimplexNoise2D
-vec3 _permute_simplex2_noise_fractal(vec3 x) {
-	return ((x*34.0)+1.0)*x-floor(((x*34.0)+1.0)*x*(1.0/289.0))*289.0;
-}
-
-float _simplex2dNoiseFractalFunc(vec2 v) {
-	vec4 C = vec4(0.211324865405187,
-				0.366025403784439,
-				-0.577350269189626,
-				0.024390243902439);
-	
-	vec2 i  = floor(v + dot(v, C.yy) );
-	vec2 x0 = v -   i + dot(i, C.xx);
-	
-	vec2 i1;
-	i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-	vec4 x12 = vec4(x0.xy, x0.xy) + C.xxzz;
-	x12.xy -= i1;
-	
-	i = i - floor(i * (1.0 / 289.0)) * 289.0;
-	vec3 p = _permute_simplex2_noise_fractal(_permute_simplex2_noise_fractal(i.y + vec3(0.0, i1.y, 1.0 )) + i.x + vec3(0.0, i1.x, 1.0));
-	
-	vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), vec3(0.0));
-	m = m * m;
-	m = m * m;
-	
-	vec3 x = 2.0 * fract(p * C.www) - 1.0;
-	vec3 h = abs(x) - 0.5;
-	vec3 ox = floor(x + 0.5);
-	vec3 a0 = x - ox;
-	
-	m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
-	
-	vec3 g;
-	g.x  = a0.x  * x0.x  + h.x  * x0.y;
-	g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-	return 130.0 * dot(m, g);
-}
-float _simplexNoise2DFBM(vec2 _uv_sn2fbm, int _oct_sn2fbm, vec2 _per_sn2fbm, float _lac_sn2fbm,
-						float _persist_sn2fbm, float _rot_sn2fbm, float _ampl_sn2fbm, vec2 _shift_sn2fbm) {
-	float _v = 0.0;
-	float _a = _ampl_sn2fbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_sn2fbm), sin(_rot_sn2fbm)), vec2(-sin(_rot_sn2fbm), cos(_rot_sn2fbm)));
-	for (int i = 0; i < _oct_sn2fbm; ++i) {
-		_v += _a * _simplex2dNoiseFractalFunc(_uv_sn2fbm * _per_sn2fbm);
-		_uv_sn2fbm = _r0t * _uv_sn2fbm * _lac_sn2fbm + _shift_sn2fbm;
-		_a *= _persist_sn2fbm;
-	}
-	return (min(_v, 1.0) + 1.0) * 0.5;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/simplex2d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -7724,170 +6357,12 @@ constant = 0.5
 
 [sub_resource type="VisualShader" id="522"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalWorleyNoise3D
-vec2 _cellular3dNoiseFractalFunc(vec3 P, float _jitter_w3d) {
-	float K = 0.142857142857;
-	float Ko = 0.428571428571;
-	float K2 = 0.020408163265306;
-	float Kz = 0.166666666667;
-	float Kzo = 0.416666666667;
-	
-	vec3 Pi = floor(P) - floor(floor(P) * (1.0 / 289.0)) * 289.0;
-	vec3 Pf = fract(P) - 0.5;
-	
-	vec3 Pfx = Pf.x + vec3(1.0, 0.0, -1.0);
-	vec3 Pfy = Pf.y + vec3(1.0, 0.0, -1.0);
-	vec3 Pfz = Pf.z + vec3(1.0, 0.0, -1.0);
-	
-	vec3 p = ((34.0*(Pi.x+vec3(-1.0,0.0,1.0))+1.0)*(Pi.x+vec3(-1.0,0.0,1.0)))-floor(((34.0*(Pi.x+vec3(-1.0,0.0,1.0))+1.0)
-				*(Pi.x+vec3(-1.0,0.0,1.0)))*(1.0/289.0))*289.0;
-	vec3 p1 = ((34.0*(p+Pi.y-1.0)+1.0)*(p+Pi.y-1.0))-floor(((34.0*(p+Pi.y-1.0)+1.0)*(p+Pi.y-1.0))*(1.0/289.0))*289.0;
-	vec3 p2 = ((34.0*(p+Pi.y)+1.0)*(p+Pi.y))-floor(((34.0*(p+Pi.y)+1.0)*(p+Pi.y))*(1.0/289.0))*289.0;
-	vec3 p3 = ((34.0*(p+Pi.y+1.0)+1.0)*(p+Pi.y+1.0))-floor(((34.0*(p+Pi.y+1.0)+1.0)*(p+Pi.y+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 p11 = ((34.0*(p1+Pi.z-1.0)+1.0)*(p1+Pi.z-1.0))-floor(((34.0*(p1+Pi.z-1.0)+1.0)*(p1+Pi.z-1.0))*(1.0/289.0))*289.0;
-	vec3 p12 = ((34.0*(p1+Pi.z)+1.0)*(p1+Pi.z))-floor(((34.0*(p1+Pi.z)+1.0)*(p1+Pi.z))*(1.0/289.0))*289.0;
-	vec3 p13 = ((34.0*(p1+Pi.z+1.0)+1.0)*(p1+Pi.z+1.0))-floor(((34.0*(p1+Pi.z+1.0)+1.0)*(p1+Pi.z+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 p21 = ((34.0*(p2+Pi.z-1.0)+1.0)*(p2+Pi.z-1.0))-floor(((34.0*(p2+Pi.z-1.0)+1.0)*(p2+Pi.z-1.0))*(1.0/289.0))*289.0;
-	vec3 p22 = ((34.0*(p2+Pi.z)+1.0)*(p2+Pi.z))-floor(((34.0*(p2+Pi.z)+1.0)*(p2+Pi.z))*(1.0/289.0))*289.0;
-	vec3 p23 = ((34.0*(p2+Pi.z+1.0)+1.0)*(p2+Pi.z+1.0))-floor(((34.0*(p2+Pi.z+1.0)+1.0)*(p2+Pi.z+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 p31 = ((34.0*(p3+Pi.z-1.0)+1.0)*(p3+Pi.z-1.0))-floor(((34.0*(p3+Pi.z-1.0)+1.0)*(p3+Pi.z-1.0))*(1.0/289.0))*289.0;
-	vec3 p32 = ((34.0*(p3+Pi.z)+1.0)*(p3+Pi.z))-floor(((34.0*(p3+Pi.z)+1.0)*(p3+Pi.z))*(1.0/289.0))*289.0;
-	vec3 p33 = ((34.0*(p3+Pi.z+1.0)+1.0)*(p3+Pi.z+1.0))-floor(((34.0*(p3+Pi.z+1.0)+1.0)*(p3+Pi.z+1.0))*(1.0/289.0))*289.0;
-	
-	vec3 ox11 = fract(p11*K) - Ko;
-	vec3 oy11 = ((floor(p11*K))-floor((floor(p11*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz11 = floor(p11*K2)*Kz - Kzo;
-	
-	vec3 ox12 = fract(p12*K) - Ko;
-	vec3 oy12 = ((floor(p12*K))-floor((floor(p12*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz12 = floor(p12*K2)*Kz - Kzo;
-	
-	vec3 ox13 = fract(p13*K) - Ko;
-	vec3 oy13 = ((floor(p13*K))-floor((floor(p13*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz13 = floor(p13*K2)*Kz - Kzo;
-	
-	vec3 ox21 = fract(p21*K) - Ko;
-	vec3 oy21 = ((floor(p21*K))-floor((floor(p21*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz21 = floor(p21*K2)*Kz - Kzo;
-	
-	vec3 ox22 = fract(p22*K) - Ko;
-	vec3 oy22 = ((floor(p22*K))-floor((floor(p22*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz22 = floor(p22*K2)*Kz - Kzo;
-	
-	vec3 ox23 = fract(p23*K) - Ko;
-	vec3 oy23 = ((floor(p23*K))-floor((floor(p23*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz23 = floor(p23*K2)*Kz - Kzo;
-	
-	vec3 ox31 = fract(p31*K) - Ko;
-	vec3 oy31 = ((floor(p31*K))-floor((floor(p31*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz31 = floor(p31*K2)*Kz - Kzo;
-	
-	vec3 ox32 = fract(p32*K) - Ko;
-	vec3 oy32 = ((floor(p32*K))-floor((floor(p32*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz32 = floor(p32*K2)*Kz - Kzo;
-	
-	vec3 ox33 = fract(p33*K) - Ko;
-	vec3 oy33 = ((floor(p33*K))-floor((floor(p33*K))*(1.0/7.0))*7.0)*K - Ko;
-	vec3 oz33 = floor(p33*K2)*Kz - Kzo;
-	
-	vec3 dx11 = Pfx + _jitter_w3d*ox11;
-	vec3 dy11 = Pfy.x + _jitter_w3d*oy11;
-	vec3 dz11 = Pfz.x + _jitter_w3d*oz11;
-	
-	vec3 dx12 = Pfx + _jitter_w3d*ox12;
-	vec3 dy12 = Pfy.x + _jitter_w3d*oy12;
-	vec3 dz12 = Pfz.y + _jitter_w3d*oz12;
-	
-	vec3 dx13 = Pfx + _jitter_w3d*ox13;
-	vec3 dy13 = Pfy.x + _jitter_w3d*oy13;
-	vec3 dz13 = Pfz.z + _jitter_w3d*oz13;
-	
-	vec3 dx21 = Pfx + _jitter_w3d*ox21;
-	vec3 dy21 = Pfy.y + _jitter_w3d*oy21;
-	vec3 dz21 = Pfz.x + _jitter_w3d*oz21;
-	
-	vec3 dx22 = Pfx + _jitter_w3d*ox22;
-	vec3 dy22 = Pfy.y + _jitter_w3d*oy22;
-	vec3 dz22 = Pfz.y + _jitter_w3d*oz22;
-	
-	vec3 dx23 = Pfx + _jitter_w3d*ox23;
-	vec3 dy23 = Pfy.y + _jitter_w3d*oy23;
-	vec3 dz23 = Pfz.z + _jitter_w3d*oz23;
-	
-	vec3 dx31 = Pfx + _jitter_w3d*ox31;
-	vec3 dy31 = Pfy.z + _jitter_w3d*oy31;
-	vec3 dz31 = Pfz.x + _jitter_w3d*oz31;
-	
-	vec3 dx32 = Pfx + _jitter_w3d*ox32;
-	vec3 dy32 = Pfy.z + _jitter_w3d*oy32;
-	vec3 dz32 = Pfz.y + _jitter_w3d*oz32;
-	
-	vec3 dx33 = Pfx + _jitter_w3d*ox33;
-	vec3 dy33 = Pfy.z + _jitter_w3d*oy33;
-	vec3 dz33 = Pfz.z + _jitter_w3d*oz33;
-	
-	vec3 d11 = dx11 * dx11 + dy11 * dy11 + dz11 * dz11;
-	vec3 d12 = dx12 * dx12 + dy12 * dy12 + dz12 * dz12;
-	vec3 d13 = dx13 * dx13 + dy13 * dy13 + dz13 * dz13;
-	vec3 d21 = dx21 * dx21 + dy21 * dy21 + dz21 * dz21;
-	vec3 d22 = dx22 * dx22 + dy22 * dy22 + dz22 * dz22;
-	vec3 d23 = dx23 * dx23 + dy23 * dy23 + dz23 * dz23;
-	vec3 d31 = dx31 * dx31 + dy31 * dy31 + dz31 * dz31;
-	vec3 d32 = dx32 * dx32 + dy32 * dy32 + dz32 * dz32;
-	vec3 d33 = dx33 * dx33 + dy33 * dy33 + dz33 * dz33;
-
-	vec3 d1a = min(d11, d12);
-	d12 = max(d11, d12);
-	d11 = min(d1a, d13);
-	d13 = max(d1a, d13);
-	d12 = min(d12, d13);
-	vec3 d2a = min(d21, d22);
-	d22 = max(d21, d22);
-	d21 = min(d2a, d23);
-	d23 = max(d2a, d23);
-	d22 = min(d22, d23);
-	vec3 d3a = min(d31, d32);
-	d32 = max(d31, d32);
-	d31 = min(d3a, d33);
-	d33 = max(d3a, d33);
-	d32 = min(d32, d33);
-	vec3 da = min(d11, d21);
-	d21 = max(d11, d21);
-	d11 = min(da, d31);
-	d31 = max(da, d31);
-	d11.xy = (d11.x < d11.y) ? d11.xy : d11.yx;
-	d11.xz = (d11.x < d11.z) ? d11.xz : d11.zx;
-	d12 = min(d12, d21);
-	d12 = min(d12, d22);
-	d12 = min(d12, d31);
-	d12 = min(d12, d32);
-	d11.yz = min(d11.yz,d12.xy);
-	d11.y = min(d11.y,d12.z);
-	d11.y = min(d11.y,d11.z);
-	return sqrt(d11.xy);
-}
-float _cellularNoise3DFBM(vec2 _uv_cnfbm, int _oct_cnfbm, vec2 _per_cnfbm, float _lac_cnfbm, float _persist_cnfbm,
-		float _rot_cnfbm, float _ampl_cnfbm, vec2 _shift_cnfbm, float _jitter_cnfbm, bool _use_F2_cnfbm, float _time_cnfbm) {
-	float _v = 0.0;
-	float _a = _ampl_cnfbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_cnfbm), sin(_rot_cnfbm)), vec2(-sin(_rot_cnfbm), cos(_rot_cnfbm)));
-	for (int i = 0; i < _oct_cnfbm; ++i) {
-		vec2 _cell_noiseF12 = _cellular3dNoiseFractalFunc(vec3(_uv_cnfbm * _per_cnfbm, _time_cnfbm), _jitter_cnfbm);
-		if (_use_F2_cnfbm) {
-			_v += _a * _cell_noiseF12.y;
-		} else {
-			_v += _a * _cell_noiseF12.x;
-		}
-		_uv_cnfbm = _r0t * _uv_cnfbm * _lac_cnfbm + _shift_cnfbm;
-		_a *= _persist_cnfbm;
-	}
-	return _v;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/worley3d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -8014,91 +6489,12 @@ constant = 0.5
 
 [sub_resource type="VisualShader" id="534"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalPerlinNoise3D
-float _perlin3dNoiseFractalFunc(vec3 P) {
-	vec3 Pi0 = floor(P);
-	vec3 Pi1 = Pi0 + vec3(1.0);
-	Pi0 = Pi0 - floor(Pi0 * (1.0 / 289.0)) * 289.0;
-	Pi1 = Pi1 - floor(Pi1 * (1.0 / 289.0)) * 289.0;
-	vec3 Pf0 = fract(P);
-	vec3 Pf1 = Pf0 - vec3(1.0);
-	vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-	vec4 iy = vec4(Pi0.yy, Pi1.yy);
-	vec4 iz0 = vec4(Pi0.z);
-	vec4 iz1 = vec4(Pi1.z);
-	
-	vec4 ixy = (((((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy))-
-		floor(((((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*34.0)+1.0)*
-		((((ix*34.0)+1.0)*ix)-floor(((ix*34.0)+1.0)*ix*(1.0/289.0))*289.0 + iy)*(1.0/289.0))*289.0;
-	vec4 ixy0 = ((((ixy + iz0)*34.0)+1.0)*(ixy + iz0))-floor((((ixy + iz0)*34.0)+1.0)*(ixy + iz0)*(1.0/289.0))*289.0;
-	vec4 ixy1 = ((((ixy + iz1)*34.0)+1.0)*(ixy + iz1))-floor((((ixy + iz1)*34.0)+1.0)*(ixy + iz1)*(1.0/289.0))*289.0;
-	
-	vec4 gx0 = ixy0 * (1.0 / 7.0);
-	vec4 gy0 = fract(floor(gx0) * (1.0 / 7.0)) - 0.5;
-	gx0 = fract(gx0);
-	vec4 gz0 = vec4(0.5) - abs(gx0) - abs(gy0);
-	vec4 sz0 = step(gz0, vec4(0.0));
-	gx0 -= sz0 * (step(0.0, gx0) - 0.5);
-	gy0 -= sz0 * (step(0.0, gy0) - 0.5);
-	
-	vec4 gx1 = ixy1 * (1.0 / 7.0);
-	vec4 gy1 = fract(floor(gx1) * (1.0 / 7.0)) - 0.5;
-	gx1 = fract(gx1);
-	vec4 gz1 = vec4(0.5) - abs(gx1) - abs(gy1);
-	vec4 sz1 = step(gz1, vec4(0.0));
-	gx1 -= sz1 * (step(0.0, gx1) - 0.5);
-	gy1 -= sz1 * (step(0.0, gy1) - 0.5);
-	
-	vec3 g000 = vec3(gx0.x,gy0.x,gz0.x);
-	vec3 g100 = vec3(gx0.y,gy0.y,gz0.y);
-	vec3 g010 = vec3(gx0.z,gy0.z,gz0.z);
-	vec3 g110 = vec3(gx0.w,gy0.w,gz0.w);
-	vec3 g001 = vec3(gx1.x,gy1.x,gz1.x);
-	vec3 g101 = vec3(gx1.y,gy1.y,gz1.y);
-	vec3 g011 = vec3(gx1.z,gy1.z,gz1.z);
-	vec3 g111 = vec3(gx1.w,gy1.w,gz1.w);
-	
-	vec4 norm0 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g000, g000), dot(g010, g010), dot(g100, g100), dot(g110, g110));
-	g000 *= norm0.x;
-	g010 *= norm0.y;
-	g100 *= norm0.z;
-	g110 *= norm0.w;
-	vec4 norm1 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g001, g001), dot(g011, g011), dot(g101, g101), dot(g111, g111));
-	g001 *= norm1.x;
-	g011 *= norm1.y;
-	g101 *= norm1.z;
-	g111 *= norm1.w;
-	
-	float n000 = dot(g000, Pf0);
-	float n100 = dot(g100, vec3(Pf1.x, Pf0.yz));
-	float n010 = dot(g010, vec3(Pf0.x, Pf1.y, Pf0.z));
-	float n110 = dot(g110, vec3(Pf1.xy, Pf0.z));
-	float n001 = dot(g001, vec3(Pf0.xy, Pf1.z));
-	float n101 = dot(g101, vec3(Pf1.x, Pf0.y, Pf1.z));
-	float n011 = dot(g011, vec3(Pf0.x, Pf1.yz));
-	float n111 = dot(g111, Pf1);
-	
-	vec3 fade_xyz = Pf0 * Pf0 * Pf0 * (Pf0 * (Pf0 * 6.0 - 15.0) + 10.0);
-	vec4 n_z = mix(vec4(n000, n100, n010, n110), vec4(n001, n101, n011, n111), fade_xyz.z);
-	vec2 n_yz = mix(n_z.xy, n_z.zw, fade_xyz.y);
-	float n_xyz = mix(n_yz.x, n_yz.y, fade_xyz.x); 
-	return 2.2 * n_xyz;
-}
-float _perlinNoise3DFBM(vec2 _uv_pn3fbm, int _oct_pn3fbm, vec2 _per_pn3fbm, float _lac_pn3fbm,
-		float _persist_pn3fbm, float _rot_pn3fbm, float _ampl_pn3fbm, vec2 _shift_pn3fbm, float _time_pn3fbm) {
-	float _v = 0.0;
-	float _a = _ampl_pn3fbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_pn3fbm), sin(_rot_pn3fbm)), vec2(-sin(_rot_pn3fbm), cos(_rot_pn3fbm)));
-	for (int i = 0; i < _oct_pn3fbm; ++i) {
-		_v += _a * _perlin3dNoiseFractalFunc(vec3(_uv_pn3fbm * _per_pn3fbm, _time_pn3fbm));
-		_uv_pn3fbm = _r0t * _uv_pn3fbm * _lac_pn3fbm + _shift_pn3fbm;
-		_a *= _persist_pn3fbm;
-	}
-	return (min(_v, 1.0) + 1.0) * 0.5;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/perlin3d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -8213,83 +6609,12 @@ constant = 0.8
 
 [sub_resource type="VisualShader" id="546"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalSimplexNoise3D
-vec4 _permute_simplex3_noise_fractal(vec4 x) {
-	return ((x * 34.0) + 1.0) * x - floor(((x * 34.0) + 1.0) * x * (1.0 / 289.0)) * 289.0;
-}
-float _simplex3dNoiseFractalFunc(vec3 v) { 
-	vec2 C = vec2(1.0/6.0, 1.0/3.0) ;
-	vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-	
-	vec3 i  = floor(v + dot(v, vec3(C.y)));
-	vec3 x0 = v - i + dot(i, vec3(C.x)) ;
-	
-	vec3 g = step(x0.yzx, x0.xyz);
-	vec3 l = 1.0 - g;
-	vec3 i1 = min( g.xyz, l.zxy );
-	vec3 i2 = max( g.xyz, l.zxy );
-	
-	vec3 x1 = x0 - i1 + vec3(C.x);
-	vec3 x2 = x0 - i2 + vec3(C.y);
-	vec3 x3 = x0 - D.yyy;
-	
-	i = i - floor(i * (1.0 / 289.0)) * 289.0;
-	vec4 p = _permute_simplex3_noise_fractal(_permute_simplex3_noise_fractal(_permute_simplex3_noise_fractal(
-	 		i.z + vec4(0.0, i1.z, i2.z, 1.0))
-		+   i.y + vec4(0.0, i1.y, i2.y, 1.0))
-		+   i.x + vec4(0.0, i1.x, i2.x, 1.0));
-	
-	float n_ = 0.142857142857;
-	vec3  ns = n_ * D.wyz - D.xzx;
-	
-	vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-	
-	vec4 x_ = floor(j * ns.z);
-	vec4 y_ = floor(j - 7.0 * x_ );
-	
-	vec4 x = x_ *ns.x + vec4(ns.y);
-	vec4 y = y_ *ns.x + vec4(ns.y);
-	vec4 h = 1.0 - abs(x) - abs(y);
-	
-	vec4 b0 = vec4( x.xy, y.xy );
-	vec4 b1 = vec4( x.zw, y.zw );
-	
-	vec4 s0 = floor(b0)*2.0 + 1.0;
-	vec4 s1 = floor(b1)*2.0 + 1.0;
-	vec4 sh = -step(h, vec4(0.0));
-	
-	vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
-	vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
-	
-	vec3 p0 = vec3(a0.xy,h.x);
-	vec3 p1 = vec3(a0.zw,h.y);
-	vec3 p2 = vec3(a1.xy,h.z);
-	vec3 p3 = vec3(a1.zw,h.w);
-	
-	vec4 norm = 2.79284291400159 - 0.85373472095314 * vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3));
-	p0 *= norm.x;
-	p1 *= norm.y;
-	p2 *= norm.z;
-	p3 *= norm.w;
-	
-	vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), vec4(0.0));
-	m = m * m;
-	return 22.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
-}
-float _simplexNoise3DFBM(vec2 _uv_sn3fbm, int _oct_sn3fbm, vec2 _per_sn3fbm, float _lac_sn3fbm,
-		float _persist_sn3fbm, float _rot_sn3fbm, float _ampl_sn3fbm, vec2 _shift_sn3fbm, float _time_sn3fbm) {
-	float _v = 0.0;
-	float _a = _ampl_sn3fbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_sn3fbm), sin(_rot_sn3fbm)), vec2(-sin(_rot_sn3fbm), cos(_rot_sn3fbm)));
-	for (int i = 0; i < _oct_sn3fbm; ++i) {
-		_v += _a * _simplex3dNoiseFractalFunc(vec3(_uv_sn3fbm * _per_sn3fbm, _time_sn3fbm));
-		_uv_sn3fbm = _r0t * _uv_sn3fbm * _lac_sn3fbm + _shift_sn3fbm;
-		_a *= _persist_sn3fbm;
-	}
-	return (min(_v, 1.0) + 1.0) * 0.5;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/simplex3d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -8407,156 +6732,12 @@ constant = Vector3(2, 2, 0)
 
 [sub_resource type="VisualShader" id="559"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalPerlinNoise4D
-vec4 _permute_perlin4d_noise_fractal_func(vec4 x) {
-	return ((x*34.0)+1.0)*x - floor(((x*34.0)+1.0)*x * (1.0 / 289.0)) * 289.0;
-}
-float _perlin4dNoiseFractalFunc(vec4 P) {
-	vec4 Pi0 = floor(P);
-	vec4 Pi1 = Pi0 + 1.0;
-	Pi0 = Pi0 - floor(Pi0 * (1.0 / 289.0)) * 289.0;
-	Pi1 = Pi1 - floor(Pi1 * (1.0 / 289.0)) * 289.0;
-	vec4 Pf0 = fract(P);
-	vec4 Pf1 = Pf0 - 1.0;
-	vec4 ix = vec4(Pi0.x, Pi1.x, Pi0.x, Pi1.x);
-	vec4 iy = vec4(Pi0.yy, Pi1.yy);
-	vec4 iz0 = vec4(Pi0.zzzz);
-	vec4 iz1 = vec4(Pi1.zzzz);
-	vec4 iw0 = vec4(Pi0.wwww);
-	vec4 iw1 = vec4(Pi1.wwww);
-	
-	vec4 ixy = _permute_perlin4d_noise_fractal_func(_permute_perlin4d_noise_fractal_func(ix) + iy);
-	vec4 ixy0 = _permute_perlin4d_noise_fractal_func(ixy + iz0);
-	vec4 ixy1 = _permute_perlin4d_noise_fractal_func(ixy + iz1);
-	vec4 ixy00 = _permute_perlin4d_noise_fractal_func(ixy0 + iw0);
-	vec4 ixy01 = _permute_perlin4d_noise_fractal_func(ixy0 + iw1);
-	vec4 ixy10 = _permute_perlin4d_noise_fractal_func(ixy1 + iw0);
-	vec4 ixy11 = _permute_perlin4d_noise_fractal_func(ixy1 + iw1);
-	
-	vec4 gx00 = ixy00 * (1.0 / 7.0);
-	vec4 gy00 = floor(gx00) * (1.0 / 7.0);
-	vec4 gz00 = floor(gy00) * (1.0 / 6.0);
-	gx00 = fract(gx00) - 0.5;
-	gy00 = fract(gy00) - 0.5;
-	gz00 = fract(gz00) - 0.5;
-	vec4 gw00 = vec4(0.75) - abs(gx00) - abs(gy00) - abs(gz00);
-	vec4 sw00 = step(gw00, vec4(0.0));
-	gx00 -= sw00 * (step(0.0, gx00) - 0.5);
-	gy00 -= sw00 * (step(0.0, gy00) - 0.5);
-	
-	vec4 gx01 = ixy01 * (1.0 / 7.0);
-	vec4 gy01 = floor(gx01) * (1.0 / 7.0);
-	vec4 gz01 = floor(gy01) * (1.0 / 6.0);
-	gx01 = fract(gx01) - 0.5;
-	gy01 = fract(gy01) - 0.5;
-	gz01 = fract(gz01) - 0.5;
-	vec4 gw01 = vec4(0.75) - abs(gx01) - abs(gy01) - abs(gz01);
-	vec4 sw01 = step(gw01, vec4(0.0));
-	gx01 -= sw01 * (step(0.0, gx01) - 0.5);
-	gy01 -= sw01 * (step(0.0, gy01) - 0.5);
-	
-	vec4 gx10 = ixy10 * (1.0 / 7.0);
-	vec4 gy10 = floor(gx10) * (1.0 / 7.0);
-	vec4 gz10 = floor(gy10) * (1.0 / 6.0);
-	gx10 = fract(gx10) - 0.5;
-	gy10 = fract(gy10) - 0.5;
-	gz10 = fract(gz10) - 0.5;
-	vec4 gw10 = vec4(0.75) - abs(gx10) - abs(gy10) - abs(gz10);
-	vec4 sw10 = step(gw10, vec4(0.0));
-	gx10 -= sw10 * (step(0.0, gx10) - 0.5);
-	gy10 -= sw10 * (step(0.0, gy10) - 0.5);
-	
-	vec4 gx11 = ixy11 * (1.0 / 7.0);
-	vec4 gy11 = floor(gx11) * (1.0 / 7.0);
-	vec4 gz11 = floor(gy11) * (1.0 / 6.0);
-	gx11 = fract(gx11) - 0.5;
-	gy11 = fract(gy11) - 0.5;
-	gz11 = fract(gz11) - 0.5;
-	vec4 gw11 = vec4(0.75) - abs(gx11) - abs(gy11) - abs(gz11);
-	vec4 sw11 = step(gw11, vec4(0.0));
-	gx11 -= sw11 * (step(0.0, gx11) - 0.5);
-	gy11 -= sw11 * (step(0.0, gy11) - 0.5);
-	
-	vec4 g0000 = vec4(gx00.x,gy00.x,gz00.x,gw00.x);
-	vec4 g1000 = vec4(gx00.y,gy00.y,gz00.y,gw00.y);
-	vec4 g0100 = vec4(gx00.z,gy00.z,gz00.z,gw00.z);
-	vec4 g1100 = vec4(gx00.w,gy00.w,gz00.w,gw00.w);
-	vec4 g0010 = vec4(gx10.x,gy10.x,gz10.x,gw10.x);
-	vec4 g1010 = vec4(gx10.y,gy10.y,gz10.y,gw10.y);
-	vec4 g0110 = vec4(gx10.z,gy10.z,gz10.z,gw10.z);
-	vec4 g1110 = vec4(gx10.w,gy10.w,gz10.w,gw10.w);
-	vec4 g0001 = vec4(gx01.x,gy01.x,gz01.x,gw01.x);
-	vec4 g1001 = vec4(gx01.y,gy01.y,gz01.y,gw01.y);
-	vec4 g0101 = vec4(gx01.z,gy01.z,gz01.z,gw01.z);
-	vec4 g1101 = vec4(gx01.w,gy01.w,gz01.w,gw01.w);
-	vec4 g0011 = vec4(gx11.x,gy11.x,gz11.x,gw11.x);
-	vec4 g1011 = vec4(gx11.y,gy11.y,gz11.y,gw11.y);
-	vec4 g0111 = vec4(gx11.z,gy11.z,gz11.z,gw11.z);
-	vec4 g1111 = vec4(gx11.w,gy11.w,gz11.w,gw11.w);
-	
-	vec4 norm00 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0000, g0000), dot(g0100, g0100), dot(g1000, g1000), dot(g1100, g1100));
-	g0000 *= norm00.x;
-	g0100 *= norm00.y;
-	g1000 *= norm00.z;
-	g1100 *= norm00.w;
-	
-	vec4 norm01 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0001, g0001), dot(g0101, g0101), dot(g1001, g1001), dot(g1101, g1101));
-	g0001 *= norm01.x;
-	g0101 *= norm01.y;
-	g1001 *= norm01.z;
-	g1101 *= norm01.w;
-	
-	vec4 norm10 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0010, g0010), dot(g0110, g0110), dot(g1010, g1010), dot(g1110, g1110));
-	g0010 *= norm10.x;
-	g0110 *= norm10.y;
-	g1010 *= norm10.z;
-	g1110 *= norm10.w;
-	
-	vec4 norm11 = 1.79284291400159 - 0.85373472095314 * vec4(dot(g0011, g0011), dot(g0111, g0111), dot(g1011, g1011), dot(g1111, g1111));
-	g0011 *= norm11.x;
-	g0111 *= norm11.y;
-	g1011 *= norm11.z;
-	g1111 *= norm11.w;
-	
-	float n0000 = dot(g0000, Pf0);
-	float n1000 = dot(g1000, vec4(Pf1.x, Pf0.yzw));
-	float n0100 = dot(g0100, vec4(Pf0.x, Pf1.y, Pf0.zw));
-	float n1100 = dot(g1100, vec4(Pf1.xy, Pf0.zw));
-	float n0010 = dot(g0010, vec4(Pf0.xy, Pf1.z, Pf0.w));
-	float n1010 = dot(g1010, vec4(Pf1.x, Pf0.y, Pf1.z, Pf0.w));
-	float n0110 = dot(g0110, vec4(Pf0.x, Pf1.yz, Pf0.w));
-	float n1110 = dot(g1110, vec4(Pf1.xyz, Pf0.w));
-	float n0001 = dot(g0001, vec4(Pf0.xyz, Pf1.w));
-	float n1001 = dot(g1001, vec4(Pf1.x, Pf0.yz, Pf1.w));
-	float n0101 = dot(g0101, vec4(Pf0.x, Pf1.y, Pf0.z, Pf1.w));
-	float n1101 = dot(g1101, vec4(Pf1.xy, Pf0.z, Pf1.w));
-	float n0011 = dot(g0011, vec4(Pf0.xy, Pf1.zw));
-	float n1011 = dot(g1011, vec4(Pf1.x, Pf0.y, Pf1.zw));
-	float n0111 = dot(g0111, vec4(Pf0.x, Pf1.yzw));
-	float n1111 = dot(g1111, Pf1);
-	
-	vec4 fade_xyzw = Pf0 * Pf0 * Pf0 * (Pf0 * (Pf0 * 6.0 - 15.0) + 10.0);
-	vec4 n_0w = mix(vec4(n0000, n1000, n0100, n1100), vec4(n0001, n1001, n0101, n1101), fade_xyzw.w);
-	vec4 n_1w = mix(vec4(n0010, n1010, n0110, n1110), vec4(n0011, n1011, n0111, n1111), fade_xyzw.w);
-	vec4 n_zw = mix(n_0w, n_1w, fade_xyzw.z);
-	vec2 n_yzw = mix(n_zw.xy, n_zw.zw, fade_xyzw.y);
-	float n_xyzw = mix(n_yzw.x, n_yzw.y, fade_xyzw.x);
-	return 2.2 * n_xyzw;
-}
-float _perlinNoise4DFBM(vec2 _uv_pn4fbm, int _oct_pn4fbm, vec2 _per_pn4fbm, float _lac_pn4fbm, float _persist_pn4fbm,
-				float _rot_pn4fbm, float _ampl_pn4fbm, vec2 _shift_pn4fbm, float _time_pn4fbm, float _z_pn4fbm) {
-	float _v = 0.0;
-	float _a = _ampl_pn4fbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_pn4fbm), sin(_rot_pn4fbm)), vec2(-sin(_rot_pn4fbm), cos(_rot_pn4fbm)));
-	for (int i = 0; i < _oct_pn4fbm; ++i) {
-		_v += _a * _perlin4dNoiseFractalFunc(vec4(_uv_pn4fbm * _per_pn4fbm, _time_pn4fbm, _z_pn4fbm));
-		_uv_pn4fbm = _r0t * _uv_pn4fbm * _lac_pn4fbm + _shift_pn4fbm;
-		_a *= _persist_pn4fbm;
-	}
-	return (min(_v, 1.0) + 1.0) * 0.5;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/perlin4d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -8680,94 +6861,12 @@ constant = Vector3(0.5, 0.5, 0)
 
 [sub_resource type="VisualShader" id="572"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // FractalSimplexNoise4D
-vec4 _permute_4_s4_noise_fractal(vec4 x) {
-	return ((x * 34.0) + 1.0) * x - floor(((x * 34.0) + 1.0) * x * (1.0 / 289.0)) * 289.0;
-}
-float _permute_s4_noise_fractal(float x) {
-	return ((x * 34.0) + 1.0) * x - floor(((x * 34.0) + 1.0) * x * (1.0 / 289.0)) * 289.0;
-}
-vec4 _grad4_s4_noise_fractal(float j, vec4 ip) {
-	vec4 ones = vec4(1.0, 1.0, 1.0, -1.0);
-	vec4 p, s;
-	p.xyz = floor( fract (vec3(j) * ip.xyz) * 7.0) * ip.z - 1.0;
-	p.w = 1.5 - dot(abs(p.xyz), ones.xyz);
-	s = vec4(lessThan(p, vec4(0.0)));
-	p.xyz = p.xyz + (s.xyz*2.0 - 1.0) * s.www; 
-	return p;
-}
-float _simplex4dNoiseFractalFunc(vec4 v) {
-	vec4 C = vec4( 0.138196601125011,
-				0.276393202250021,
-				0.414589803375032,
-				-0.447213595499958);
-	
-	vec4 i  = floor(v + dot(v, vec4(0.309016994374947451)) );
-	vec4 x0 = v -   i + dot(i, C.xxxx);
-	
-	vec4 i0;
-	vec3 isX = step( x0.yzw, x0.xxx );
-	vec3 isYZ = step( x0.zww, x0.yyz );
-	i0.x = isX.x + isX.y + isX.z;
-	i0.yzw = 1.0 - isX;
-	i0.y += isYZ.x + isYZ.y;
-	i0.zw += 1.0 - isYZ.xy;
-	i0.z += isYZ.z;
-	i0.w += 1.0 - isYZ.z;
-	
-	vec4 i3 = clamp( i0, 0.0, 1.0 );
-	vec4 i2 = clamp( i0-1.0, 0.0, 1.0 );
-	vec4 i1 = clamp( i0-2.0, 0.0, 1.0 );
-	
-	vec4 x1 = x0 - i1 + C.xxxx;
-	vec4 x2 = x0 - i2 + C.yyyy;
-	vec4 x3 = x0 - i3 + C.zzzz;
-	vec4 x4 = x0 + C.wwww;
-	
-	i = i - floor(i * (1.0 / 289.0)) * 289.0;
-	float j0 = _permute_s4_noise_fractal( _permute_s4_noise_fractal( _permute_s4_noise_fractal( _permute_s4_noise_fractal(i.w) + i.z) + i.y) + i.x);
-	vec4 j1 = _permute_4_s4_noise_fractal( _permute_4_s4_noise_fractal( _permute_4_s4_noise_fractal( _permute_4_s4_noise_fractal (
-				i.w + vec4(i1.w, i2.w, i3.w, 1.0 ))
-				+ i.z + vec4(i1.z, i2.z, i3.z, 1.0 ))
-				+ i.y + vec4(i1.y, i2.y, i3.y, 1.0 ))
-				+ i.x + vec4(i1.x, i2.x, i3.x, 1.0 ));
-	
-	vec4 ip = vec4(1.0/294.0, 1.0/49.0, 1.0/7.0, 0.0) ;
-	
-	vec4 p0 = _grad4_s4_noise_fractal(j0,   ip);
-	vec4 p1 = _grad4_s4_noise_fractal(j1.x, ip);
-	vec4 p2 = _grad4_s4_noise_fractal(j1.y, ip);
-	vec4 p3 = _grad4_s4_noise_fractal(j1.z, ip);
-	vec4 p4 = _grad4_s4_noise_fractal(j1.w, ip);
-	
-	vec4 norm = 2.79284291400159 - 1.85373472095314 * vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3));
-	p0 *= norm.x;
-	p1 *= norm.y;
-	p2 *= norm.z;
-	p3 *= norm.w;
-	p4 *= 2.79284291400159 - 1.85373472095314 * dot(p4,p4);
-	
-	vec3 m0 = max(0.6 - vec3(dot(x0,x0), dot(x1,x1), dot(x2,x2)), vec3(0.0));
-	vec2 m1 = max(0.6 - vec2(dot(x3,x3), dot(x4,x4)), vec2(0.0));
-	m0 = m0 * m0;
-	m1 = m1 * m1;
-	return 33.0 *(dot(m0*m0, vec3(dot(p0, x0), dot(p1, x1), dot(p2, x2)))
-				+ dot(m1*m1, vec2(dot(p3, x3), dot(p4, x4))));
-}
-float _simplexNoise4DFBM(vec2 _uv_sn4fbm, int _oct_sn4fbm, vec2 _per_sn4fbm, float _lac_sn4fbm, float _persist_sn4fbm,
-				float _rot_sn4fbm, float _ampl_sn4fbm, vec2 _shift_sn4fbm, float _time_sn4fbm, float _z_sn4fbm) {
-	float _v = 0.0;
-	float _a = _ampl_sn4fbm;
-	mat2 _r0t = mat2(vec2(cos(_rot_sn4fbm), sin(_rot_sn4fbm)), vec2(-sin(_rot_sn4fbm), cos(_rot_sn4fbm)));
-	for (int i = 0; i < _oct_sn4fbm; ++i) {
-		_v += _a * _simplex4dNoiseFractalFunc(vec4(_uv_sn4fbm * _per_sn4fbm, _time_sn4fbm, _z_sn4fbm));
-		_uv_sn4fbm = _r0t * _uv_sn4fbm * _lac_sn4fbm + _shift_sn4fbm;
-		_a *= _persist_sn4fbm;
-	}
-	return (min(_v, 1.0) + 1.0) * 0.5;
-}
+#include \"res://addons/shaderV/rgba/noise/fractal/simplex4d_fractal.gdshaderinc\"
 
 void fragment() {
 // Input:3
@@ -8879,29 +6978,12 @@ constant = 10.0
 
 [sub_resource type="VisualShader" id="582"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // NormalFromHeightmap
-vec3 _normalFromHeightmapFunc(vec2 _hm_uv, sampler2D _hm_tex, vec2 _hm_size, float _norm_hm_strgth, bool _conv_hm_gray, bool _inv_x_norm, bool _inv_y_norm){
-	vec3 _hm_down = textureLod(_hm_tex, _hm_uv + vec2(0.0, 1.0 / _hm_size.y), 0.0).rgb;
-	vec3 _hm_up = textureLod(_hm_tex, _hm_uv - vec2(0.0, 1.0 / _hm_size.y), 0.0).rgb;
-	vec3 _hm_right = textureLod(_hm_tex, _hm_uv + vec2(1.0 / _hm_size.x, 0.0), 0.0).rgb;
-	vec3 _hm_left = textureLod(_hm_tex, _hm_uv - vec2(1.0 / _hm_size.x, 0.0), 0.0).rgb;
-	
-	if (_conv_hm_gray) {
-		_hm_down.r = 0.2126 * _hm_down.r + 0.7152 * _hm_down.g + 0.0722 * _hm_down.b;
-		_hm_up.r = 0.2126 * _hm_up.r + 0.7152 * _hm_up.g + 0.0722 * _hm_up.b;
-		_hm_right.r = 0.2126 * _hm_right.r + 0.7152 * _hm_right.g + 0.0722 * _hm_right.b;
-		_hm_left.r = 0.2126 * _hm_left.r + 0.7152 * _hm_left.g + 0.0722 * _hm_left.b;
-	}
-	
-	float dx = (1.0 - float(_inv_x_norm)) * (_hm_left.r - _hm_right.r) + 
-				(float(_inv_x_norm)) * (-_hm_left.r + _hm_right.r);
-	float dy = (1.0 - float(_inv_y_norm)) * (_hm_up.r - _hm_down.r) + 
-				(float(_inv_y_norm)) * (-_hm_up.r + _hm_down.r);
-	
-	return normalize(vec3(dx, dy, 1.0 / _norm_hm_strgth));
-}
+#include \"res://addons/shaderV/rgba/normalFromHeightmap.gdshaderinc\"
 
 void fragment() {
 // Input:4
@@ -8969,46 +7051,52 @@ shader = SubResource("582")
 [sub_resource type="VisualShaderNodeCustom" id="584"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 0)]
+expanded_output_ports = [0]
 initialized = true
 script = ExtResource("89")
 
 [sub_resource type="VisualShaderNodeCustom" id="585"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 1)]
+expanded_output_ports = [0]
 initialized = true
 script = ExtResource("91")
 
 [sub_resource type="VisualShaderNodeCustom" id="586"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 0)]
+expanded_output_ports = [0]
 initialized = true
 script = ExtResource("92")
 
 [sub_resource type="VisualShaderNodeCustom" id="587"]
 output_port_for_preview = 0
 default_input_values = [0, Vector3(1, 1, 1)]
+expanded_output_ports = [0]
 initialized = true
 script = ExtResource("90")
 
 [sub_resource type="VisualShaderNodeInput" id="588"]
 output_port_for_preview = 0
+expanded_output_ports = [0]
 input_name = "uv"
 
 [sub_resource type="VisualShader" id="589"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // CartesianToSpherical
-vec3 _cartesianToSphericalFunc(vec3 _cartesian_vec3){
-//	(x, y, z) -> (r, theta, phi)
-	return vec3(length(_cartesian_vec3),
-				atan(_cartesian_vec3.y / _cartesian_vec3.x),
-				atan(length(_cartesian_vec3.xy)/ _cartesian_vec3.z));
-}
+#include \"res://addons/shaderV/tools/transformCoordinates/cartesianToSpherical.gdshaderinc\"
+// SphericalToCartesian
+#include \"res://addons/shaderV/tools/transformCoordinates/sphericalToCartesian.gdshaderinc\"
 
 void fragment() {
 // Input:6
 	vec2 n_out6p0 = UV;
+	float n_out6p1 = n_out6p0.r;
+	float n_out6p2 = n_out6p0.g;
 
 
 	vec3 n_out3p0;
@@ -9018,27 +7106,34 @@ void fragment() {
 	}
 
 
+	vec3 n_out5p0;
+// SphericalToCartesian:5
+	{
+		n_out5p0 = _sphericalToCartesianFunc(n_out3p0);
+	}
+
+
 // Output:0
-	COLOR.rgb = n_out3p0;
+	COLOR.rgb = n_out5p0;
 
 
 }
 "
-graph_offset = Vector2(-263.26, -53.8514)
+graph_offset = Vector2(-421.011, -248.045)
 mode = 1
 flags/light_only = false
-nodes/fragment/0/position = Vector2(600, 20)
+nodes/fragment/0/position = Vector2(680, -20)
 nodes/fragment/2/node = SubResource("584")
-nodes/fragment/2/position = Vector2(-120, -160)
+nodes/fragment/2/position = Vector2(-20, -200)
 nodes/fragment/3/node = SubResource("585")
-nodes/fragment/3/position = Vector2(-60, 120)
+nodes/fragment/3/position = Vector2(-120, 140)
 nodes/fragment/4/node = SubResource("586")
-nodes/fragment/4/position = Vector2(200, -160)
+nodes/fragment/4/position = Vector2(240, -200)
 nodes/fragment/5/node = SubResource("587")
-nodes/fragment/5/position = Vector2(240, 260)
+nodes/fragment/5/position = Vector2(260, 140)
 nodes/fragment/6/node = SubResource("588")
-nodes/fragment/6/position = Vector2(-480, -20)
-nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 3, 0, 0, 0, 6, 0, 3, 0, 6, 0, 2, 0, 2, 0, 4, 0)
+nodes/fragment/6/position = Vector2(-540, -80)
+nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 2, 0, 4, 0, 5, 0, 0, 0, 6, 0, 2, 0, 6, 0, 3, 0)
 
 [sub_resource type="ShaderMaterial" id="590"]
 shader = SubResource("589")
@@ -9068,16 +7163,12 @@ constant = Vector3(8, 8, 0)
 
 [sub_resource type="VisualShader" id="598"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // GridShape
-vec4 _gridFunc(vec2 _grid_uv, vec2 _gridline_thickness, vec2 _gridline_smooth, vec2 _gridcell_count, vec4 _grid_col, vec4 _grid_bg_col){
-	vec2 _grid_vec = fract(_grid_uv * _gridcell_count);
-	_grid_vec = min(_grid_vec, vec2(1.0) - _grid_vec);
-	_grid_vec = smoothstep(_grid_vec - _gridline_smooth, _grid_vec + _gridline_smooth, _gridline_thickness / vec2(2.0));
-//	return mix(_grid_bg_col, _grid_col, clamp(_grid_vec.x + _grid_vec.y, 0.0, 1.0));
-	return mix(_grid_bg_col, _grid_col, (_grid_vec.x + _grid_vec.y));
-}
+#include \"res://addons/shaderV/rgba/generate_shapes/gridShape.gdshaderinc\"
 
 void fragment() {
 // Input:6
@@ -9171,59 +7262,12 @@ constant = 0.005
 
 [sub_resource type="VisualShader" id="607"]
 code = "shader_type canvas_item;
+render_mode blend_mix;
+
 
 
 // SobelEdge
-float _sobelEdgeFunc(sampler2D _tex_sobel, vec2 _uv_sobel, float _lod_sobel, float _ofst_sobel, bool _preconv_grayscale_sobel, bool _use_scharr){
-	vec3 s00 = vec3(0.0);
-	vec3 s01 = vec3(0.0);
-	vec3 s02 = vec3(0.0);
-	vec3 s10 = vec3(0.0);
-	vec3 s12 = vec3(0.0);
-	vec3 s20 = vec3(0.0);
-	vec3 s21 = vec3(0.0);
-	vec3 s22 = vec3(0.0);
-	if (_lod_sobel < 0.0){
-		s00 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0, -1.0)).rgb;
-		s01 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0, -1.0)).rgb;
-		s02 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0, -1.0)).rgb;
-		s10 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  0.0)).rgb;
-		s12 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  0.0)).rgb;
-		s20 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  1.0)).rgb;
-		s21 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0,  1.0)).rgb;
-		s22 = texture(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  1.0)).rgb;
-	}else{
-		s00 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0, -1.0), _lod_sobel).rgb;
-		s01 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0, -1.0), _lod_sobel).rgb;
-		s02 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0, -1.0), _lod_sobel).rgb;
-		s10 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  0.0), _lod_sobel).rgb;
-		s12 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  0.0), _lod_sobel).rgb;
-		s20 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2(-1.0,  1.0), _lod_sobel).rgb;
-		s21 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 0.0,  1.0), _lod_sobel).rgb;
-		s22 = textureLod(_tex_sobel, _uv_sobel + _ofst_sobel * vec2( 1.0,  1.0), _lod_sobel).rgb;
-	}
-	if (_preconv_grayscale_sobel){
-		s00.x = 0.2126 * s00.r + 0.7152 * s00.g + 0.0722 * s00.b;
-		s01.x = 0.2126 * s01.r + 0.7152 * s01.g + 0.0722 * s01.b;
-		s02.x = 0.2126 * s02.r + 0.7152 * s02.g + 0.0722 * s02.b;
-		s10.x = 0.2126 * s10.r + 0.7152 * s10.g + 0.0722 * s10.b;
-		s12.x = 0.2126 * s12.r + 0.7152 * s12.g + 0.0722 * s12.b;
-		s20.x = 0.2126 * s20.r + 0.7152 * s20.g + 0.0722 * s20.b;
-		s21.x = 0.2126 * s21.r + 0.7152 * s21.g + 0.0722 * s21.b;
-		s22.x = 0.2126 * s22.r + 0.7152 * s22.g + 0.0722 * s22.b;
-	}
-	float edgeSqr = 0.0;
-	if (!_use_scharr) {
-		float sobelX = s00.x + 2.0 * s10.x + s20.x - s02.x - 2.0 * s12.x - s22.x;
-		float sobelY = s00.x + 2.0 * s01.x + s02.x - s20.x - 2.0 * s21.x - s22.x;
-		edgeSqr = (sobelX * sobelX + sobelY * sobelY);
-	}else{
-		float scharrX = 3.0 * s00.x + 10.0 * s10.x + 3.0 * s20.x - 3.0 * s02.x - 10.0 * s12.x - 3.0 * s22.x;
-		float scharrY = 3.0 * s00.x + 10.0 * s01.x + 3.0 * s02.x - 3.0 * s20.x - 10.0 * s21.x - 3.0 * s22.x;
-		edgeSqr = (scharrX * scharrX + scharrY * scharrY);
-	}
-	return edgeSqr;
-}
+#include \"res://addons/shaderV/rgba/sobelEdge.gdshaderinc\"
 
 void fragment() {
 // ColorConstant:9

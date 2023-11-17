@@ -131,5 +131,5 @@ float _perlin4dNoiseFunc(vec4 P) {
 	vec4 n_zw = mix(n_0w, n_1w, fade_xyzw.z);
 	vec2 n_yzw = mix(n_zw.xy, n_zw.zw, fade_xyzw.y);
 	float n_xyzw = mix(n_yzw.x, n_yzw.y, fade_xyzw.x);
-	return 2.2 * n_xyzw;
+	return (2.2 * n_xyzw + 1.0) * 0.5;
 }
