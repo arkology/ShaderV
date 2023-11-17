@@ -40,8 +40,8 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("cartesianToPolar.gdshaderinc").code
-	return code
+	var path = self.get_script().get_path().get_base_dir()
+	return '#include "' + path + '/cartesianToPolar.gdshaderinc"'
 
 func _get_code(input_vars, output_vars, mode, type):
 	var uv = "UV"
@@ -49,5 +49,5 @@ func _get_code(input_vars, output_vars, mode, type):
 	if input_vars[0]:
 		uv = input_vars[0]
 	
-	return "%s.xy = _cartesianToPolarFunc(%s.xy);" % [output_vars[0], uv]
+	return "%s = vec3(_cartesianToPolarFunc(%s.xy), %s.z);" % [output_vars[0], uv, uv]
 

@@ -1,3 +1,7 @@
+<p align="center"><img src="addons/shaderV/shaderV_icon.png" width="80px"/></p>
+
+👉 [3.x](https://github.com/arkology/ShaderV/tree/godot-3.x)
+
 # ShaderV - VisualShader plugin for Godot Engine 4.x
 <p>Adds many premade 2D effects (such as noises, blur, emboss, zoom, custom shapes, etc.) to build-in VisualShader editor.</p>
 <p>You can find basic usage examples in the <i>addons/shaderV/examples</i> folder. Note that plugin can work freely without <i>examples</i> folder, so this folder can be deleted.</p>
@@ -40,20 +44,20 @@
   </ul>
 <li>Noise:</li>
   <ul>
-    <li>Fractal noise:</li>
-      <ul>
-      <li>FractalGenericNoise2D - Fractal GenericNoise using hash random function</li>
-      <li>FractalPerlinNoise2D/3D/4D - Fractal 2D/3D/4D Perlin Noise</li>
-      <li>FractalSimplexNoise2D/3D/4D - Fractal 2D/3D/4D Simplex Noise</li>
-      <li>FractalWorleyNoise2D/3D - Fractal 2D/3D Worley (Voronoi) Noise</li>
-      </ul>
-    <li>GenericNoise2D - GenericNoise using hash random function</li>
-    <li>PerlinNoise2D - Classic 2d perlin noise with ability to set period</li>
-    <li>PerlinNoise3D - Classic 3d perlin noise</li>
-    <li>PerlinPeriodicNoise3D - Classic 3d perlin noise with ability to set period</li>
-    <li>PerlinNoise4D - Classic 4d perlin noise</li>
-    <li>SimplexNoise2D/3D/4D - 2D/3D/4D simplex noise</li>
-    <li>WorleyNoise2D/2x2/2x2x2/3D - 2D/2x2/2x2x2/3D worley noise</li>
+	<li>Fractal noise:</li>
+	  <ul>
+	  <li>FractalGenericNoise2D - Fractal GenericNoise using hash random function</li>
+	  <li>FractalPerlinNoise2D/3D/4D - Fractal 2D/3D/4D Perlin Noise</li>
+	  <li>FractalSimplexNoise2D/3D/4D - Fractal 2D/3D/4D Simplex Noise</li>
+	  <li>FractalWorleyNoise2D/3D - Fractal 2D/3D Worley (Voronoi) Noise</li>
+	  </ul>
+	<li>GenericNoise2D - GenericNoise using hash random function</li>
+	<li>PerlinNoise2D - Classic 2d perlin noise with ability to set period</li>
+	<li>PerlinNoise3D - Classic 3d perlin noise</li>
+	<li>PerlinPeriodicNoise3D - Classic 3d perlin noise with ability to set period</li>
+	<li>PerlinNoise4D - Classic 4d perlin noise</li>
+	<li>SimplexNoise2D/3D/4D - 2D/3D/4D simplex noise</li>
+	<li>WorleyNoise2D/2x2/2x2x2/3D - 2D/2x2/2x2x2/3D worley noise</li>
   </ul>
 <li>BCSAdjustment - Full analog of BCS adjustment of environment in Godot</li>
 <li>BlackAndWhite - Turns color to black and white</li>
@@ -86,11 +90,11 @@
 <ul>
   <li>Animated:</li>
   <ul>
-    <li>DistortionUVAnimated - Animated wave-like UV distortion</li>
-    <li>DoodleUV - Doodle UV effect</li>
-    <li>RotateUVAnimated - Animated UV rotation by angle in radians relative to pivot point</li>
-    <li>SwirlUV - Swirl UV effect</li>
-    <li>TilingAndOffsetUVAnimated - Animated UV tiling with given [offset] speed</li>
+	<li>DistortionUVAnimated - Animated wave-like UV distortion</li>
+	<li>DoodleUV - Doodle UV effect</li>
+	<li>RotateUVAnimated - Animated UV rotation by angle in radians relative to pivot point</li>
+	<li>SwirlUV - Swirl UV effect</li>
+	<li>TilingAndOffsetUVAnimated - Animated UV tiling with given [offset] speed</li>
   </ul>
   <li>DistortionUV - Wave-like UV distortion</li>
   <li>FlipUV - Flip UV horizontal and/or vertical</li>
@@ -110,19 +114,19 @@
 <ul>
   <li>Random:</li>
   <ul>
-    <li>HashRandom1d - Hash func with scalar input and scalar output</li>
-    <li>HashRandom2d - Hash func with vector input and scalar output</li>
-    <li>HashRandom2dVec - Hash func with vector input and vector output</li>
-    <li>RandomFloat - Returns random float based on input value. UV is default input value.</li>
-    <li>RandomFloatImproved - Improved version of classic random function. Classic random can produce artifacts. This one - doesn't.</li>
-    <li>RandomGoldRatio - Random float based on golden ratio</li>
+	<li>HashRandom1d - Hash func with scalar input and scalar output</li>
+	<li>HashRandom2d - Hash func with vector input and scalar output</li>
+	<li>HashRandom2dVec - Hash func with vector input and vector output</li>
+	<li>RandomFloat - Returns random float based on input value. UV is default input value.</li>
+	<li>RandomFloatImproved - Improved version of classic random function. Classic random can produce artifacts. This one - doesn't.</li>
+	<li>RandomGoldRatio - Random float based on golden ratio</li>
   </ul>
   <li>Coordinates transformation:</li>
   <ul>
-    <li>CartesianToPolar - Cartesian (x, y) -> Polar (r, theta). By default (x, y) is UV</li>
-    <li>CartesianToSpherical - Cartesian (x, y, z) -> Spherical (r, theta, phi). By default (x, y, z) is UV</li>
-    <li>PolarToCartesian - Polar (r, theta) -> Cartesian (x, y)</li>
-    <li>SphericalToCartesian - Spherical (r, theta, phi) -> Cartesian (x, y, z)</li>
+	<li>CartesianToPolar - Cartesian (x, y) -> Polar (r, theta). By default (x, y) is UV</li>
+	<li>CartesianToSpherical - Cartesian (x, y, z) -> Spherical (r, theta, phi). By default (x, y, z) is UV</li>
+	<li>PolarToCartesian - Polar (r, theta) -> Cartesian (x, y)</li>
+	<li>SphericalToCartesian - Spherical (r, theta, phi) -> Cartesian (x, y, z)</li>
   </ul>
   <li>ScaledTIME - Returns [scale] * TIME</li>
   <li>Relay - Outputs its input, may be useful for organizing node connections. Works with booleans, vectors and scalars. Also can be used as preview node</li>

@@ -36,8 +36,8 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("hash2dvector.gdshaderinc").code
-	return code
+	var path = self.get_script().get_path().get_base_dir()
+	return '#include "' + path + '/hash2dvector.gdshaderinc"'
 
 func _get_code(input_vars, output_vars, mode, type):
-	return "%s.xy = _hash2v(%s.xy);" % [output_vars[0], input_vars[0]]
+	return "%s = vec3(_hash2v(%s.xy), 0.0);" % [output_vars[0], input_vars[0]]

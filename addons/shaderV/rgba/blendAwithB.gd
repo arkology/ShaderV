@@ -69,8 +69,8 @@ func _get_output_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 
 func _get_global_code(mode):
-	var code : String = preload("blendAwithB.gdshaderinc").code
-	return code
+	var path = self.get_script().get_path().get_base_dir()
+	return '#include "' + path + '/blendAwithB.gdshaderinc"'
 
 func _get_code(input_vars, output_vars, mode, type):
 	return """vec4 %s%s = _blendAwithBFunc(vec4(%s, %s), vec4(%s, %s), %s);

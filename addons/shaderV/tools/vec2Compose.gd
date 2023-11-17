@@ -49,8 +49,8 @@ func _get_output_port_type(port):
 	return VisualShaderNode.PORT_TYPE_VECTOR_3D
 
 func _get_global_code(mode):
-	var code : String = preload("vec2Compose.gdshaderinc").code
-	return code
+	var path = self.get_script().get_path().get_base_dir()
+	return '#include "' + path + '/vec2Compose.gdshaderinc"'
 
 func _get_code(input_vars, output_vars, mode, type):
 	return "%s.xy = _vec2ComposeFunc(%s, %s);" % [output_vars[0], input_vars[0], input_vars[1]]
