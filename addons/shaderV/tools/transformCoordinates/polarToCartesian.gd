@@ -41,9 +41,9 @@ func _get_output_port_type(port) -> int:
 
 func _get_global_code(mode: int) -> String:
 	var code : String = preload("polarToCartesian.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	code = code.replace("shader_type canvas_item;\n", "").replace("shader_type canvas_item;\r\n", "")
 	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
-	return "%s.xy = _polarToCartesianFunc(%s.xy);" % [output_vars[0], input_vars[0]]
+	return "%s = vec3(_polarToCartesianFunc(%s.xy), %s.z);" % [output_vars[0], input_vars[0], input_vars[0]]
 

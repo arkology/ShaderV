@@ -41,5 +41,5 @@ float _perlin2dNoiseFunc(vec2 P, vec2 _period_perl2) {
 	vec2 fade_xy = Pf.xy * Pf.xy * Pf.xy * (Pf.xy * (Pf.xy * 6.0 - 15.0) + 10.0);
 	vec2 n_x = mix(vec2(n00, n01), vec2(n10, n11), fade_xy.x);
 	float n_xy = mix(n_x.x, n_x.y, fade_xy.y);
-	return 2.3 * n_xy;
+	return (2.3 * n_xy + 1.0) * 0.5;
 }

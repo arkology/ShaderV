@@ -3,7 +3,7 @@ extends VisualShaderNodeCustom
 class_name VisualShaderNodeRGBAshiftHSV
 
 func _init() -> void:
-	set_input_port_default_value(1, 1.0)
+	set_input_port_default_value(1, 0.0)
 	set_input_port_default_value(2, 1.0)
 	set_input_port_default_value(3, 1.0)
 
@@ -18,11 +18,8 @@ func _get_category() -> String:
 
 func _get_description() -> String:
 	return """Changes hue, saturation and value of input color.
-Input values recommendations:
-[hue]: min=0.0, max=1.0;
-[saturation]: min=0.0;
-[value]: min=0.0;
-"""
+[hue] will be added to [color] hue, so [col].hue = [color].hue + [hue].
+[color] saturation and value will be multiplied by [sat] and [value], so [col].saturation(OR)value = [color].saturation(OR)value +* [sat](OR)[value]"""
 
 func _get_return_icon_type() -> int:
 	return VisualShaderNode.PORT_TYPE_VECTOR
@@ -63,7 +60,7 @@ func _get_output_port_type(port: int) -> int:
 
 func _get_global_code(mode: int) -> String:
 	var code : String = preload("shiftHSV.gdshader").code
-	code = code.replace("shader_type canvas_item;\n", "")
+	code = code.replace("shader_type canvas_item;\n", "").replace("shader_type canvas_item;\r\n", "")
 	return code
 
 func _get_code(input_vars: Array, output_vars: Array, mode: int, type: int) -> String:
