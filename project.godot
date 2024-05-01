@@ -430,6 +430,11 @@ _global_script_classes=[ {
 "path": "res://addons/shaderV/tools/random/randomFloat.gd"
 }, {
 "base": "VisualShaderNodeCustom",
+"class": "VisualShaderToolsRandomFloat4D",
+"language": "GDScript",
+"path": "res://addons/shaderV/tools/random/randomFloat4D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
 "class": "VisualShaderToolsRandomFloatGoldenRation",
 "language": "GDScript",
 "path": "res://addons/shaderV/tools/random/randomGoldNoiseFloat.gd"
@@ -554,6 +559,7 @@ _global_script_class_icons={
 "VisualShaderToolsHash2Dvec": "",
 "VisualShaderToolsPolarToCartesian": "",
 "VisualShaderToolsRandomFloat": "",
+"VisualShaderToolsRandomFloat4D": "",
 "VisualShaderToolsRandomFloatGoldenRation": "",
 "VisualShaderToolsRandomFloatImproved": "",
 "VisualShaderToolsRelay": "",

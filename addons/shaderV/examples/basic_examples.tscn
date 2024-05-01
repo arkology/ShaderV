@@ -1,4 +1,4 @@
-[gd_scene load_steps=692 format=2]
+[gd_scene load_steps=698 format=2]
 
 [ext_resource path="res://addons/shaderV/shaderV_icon.png" type="Texture" id=1]
 [ext_resource path="res://addons/shaderV/uv/tilingNoffset.gd" type="Script" id=2]
@@ -37,6 +37,7 @@
 [ext_resource path="res://addons/shaderV/rgba/generate_shapes/chekerboardPattern.gd" type="Script" id=35]
 [ext_resource path="res://addons/shaderV/rgba/generate_shapes/generateCircle2.gd" type="Script" id=36]
 [ext_resource path="res://addons/shaderV/rgba/generate_shapes/generateCircle.gd" type="Script" id=37]
+[ext_resource path="res://addons/shaderV/tools/random/randomFloat4D.gd" type="Script" id=38]
 [ext_resource path="res://addons/shaderV/rgba/generate_shapes/generateRegularNgon.gd" type="Script" id=39]
 [ext_resource path="res://addons/shaderV/rgba/generate_shapes/generateSpiral.gd" type="Script" id=40]
 [ext_resource path="res://addons/shaderV/rgba/generate_shapes/scanLinesSharp.gd" type="Script" id=41]
@@ -1733,16 +1734,85 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -193.937, -125.597 )
+graph_offset = Vector2( 52.455, -86.2322 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 400, 0 )
 nodes/fragment/2/node = SubResource( 609 )
-nodes/fragment/2/position = Vector2( 200, 0 )
+nodes/fragment/2/position = Vector2( 100, 0 )
 nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=110]
 shader = SubResource( 109 )
+
+[sub_resource type="VisualShaderNodeCustom" id=612]
+default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, 0.0, 2, 1.0, 3, Vector3( 0, 0, 0 ), 4, 0.0 ]
+initialized = true
+script = ExtResource( 38 )
+
+[sub_resource type="VisualShaderNodeInput" id=613]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeInput" id=614]
+input_name = "time"
+
+[sub_resource type="VisualShader" id=615]
+code = "shader_type canvas_item;
+
+
+// RandomFloat4D
+
+	float gpu_random_float(vec4 co){
+		float f = dot(fract(co) + fract(co * 2.32184321231),vec4(129.898,782.33,944.32214932,122.2834234542));
+		return fract(sin(f) * 437588.5453);
+	}
+	
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:3
+	vec3 n_out3p0 = vec3(UV, 0.0);
+
+// Input:4
+	float n_out4p0 = TIME;
+
+// RandomFloat4D:2
+	float n_in2p2 = 1.00000;
+	vec3 n_in2p3 = vec3(0.00000, 0.00000, 0.00000);
+	float n_in2p4 = 0.00000;
+	float n_out2p0;
+	{
+		n_out2p0 = gpu_random_float(vec4(n_out3p0, n_out4p0) * n_in2p2 + vec4(n_in2p3, n_in2p4));
+	}
+
+// Output:0
+	COLOR.rgb = vec3(n_out2p0);
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -434.239, -66.7544 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 400, 0 )
+nodes/fragment/2/node = SubResource( 612 )
+nodes/fragment/2/position = Vector2( 80, 0 )
+nodes/fragment/3/node = SubResource( 613 )
+nodes/fragment/3/position = Vector2( -160, -20 )
+nodes/fragment/4/node = SubResource( 614 )
+nodes/fragment/4/position = Vector2( -180, 60 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 3, 0, 2, 0, 4, 0, 2, 1 )
+
+[sub_resource type="ShaderMaterial" id=616]
+shader = SubResource( 615 )
 
 [sub_resource type="VisualShaderNodeInput" id=111]
 input_name = "uv"
@@ -9800,7 +9870,7 @@ __meta__ = {
 
 [node name="sphericalUV" type="VBoxContainer" parent="container"]
 margin_left = 654.0
-margin_right = 801.0
+margin_right = 774.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -9811,7 +9881,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/sphericalUV"]
 margin_top = 11.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Spherical UV"
@@ -9823,7 +9893,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/sphericalUV"]
 material = SubResource( 41 )
 margin_top = 23.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -9836,7 +9906,7 @@ __meta__ = {
 }
 
 [node name="tileUV" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 763.0
 margin_right = 910.0
 margin_bottom = 95.0
 rect_min_size = Vector2( 120, 95 )
@@ -9848,7 +9918,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/tileUV"]
 margin_top = 11.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 25.0
 rect_min_size = Vector2( 70, 0 )
 text = "Tile UV"
@@ -9860,7 +9930,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/tileUV"]
 material = SubResource( 47 )
 margin_top = 23.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 83.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10217,7 +10287,7 @@ __meta__ = {
 [node name="hash2d" type="VBoxContainer" parent="container"]
 margin_left = 654.0
 margin_top = 97.0
-margin_right = 801.0
+margin_right = 774.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10228,7 +10298,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/hash2d"]
 margin_top = 3.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Hash 2D
@@ -10241,7 +10311,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/hash2d"]
 material = SubResource( 104 )
 margin_top = 32.0
-margin_right = 147.0
+margin_right = 120.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10254,7 +10324,7 @@ __meta__ = {
 }
 
 [node name="hash2dvector" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 763.0
 margin_top = 97.0
 margin_right = 910.0
 margin_bottom = 192.0
@@ -10267,7 +10337,7 @@ __meta__ = {
 
 [node name="title" type="Label" parent="container/hash2dvector"]
 margin_top = 3.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 70, 0 )
 text = "Hash Random 
@@ -10280,7 +10350,7 @@ __meta__ = {
 [node name="preview" type="TextureRect" parent="container/hash2dvector"]
 material = SubResource( 107 )
 margin_top = 32.0
-margin_right = 120.0
+margin_right = 147.0
 margin_bottom = 92.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
@@ -10330,10 +10400,48 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="randomGoldNoiseFloat" type="VBoxContainer" parent="container"]
+[node name="randomFloat4D" type="VBoxContainer" parent="container"]
 margin_left = 1008.0
 margin_top = 97.0
 margin_right = 1128.0
+margin_bottom = 192.0
+rect_min_size = Vector2( 120, 95 )
+custom_constants/separation = -2
+alignment = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="title" type="Label" parent="container/randomFloat4D"]
+margin_top = 11.0
+margin_right = 120.0
+margin_bottom = 25.0
+rect_min_size = Vector2( 70, 0 )
+text = "Random Float (4D)"
+align = 1
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="preview" type="TextureRect" parent="container/randomFloat4D"]
+material = SubResource( 616 )
+margin_top = 23.0
+margin_right = 120.0
+margin_bottom = 83.0
+rect_min_size = Vector2( 70, 60 )
+size_flags_horizontal = 5
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="randomGoldNoiseFloat" type="VBoxContainer" parent="container"]
+margin_left = 1117.0
+margin_top = 97.0
+margin_right = 1237.0
 margin_bottom = 192.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10371,10 +10479,9 @@ __meta__ = {
 }
 
 [node name="remap" type="VBoxContainer" parent="container"]
-margin_left = 1117.0
-margin_top = 97.0
-margin_right = 1237.0
-margin_bottom = 192.0
+margin_top = 194.0
+margin_right = 120.0
+margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10410,8 +10517,9 @@ __meta__ = {
 }
 
 [node name="sinTime" type="VBoxContainer" parent="container"]
+margin_left = 109.0
 margin_top = 194.0
-margin_right = 120.0
+margin_right = 229.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10448,9 +10556,9 @@ __meta__ = {
 }
 
 [node name="vec2Compose" type="VBoxContainer" parent="container"]
-margin_left = 109.0
+margin_left = 218.0
 margin_top = 194.0
-margin_right = 229.0
+margin_right = 338.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10487,9 +10595,9 @@ __meta__ = {
 }
 
 [node name="blur9sample" type="VBoxContainer" parent="container"]
-margin_left = 218.0
+margin_left = 327.0
 margin_top = 194.0
-margin_right = 338.0
+margin_right = 447.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10526,9 +10634,9 @@ __meta__ = {
 }
 
 [node name="blurCustom" type="VBoxContainer" parent="container"]
-margin_left = 327.0
+margin_left = 436.0
 margin_top = 194.0
-margin_right = 447.0
+margin_right = 556.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10565,9 +10673,9 @@ __meta__ = {
 }
 
 [node name="zoomBlur" type="VBoxContainer" parent="container"]
-margin_left = 436.0
+margin_left = 545.0
 margin_top = 194.0
-margin_right = 556.0
+margin_right = 665.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10604,9 +10712,9 @@ __meta__ = {
 }
 
 [node name="glowEmpty" type="VBoxContainer" parent="container"]
-margin_left = 545.0
+margin_left = 654.0
 margin_top = 194.0
-margin_right = 665.0
+margin_right = 774.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10643,9 +10751,9 @@ __meta__ = {
 }
 
 [node name="innerGlow" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 763.0
 margin_top = 194.0
-margin_right = 801.0
+margin_right = 910.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10682,9 +10790,9 @@ __meta__ = {
 }
 
 [node name="innerGlowEmpty" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 899.0
 margin_top = 194.0
-margin_right = 910.0
+margin_right = 1019.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10722,9 +10830,9 @@ __meta__ = {
 }
 
 [node name="outerGlow" type="VBoxContainer" parent="container"]
-margin_left = 899.0
+margin_left = 1008.0
 margin_top = 194.0
-margin_right = 1019.0
+margin_right = 1128.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10761,9 +10869,9 @@ __meta__ = {
 }
 
 [node name="outerGlowEmpty" type="VBoxContainer" parent="container"]
-margin_left = 1008.0
+margin_left = 1117.0
 margin_top = 194.0
-margin_right = 1128.0
+margin_right = 1237.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10801,10 +10909,9 @@ __meta__ = {
 }
 
 [node name="checkerboardPattern" type="VBoxContainer" parent="container"]
-margin_left = 1117.0
-margin_top = 194.0
-margin_right = 1237.0
-margin_bottom = 289.0
+margin_top = 291.0
+margin_right = 120.0
+margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -10841,8 +10948,9 @@ __meta__ = {
 }
 
 [node name="generateCircle" type="VBoxContainer" parent="container"]
+margin_left = 109.0
 margin_top = 291.0
-margin_right = 120.0
+margin_right = 229.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10879,9 +10987,9 @@ __meta__ = {
 }
 
 [node name="generateCircle2" type="VBoxContainer" parent="container"]
-margin_left = 109.0
+margin_left = 218.0
 margin_top = 291.0
-margin_right = 229.0
+margin_right = 338.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10918,9 +11026,9 @@ __meta__ = {
 }
 
 [node name="regulatNgon" type="VBoxContainer" parent="container"]
-margin_left = 218.0
+margin_left = 327.0
 margin_top = 291.0
-margin_right = 338.0
+margin_right = 447.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10958,9 +11066,9 @@ __meta__ = {
 }
 
 [node name="generateSpiral" type="VBoxContainer" parent="container"]
-margin_left = 327.0
+margin_left = 436.0
 margin_top = 291.0
-margin_right = 447.0
+margin_right = 556.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -10997,9 +11105,9 @@ __meta__ = {
 }
 
 [node name="scanLinesSharp" type="VBoxContainer" parent="container"]
-margin_left = 436.0
+margin_left = 545.0
 margin_top = 291.0
-margin_right = 556.0
+margin_right = 665.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11037,9 +11145,9 @@ __meta__ = {
 }
 
 [node name="stripesRandom" type="VBoxContainer" parent="container"]
-margin_left = 545.0
+margin_left = 654.0
 margin_top = 291.0
-margin_right = 665.0
+margin_right = 774.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11077,9 +11185,9 @@ __meta__ = {
 }
 
 [node name="generic2d" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 763.0
 margin_top = 291.0
-margin_right = 801.0
+margin_right = 910.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11117,9 +11225,9 @@ __meta__ = {
 }
 
 [node name="perlin2d" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 899.0
 margin_top = 291.0
-margin_right = 910.0
+margin_right = 1019.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11157,9 +11265,9 @@ __meta__ = {
 }
 
 [node name="perlin3d" type="VBoxContainer" parent="container"]
-margin_left = 899.0
+margin_left = 1008.0
 margin_top = 291.0
-margin_right = 1019.0
+margin_right = 1128.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11197,9 +11305,9 @@ __meta__ = {
 }
 
 [node name="perlinPeriodic3d" type="VBoxContainer" parent="container"]
-margin_left = 1008.0
+margin_left = 1117.0
 margin_top = 291.0
-margin_right = 1128.0
+margin_right = 1237.0
 margin_bottom = 386.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11237,10 +11345,9 @@ __meta__ = {
 }
 
 [node name="perlin4d" type="VBoxContainer" parent="container"]
-margin_left = 1117.0
-margin_top = 291.0
-margin_right = 1237.0
-margin_bottom = 386.0
+margin_top = 388.0
+margin_right = 120.0
+margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11277,8 +11384,9 @@ __meta__ = {
 }
 
 [node name="simplex2d" type="VBoxContainer" parent="container"]
+margin_left = 109.0
 margin_top = 388.0
-margin_right = 120.0
+margin_right = 229.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11316,9 +11424,9 @@ __meta__ = {
 }
 
 [node name="simplex3d" type="VBoxContainer" parent="container"]
-margin_left = 109.0
+margin_left = 218.0
 margin_top = 388.0
-margin_right = 229.0
+margin_right = 338.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11356,9 +11464,9 @@ __meta__ = {
 }
 
 [node name="simplex4d" type="VBoxContainer" parent="container"]
-margin_left = 218.0
+margin_left = 327.0
 margin_top = 388.0
-margin_right = 338.0
+margin_right = 447.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11396,9 +11504,9 @@ __meta__ = {
 }
 
 [node name="worley2d" type="VBoxContainer" parent="container"]
-margin_left = 327.0
+margin_left = 436.0
 margin_top = 388.0
-margin_right = 447.0
+margin_right = 556.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11436,9 +11544,9 @@ __meta__ = {
 }
 
 [node name="worley2x2" type="VBoxContainer" parent="container"]
-margin_left = 436.0
+margin_left = 545.0
 margin_top = 388.0
-margin_right = 556.0
+margin_right = 665.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11476,9 +11584,9 @@ __meta__ = {
 }
 
 [node name="worley2x2x2" type="VBoxContainer" parent="container"]
-margin_left = 545.0
+margin_left = 654.0
 margin_top = 388.0
-margin_right = 665.0
+margin_right = 774.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11516,9 +11624,9 @@ __meta__ = {
 }
 
 [node name="worley3d" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 763.0
 margin_top = 388.0
-margin_right = 801.0
+margin_right = 910.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11556,9 +11664,9 @@ __meta__ = {
 }
 
 [node name="BCSAdjustment" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 899.0
 margin_top = 388.0
-margin_right = 910.0
+margin_right = 1019.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11595,9 +11703,9 @@ __meta__ = {
 }
 
 [node name="blackAndWhite" type="VBoxContainer" parent="container"]
-margin_left = 899.0
+margin_left = 1008.0
 margin_top = 388.0
-margin_right = 1019.0
+margin_right = 1128.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11634,9 +11742,9 @@ __meta__ = {
 }
 
 [node name="blendAwithB" type="VBoxContainer" parent="container"]
-margin_left = 1008.0
+margin_left = 1117.0
 margin_top = 388.0
-margin_right = 1128.0
+margin_right = 1237.0
 margin_bottom = 483.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11673,10 +11781,9 @@ __meta__ = {
 }
 
 [node name="bloom" type="VBoxContainer" parent="container"]
-margin_left = 1117.0
-margin_top = 388.0
-margin_right = 1237.0
-margin_bottom = 483.0
+margin_top = 485.0
+margin_right = 120.0
+margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -11712,8 +11819,9 @@ __meta__ = {
 }
 
 [node name="chromaticAberration" type="VBoxContainer" parent="container"]
+margin_left = 109.0
 margin_top = 485.0
-margin_right = 120.0
+margin_right = 229.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11751,9 +11859,9 @@ __meta__ = {
 }
 
 [node name="clamp" type="VBoxContainer" parent="container"]
-margin_left = 109.0
+margin_left = 218.0
 margin_top = 485.0
-margin_right = 229.0
+margin_right = 338.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11791,9 +11899,9 @@ __meta__ = {
 }
 
 [node name="colorCorrectionAdjustment" type="VBoxContainer" parent="container"]
-margin_left = 218.0
+margin_left = 327.0
 margin_top = 485.0
-margin_right = 338.0
+margin_right = 447.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11831,9 +11939,9 @@ __meta__ = {
 }
 
 [node name="emboss" type="VBoxContainer" parent="container"]
-margin_left = 327.0
+margin_left = 436.0
 margin_top = 485.0
-margin_right = 447.0
+margin_right = 556.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11870,9 +11978,9 @@ __meta__ = {
 }
 
 [node name="fireFX" type="VBoxContainer" parent="container"]
-margin_left = 436.0
+margin_left = 545.0
 margin_top = 485.0
-margin_right = 556.0
+margin_right = 665.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11909,9 +12017,9 @@ __meta__ = {
 }
 
 [node name="gradient4corners" type="VBoxContainer" parent="container"]
-margin_left = 545.0
+margin_left = 654.0
 margin_top = 485.0
-margin_right = 665.0
+margin_right = 774.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11949,9 +12057,9 @@ __meta__ = {
 }
 
 [node name="gradientMapping" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 763.0
 margin_top = 485.0
-margin_right = 801.0
+margin_right = 910.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -11989,9 +12097,9 @@ __meta__ = {
 }
 
 [node name="grayscale" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 899.0
 margin_top = 485.0
-margin_right = 910.0
+margin_right = 1019.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12028,9 +12136,9 @@ __meta__ = {
 }
 
 [node name="hue" type="VBoxContainer" parent="container"]
-margin_left = 899.0
+margin_left = 1008.0
 margin_top = 485.0
-margin_right = 1019.0
+margin_right = 1128.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12067,9 +12175,9 @@ __meta__ = {
 }
 
 [node name="inverseColor" type="VBoxContainer" parent="container"]
-margin_left = 1008.0
+margin_left = 1117.0
 margin_top = 485.0
-margin_right = 1128.0
+margin_right = 1237.0
 margin_bottom = 580.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12106,10 +12214,9 @@ __meta__ = {
 }
 
 [node name="maskAlpha" type="VBoxContainer" parent="container"]
-margin_left = 1117.0
-margin_top = 485.0
-margin_right = 1237.0
-margin_bottom = 580.0
+margin_top = 582.0
+margin_right = 120.0
+margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12145,8 +12252,9 @@ __meta__ = {
 }
 
 [node name="posterize" type="VBoxContainer" parent="container"]
+margin_left = 109.0
 margin_top = 582.0
-margin_right = 120.0
+margin_right = 229.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12183,9 +12291,9 @@ __meta__ = {
 }
 
 [node name="shiftHSV" type="VBoxContainer" parent="container"]
-margin_left = 109.0
+margin_left = 218.0
 margin_top = 582.0
-margin_right = 229.0
+margin_right = 338.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12222,9 +12330,9 @@ __meta__ = {
 }
 
 [node name="shineFX" type="VBoxContainer" parent="container"]
-margin_left = 218.0
+margin_left = 327.0
 margin_top = 582.0
-margin_right = 338.0
+margin_right = 447.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12261,9 +12369,9 @@ __meta__ = {
 }
 
 [node name="tintRGBA" type="VBoxContainer" parent="container"]
-margin_left = 327.0
+margin_left = 436.0
 margin_top = 582.0
-margin_right = 447.0
+margin_right = 556.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12300,9 +12408,9 @@ __meta__ = {
 }
 
 [node name="tonemap" type="VBoxContainer" parent="container"]
-margin_left = 436.0
+margin_left = 545.0
 margin_top = 582.0
-margin_right = 556.0
+margin_right = 665.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12339,9 +12447,9 @@ __meta__ = {
 }
 
 [node name="turnCGA4Palette" type="VBoxContainer" parent="container"]
-margin_left = 545.0
+margin_left = 654.0
 margin_top = 582.0
-margin_right = 665.0
+margin_right = 774.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12378,9 +12486,9 @@ __meta__ = {
 }
 
 [node name="turnGBPalette" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 763.0
 margin_top = 582.0
-margin_right = 801.0
+margin_right = 910.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12418,9 +12526,9 @@ __meta__ = {
 }
 
 [node name="generic2d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 899.0
 margin_top = 582.0
-margin_right = 910.0
+margin_right = 1019.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12458,9 +12566,9 @@ __meta__ = {
 }
 
 [node name="perlin2d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 899.0
+margin_left = 1008.0
 margin_top = 582.0
-margin_right = 1019.0
+margin_right = 1128.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12498,9 +12606,9 @@ __meta__ = {
 }
 
 [node name="worley2d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 1008.0
+margin_left = 1117.0
 margin_top = 582.0
-margin_right = 1128.0
+margin_right = 1237.0
 margin_bottom = 677.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12538,10 +12646,9 @@ __meta__ = {
 }
 
 [node name="simplex2d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 1117.0
-margin_top = 582.0
-margin_right = 1237.0
-margin_bottom = 677.0
+margin_top = 679.0
+margin_right = 120.0
+margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
 alignment = 1
@@ -12551,9 +12658,9 @@ __meta__ = {
 }
 
 [node name="title" type="Label" parent="container/simplex2d_fractal"]
-margin_top = 3.0
+margin_top = 8.0
 margin_right = 120.0
-margin_bottom = 34.0
+margin_bottom = 39.0
 rect_min_size = Vector2( 70, 0 )
 text = "Fractal
 Simplex2D Noise"
@@ -12564,9 +12671,9 @@ __meta__ = {
 
 [node name="preview" type="TextureRect" parent="container/simplex2d_fractal"]
 material = SubResource( 509 )
-margin_top = 32.0
+margin_top = 37.0
 margin_right = 120.0
-margin_bottom = 92.0
+margin_bottom = 97.0
 rect_min_size = Vector2( 70, 60 )
 size_flags_horizontal = 5
 texture = ExtResource( 1 )
@@ -12578,8 +12685,9 @@ __meta__ = {
 }
 
 [node name="worley3d_fractal" type="VBoxContainer" parent="container"]
+margin_left = 109.0
 margin_top = 679.0
-margin_right = 120.0
+margin_right = 229.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12617,9 +12725,9 @@ __meta__ = {
 }
 
 [node name="perlin3d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 109.0
+margin_left = 218.0
 margin_top = 679.0
-margin_right = 229.0
+margin_right = 338.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12657,9 +12765,9 @@ __meta__ = {
 }
 
 [node name="simplex3d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 218.0
+margin_left = 327.0
 margin_top = 679.0
-margin_right = 338.0
+margin_right = 447.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12697,9 +12805,9 @@ __meta__ = {
 }
 
 [node name="perlin4d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 327.0
+margin_left = 436.0
 margin_top = 679.0
-margin_right = 447.0
+margin_right = 556.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12737,9 +12845,9 @@ __meta__ = {
 }
 
 [node name="simplex4d_fractal" type="VBoxContainer" parent="container"]
-margin_left = 436.0
+margin_left = 545.0
 margin_top = 679.0
-margin_right = 556.0
+margin_right = 665.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12777,9 +12885,9 @@ __meta__ = {
 }
 
 [node name="normalFromHeightmap" type="VBoxContainer" parent="container"]
-margin_left = 545.0
+margin_left = 654.0
 margin_top = 679.0
-margin_right = 665.0
+margin_right = 774.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12817,9 +12925,9 @@ __meta__ = {
 }
 
 [node name="coordsTransformation" type="VBoxContainer" parent="container"]
-margin_left = 654.0
+margin_left = 763.0
 margin_top = 679.0
-margin_right = 801.0
+margin_right = 910.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12857,9 +12965,9 @@ __meta__ = {
 }
 
 [node name="gridShape" type="VBoxContainer" parent="container"]
-margin_left = 790.0
+margin_left = 899.0
 margin_top = 679.0
-margin_right = 910.0
+margin_right = 1019.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
@@ -12896,9 +13004,9 @@ __meta__ = {
 }
 
 [node name="sobelEdge" type="VBoxContainer" parent="container"]
-margin_left = 899.0
+margin_left = 1008.0
 margin_top = 679.0
-margin_right = 1019.0
+margin_right = 1128.0
 margin_bottom = 785.0
 rect_min_size = Vector2( 120, 95 )
 custom_constants/separation = -2
