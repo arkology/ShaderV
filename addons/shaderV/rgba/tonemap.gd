@@ -32,6 +32,7 @@ func _get_input_port_name(port: int):
 			return "exposure"
 		2:
 			return "gamma"
+	return ""
 
 func _get_input_port_type(port: int):
 	match port:
@@ -41,6 +42,7 @@ func _get_input_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		2:
 			return VisualShaderNode.PORT_TYPE_SCALAR
+	return PORT_TYPE_SCALAR
 
 func _get_output_port_count() -> int:
 	return 1

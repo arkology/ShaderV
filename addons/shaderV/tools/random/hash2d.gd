@@ -38,7 +38,3 @@ func _get_output_port_type(port):
 func _get_code(input_vars, output_vars, mode, type):
 	return output_vars[0] + " = fract(1e4 * sin(17.0 * %s.x + %s.y * 0.1) * (0.1 + abs(sin(%s.y * 13.0 + %s.x))));" % [
 	input_vars[0], input_vars[0], input_vars[0], input_vars[0]]
-
-
-
-

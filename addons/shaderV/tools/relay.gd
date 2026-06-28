@@ -39,4 +39,3 @@ func _get_output_port_type(port):
 
 func _get_code(input_vars, output_vars, mode, type):
 	return output_vars[0] + " = " + input_vars[0]
-

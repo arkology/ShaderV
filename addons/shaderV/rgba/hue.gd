@@ -24,11 +24,13 @@ func _get_input_port_name(port: int):
 	match port:
 		0:
 			return "inp"
+	return ""
 
 func _get_input_port_type(port: int):
 	match port:
 		0:
 			return VisualShaderNode.PORT_TYPE_SCALAR
+	return PORT_TYPE_SCALAR
 
 func _get_output_port_count() -> int:
 	return 1
