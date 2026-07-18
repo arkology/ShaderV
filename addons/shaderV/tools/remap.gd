@@ -38,6 +38,7 @@ func _get_input_port_name(port: int):
 			return "outMin"
 		4:
 			return "outMax"
+	return ""
 
 func _get_input_port_type(port: int):
 	match port:
@@ -51,6 +52,7 @@ func _get_input_port_type(port: int):
 			return VisualShaderNode.PORT_TYPE_SCALAR
 		4:
 			return VisualShaderNode.PORT_TYPE_SCALAR
+	return PORT_TYPE_SCALAR
 	
 
 func _get_output_port_count() -> int:
@@ -74,7 +76,3 @@ func _get_code(input_vars, output_vars, mode, type):
 	
 	return output_vars[0] + " = _remapFunc(%s, vec2(%s, %s), vec2(%s, %s));" % [
 	uv, input_vars[1], input_vars[2], input_vars[3], input_vars[4]]
-
-
-
-
